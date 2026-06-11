@@ -12,6 +12,16 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: '*');
+        $middleware->validateCsrfTokens(except: [
+        'midtrans/webhook',
+    ]);
+
+    $middleware->alias([
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+    ]);
+
+    $middleware->redirectTo('/member/login');
+    
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Livewire\Product;
+namespace App\Livewire\Admin\Product;
 
 use App\Models\Media;
 use App\Models\Product;
+use App\Models\LandingPageSection;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -27,12 +28,10 @@ class ProductList extends Component
     public $price;
     public $status = 'active';
     
-    // DIGITAL ASSETS
-    public $digital_assets;       // Menyimpan nama file/path lama
-    public $digital_asset_file;   // Untuk upload file asset baru
+    public $digital_assets;
+    public $digital_asset_file;
 
-    // IMAGE SOURCE SELECTION
-    public $image_source = 'upload'; // upload|url|media
+    public $image_source = 'upload';
     public $image;
     public $image_url;
     public $media_id;
@@ -175,6 +174,52 @@ class ProductList extends Component
             ]
         );
 
+        if ($this->editMode) {
+        $sections = LandingPageSection::whereIn('type', ['product', 'product2'])->get();
+
+        foreach ($sections as $section) {
+            $content = $section->content;
+            $updated = false;
+
+            // 1. Cek jika struktur data berupa produk satuan biasa
+            if (($content['product_id'] ?? null) == $this->editingId) {
+                $content['name'] = $this->name;
+                $content['description'] = $this->description;
+                $content['price'] = $this->price;
+                $content['image_url'] = $imageValue;
+                $updated = true;
+            }
+
+            // 2. Cek jika yang di-edit adalah Produk 1 di dalam bundling
+            if (($content['product_id_1'] ?? null) == $this->editingId) {
+                $content['name_1'] = $this->name;
+                $content['description_1'] = $this->description;
+                $content['price_1'] = $this->price;
+                $content['image_url_1'] = $imageValue;
+                $updated = true;
+            } 
+            
+            // 3. Cek jika yang di-edit adalah Produk 2 di dalam bundling
+            if (($content['product_id_2'] ?? null) == $this->editingId) {
+                $content['name_2'] = $this->name;
+                $content['description_2'] = $this->description;
+                $content['price_2'] = $this->price;
+                $content['image_url_2'] = $imageValue;
+                $updated = true;
+            }
+
+            // Jika id produk tidak ditemukan sama sekali di section ini, lewati
+            if (!$updated) {
+                continue;
+            }
+
+            // Simpan perubahan kembali ke database
+            $section->update([
+                'content' => $content
+            ]);
+        }
+    }
+
         session()->flash(
             'message',
             $this->editMode ? 'Produk berhasil diperbarui' : 'Produk berhasil ditambahkan'
@@ -214,13 +259,12 @@ class ProductList extends Component
             ->when($this->search, fn ($q) => $q->where('name', 'like', '%' . $this->search . '%'))
             ->when($this->filterStatus, fn ($q) => $q->where('status', $this->filterStatus))
             ->latest()
-            ->paginate(12, ['*'], 'page'); // Menggunakan pointer default 'page'
+            ->paginate(12, ['*'], 'page');
 
-        // Query untuk Media Library (Custom Multiple Pagination)
         $mediaItems = Media::query()
             ->when($this->searchMedia, fn ($q) => $q->where('name', 'like', '%' . $this->searchMedia . '%'))
             ->latest()
-            ->paginate(8, ['*'], 'mediaPage'); // Menggunakan pointer 'mediaPage' agar tidak tabrakan
+            ->paginate(8, ['*'], 'mediaPage');
 
         return view('livewire.product.list', [
             'products' => $products,

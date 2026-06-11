@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\LandingPage;
+namespace App\Livewire\Admin\LandingPage;
 
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -9,12 +9,12 @@ use App\Models\LandingPage;
 use App\Models\Media;
 use App\Models\Product;
 use App\Models\LandingPageSection;
-use App\Livewire\LandingPage\Components\TextSection;
-use App\Livewire\LandingPage\Components\ButtonSection;
-use App\Livewire\LandingPage\Components\ImageSection;
-use App\Livewire\LandingPage\Components\VideoSection;
-use App\Livewire\LandingPage\Components\ScriptSection;
-use App\Livewire\LandingPage\Components\ProductSection;
+use App\Livewire\Admin\LandingPage\Components\TextSection;
+use App\Livewire\Admin\LandingPage\Components\ButtonSection;
+use App\Livewire\Admin\LandingPage\Components\ImageSection;
+use App\Livewire\Admin\LandingPage\Components\VideoSection;
+use App\Livewire\Admin\LandingPage\Components\ScriptSection;
+use App\Livewire\Admin\LandingPage\Components\ProductSection;
 
 class LandingPageEditor extends Component
 {
@@ -122,8 +122,7 @@ class LandingPageEditor extends Component
         elseif ($this->mediaMethod === 'library' && $this->selectedMediaId) {
             $media = Media::find($this->selectedMediaId);
             if ($media) {
-                $urlResult = asset($media->file);
-                $this->editingContent[$isImage ? 'image_url' : 'video_url'] = $urlResult;
+                $this->editingContent[$isImage ? 'image_url' : 'video_url'] = $media->file;
             }
         }
 

@@ -3,11 +3,11 @@
     $alignment   = $section->content['alignment'] ?? 'text-left';
     $textColor   = $section->content['text_color'] ?? '#1e293b';
     $priceColor  = $section->content['price_color'] ?? '#4f46e5';
-    $newPriceColor= $section->content['new_price_color'] ?? '#4f46e5';
+    $oldPriceColor= $section->content['old_price_color'] ?? '#4f46e5';
     $btnBgColor  = $section->content['btn_bg_color'] ?? '#4f46e5';
     $btnTextColor= $section->content['btn_text_color'] ?? '#ffffff';
 
-    $fixPrice = !empty($section->content['new_price']) ? $section->content['new_price'] : ($section->content['price'] ?? 0);
+    $price = $section->content['price'] ?? 0;
     $productName = $section->content['name'] ?? 'Nama Produk';
     $productId = $section->content['product_id'] ?? $section->id;
 @endphp
@@ -35,12 +35,12 @@
             </h3>
             
             <div class="flex flex-col gap-1 {{ $alignment == 'text-center' ? 'items-center' : ($alignment == 'text-right' ? 'items-end' : 'items-start') }}">
-                @if(!empty($section->content['new_price']))
-                    <span class="text-sm font-medium line-through" style="color: {{ $newPriceColor }};">
-                        Rp {{ number_format($section->content['price'] ?? 0, 0, ',', '.') }}
+                @if(!empty($section->content['old_price']))
+                    <span class="text-sm font-medium line-through" style="color: {{ $oldPriceColor }};">
+                        Rp {{ number_format($section->content['old_price'] ?? 0, 0, ',', '.') }}
                     </span>
                     <span class="text-xl font-black" style="color: {{ $priceColor }};">
-                        Rp {{ number_format($section->content['new_price'], 0, ',', '.') }}
+                        Rp {{ number_format($section->content['price'], 0, ',', '.') }}
                     </span>
                 @else
                     <span class="text-xl font-black" style="color: {{ $priceColor }};">
@@ -55,7 +55,7 @@
 
             <div class="pt-4">
                     <button type="button" 
-                    wire:click="addToCart('{{ $productId }}', '{{ addslashes($productName) }}', {{ $fixPrice }})"
+                    wire:click="addToCart('{{ $productId }}', '{{ addslashes($productName) }}', {{ $price }})"
                     x-on:click="$dispatch('cartUpdated')"
                     class="w-full block text-center font-bold text-sm py-3 px-6 rounded-xl shadow-md hover:opacity-95 transition duration-150 transform active:scale-95 cursor-pointer"
                     style="background-color: {{ $btnBgColor }}; color: {{ $btnTextColor }};">
@@ -67,3 +67,4 @@
         </div>
     </div>
 </div>
+

@@ -38,7 +38,7 @@
         </label>
         
         <label class="cursor-pointer flex items-center gap-1.5 bg-white border border-slate-200 rounded px-2 py-1 shadow-sm hover:bg-slate-50 transition">
-            <input type="color" wire:model.live="editingContent.new_price_color" class="w-4 h-4 p-0 border-0 cursor-pointer rounded-sm">
+            <input type="color" wire:model.live="editingContent.old_price_color" class="w-4 h-4 p-0 border-0 cursor-pointer rounded-sm">
             <span class="text-[10px] font-medium text-slate-600">Harga Coret</span>
         </label>
         
@@ -66,7 +66,7 @@
         </div>
 
         <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Pilih Produk Konten (Harga Diskon/Baru)</label>
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Pilih Produk Konten</label>
             <select wire:model.live="editingContent.product_id" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:border-indigo-500">
                 <option value="">-- Pilih Produk Berdasarkan Database --</option>
                 @foreach($products as $product)
@@ -77,8 +77,8 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Harga Diskon</label>
-                <input type="number" wire:model.live="editingContent.new_price" placeholder="Contoh: 150000" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:border-indigo-500">
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Harga Dicoret</label>
+                <input type="number" wire:model.live="editingContent.old_price" placeholder="Contoh: 150000" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:border-indigo-500">
             </div>
             <div>
                 <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tulisan Badge</label>
@@ -99,7 +99,7 @@
             $pAlign       = $editingContent['alignment'] ?? 'text-left';
             $pColor       = $editingContent['text_color'] ?? '#1e293b';
             $pPrice       = $editingContent['price_color'] ?? '#4f46e5';
-            $pNewPriceClr = $editingContent['new_price_color'] ?? '#94a3b8';
+            $pOldPriceClr = $editingContent['old_price_color'] ?? '#94a3b8';
             $pBadgeBg     = $editingContent['badge_bg_color'] ?? '#f43f5e';
             $pBadgeTxt    = $editingContent['badge_text_color'] ?? '#ffffff';
             $pBtnBg       = $editingContent['btn_bg_color'] ?? '#4f46e5';
@@ -133,19 +133,20 @@
                 
                 <div class="flex flex-col gap-1 {{ $pAlign == 'text-center' ? 'items-center' : ($pAlign == 'text-right' ? 'items-end' : 'items-start') }}">
     
-                    @if(!empty($editingContent['new_price']))
+                    @if(!empty($editingContent['old_price']))
                         <span
                             class="text-sm font-medium line-through"
-                            style="color: {{ $pNewPriceClr }};"
+                            style="color: {{ $pOldPriceClr }};"
+                        >
+                            Rp {{ number_format($editingContent['old_price'], 0, ',', '.') }}
+                        </span>
+                        
+                        <span
+                        class="text-lg font-black"
+                        style="color: {{ $pPrice }};"
                         >
                             Rp {{ number_format($selectedProduct->price ?? 0, 0, ',', '.') }}
-                        </span>
-
-                        <span
-                            class="text-lg font-black"
-                            style="color: {{ $pPrice }};"
-                        >
-                            Rp {{ number_format($editingContent['new_price'], 0, ',', '.') }}
+                            
                         </span>
                     @else
                         <span

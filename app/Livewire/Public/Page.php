@@ -52,6 +52,7 @@ class Page extends Component
         }
 
         session()->put('cart', $cart);
+        $this->dispatch('cartUpdated');
         session()->flash('success', 'Produk berhasil ditambahkan!');
     }
 

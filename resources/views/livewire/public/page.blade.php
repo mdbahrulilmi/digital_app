@@ -35,6 +35,6 @@
     @endif
     
     @if($landingPage->cart)
-        @include('cart.footer')
+        <div class="h-24" ></div>
     @endif
 </div>

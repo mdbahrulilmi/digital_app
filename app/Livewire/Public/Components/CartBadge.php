@@ -7,11 +7,9 @@ use Livewire\Attributes\On;
 
 class CartBadge extends Component
 {
-    // Kita buat pendengarnya eksplisit me-refresh dirinya sendiri
     #[On('cartUpdated')]
     public function updateBadge()
     {
-        // Kosongkan saja, ini memicu komponen untuk render ulang otomatis
     }
 
     public function render()

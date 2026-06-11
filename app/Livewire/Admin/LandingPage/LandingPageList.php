@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\LandingPage;
+namespace App\Livewire\Admin\LandingPage;
 
 use Livewire\Component;
 use Livewire\WithPagination;

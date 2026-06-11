@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\LandingPage\Components;
+namespace App\Livewire\Admin\LandingPage\Components;
 
 use App\Models\Product;
 
@@ -59,14 +59,14 @@ class ProductSection
             'badge'            => $section->content['badge'] ?? '',
             'button_text'      => $section->content['button_text'] ?? 'Beli Sekarang',
             'button_url'       => $section->content['button_url'] ?? '#',
-            'new_price'       => $section->content['new_price'] ?? null,
+            'old_price'       => $section->content['old_price'] ?? null,
             
             'font_family'      => $section->content['font_family'] ?? 'font-sans',
             'alignment'        => $section->content['alignment'] ?? 'text-left',
             
             'text_color'       => $section->content['text_color'] ?? '#1e293b',
             'price_color'      => $section->content['price_color'] ?? '#4f46e5',
-            'new_price_color'  => $section->content['new_price_color'] ?? '#94a3b8',
+            'old_price_color'  => $section->content['old_price_color'] ?? '#94a3b8',
             'badge_bg_color'   => $section->content['badge_bg_color'] ?? '#f43f5e',
             'badge_text_color' => $section->content['badge_text_color'] ?? '#ffffff',
             'btn_bg_color'     => $section->content['btn_bg_color'] ?? '#4f46e5',

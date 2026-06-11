@@ -1,14 +1,20 @@
-{{-- <div class="h-24"></div> 
+@php
+    $cart = session('cart', []);
+
+    $total = collect($cart)->sum(function ($item) {
+        return ($item['price'] ?? 0) * ($item['qty'] ?? 1);
+    });
+@endphp
 
 <div class="fixed bottom-0 inset-x-0 z-40 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-[0_-8px_30px_rgb(0,0,0,0.04)] p-4 transition-all">
     <div class="max-w-3xl mx-auto flex items-center justify-between gap-4">
         
         <div>
             <span class="block text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Total Pembayaran</span>
-            <span class="block text-lg font-black text-rose-600">Rp 450.000</span>
+            <span class="block text-lg font-black text-rose-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
         </div>
 
-        <a href="/cart" wire:navigate
+        <a href="/checkout" wire:navigate
             class="cursor-pointer flex items-center justify-center gap-2 px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 transition-all text-sm md:text-base">
 
                 <span>Checkout Sekarang</span>
@@ -27,4 +33,4 @@
             </a>
 
     </div>
-</div> --}}
+</div>

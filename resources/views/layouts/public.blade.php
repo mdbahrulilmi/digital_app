@@ -17,9 +17,9 @@
         {{ $slot }}
     @endif
 
-     {{-- @if(isset($landingPage) && $landingPage->cart)
-        @include('cart.footer')
-    @endif --}}
+    @if(isset($landingPage) && $landingPage->cart)
+        @livewire('public.components.cart-footer')
+    @endif
     </div>
     
     <style>

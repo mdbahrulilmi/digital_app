@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Media;
+namespace App\Livewire\Admin\Media;
 
 use Livewire\Component;
 use Livewire\WithPagination;

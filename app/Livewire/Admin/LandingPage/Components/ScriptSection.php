@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\LandingPage\Components;
+namespace App\Livewire\Admin\LandingPage\Components;
 
 class ScriptSection
 {

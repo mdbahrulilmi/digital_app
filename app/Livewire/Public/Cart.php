@@ -30,8 +30,6 @@ class Cart extends Component
             $this->cart[$sectionId]['qty']++;
             session()->put('cart', $this->cart);
             $this->loadCart();
-
-            // 🔥 Tambahkan ini: Biar badge angka di atas ikut bertambah/sinkron
             $this->dispatch('cartUpdated'); 
         }
     }
@@ -43,7 +41,6 @@ class Cart extends Component
             session()->put('cart', $this->cart);
             $this->loadCart();
 
-            // 🔥 Tambahkan ini: Biar badge angka di atas ikut berkurang
             $this->dispatch('cartUpdated'); 
         } elseif (isset($this->cart[$sectionId]) && $this->cart[$sectionId]['qty'] == 1) {
             $this->removeItem($sectionId);
@@ -57,7 +54,6 @@ class Cart extends Component
             session()->put('cart', $this->cart);
             $this->loadCart();
 
-            // 🔥 Tambahkan ini: Biar badge angka langsung berkurang drastis sesuai item yang dihapus
             $this->dispatch('cartUpdated'); 
 
             session()->flash('success', 'Produk berhasil dihapus dari keranjang.');
