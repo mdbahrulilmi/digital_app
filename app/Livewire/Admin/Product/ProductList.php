@@ -4,32 +4,37 @@ namespace App\Livewire\Admin\Product;
 
 use App\Models\Media;
 use App\Models\Product;
-use App\Models\LandingPageSection;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use App\Traits\SlugGenerator;
+use App\Traits\MediaHandler;
+use App\Traits\LandingPageHandler;
 
 class ProductList extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithPagination, WithFileUploads, SlugGenerator, MediaHandler, LandingPageHandler;
 
     public $search = '';
     public $filterStatus = '';
 
-    // Properti pencarian khusus untuk Media Picker di dalam modal
     public $searchMedia = '';
 
     public $openModal = false;
     public $editMode = false;
     public $editingId = null;
 
-    public $name;
+    public $title;
+    public $slug;
     public $description;
     public $price;
     public $status = 'active';
-    
+
+    public $asset_source = 'upload';
     public $digital_assets;
     public $digital_asset_file;
+    public $digital_asset_url;
+    public $asset_type;
 
     public $image_source = 'upload';
     public $image;
@@ -38,18 +43,34 @@ class ProductList extends Component
     public $existingImage;
 
     protected function rules()
+{
+    return [
+        'title'              => ['required', 'string', 'max:255'],
+        'slug'               => ['required', 'string', 'unique:products,slug,' . ($this->editingId ?? 'NULL')],
+        'price'              => ['required', 'numeric', 'min:0'],
+        'status'             => ['required'],
+        'image'              => ['nullable', 'image', 'max:2048'],
+        'image_url'          => ['nullable', 'url'],
+        'asset_type'         => [
+            'required_if:asset_source,upload', 
+            'required_if:asset_source,link', 
+            'in:file,video,audio,image'
+        ],
+        'digital_asset_file' => $this->asset_source === 'upload' 
+            ? ['nullable', 'file'] 
+            : ['nullable'],
+            
+        'digital_asset_url'  => $this->asset_source === 'link' 
+            ? ['required', 'url'] 
+            : ['nullable'],
+    ];
+}
+
+    public function updatedTitle($value)
     {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'status' => ['required'],
-            'image' => ['nullable', 'image', 'max:2048'],
-            'image_url' => ['nullable', 'url'],
-            'digital_asset_file' => ['nullable', 'file', 'max:10240'], // Maksimal 10MB
-        ];
+        $this->slug = $this->generateUniqueSlug($value, Product::class);
     }
 
-    // Reset pagination ketika keyword pencarian berubah
     public function updatingSearch()
     {
         $this->resetPage(); 
@@ -73,7 +94,9 @@ class ProductList extends Component
         $product = Product::findOrFail($id);
 
         $this->editingId = $product->id;
-        $this->name = $product->name;
+        $this->title = $product->title;
+        $this->asset_type = $product->type;
+        $this->slug = $product->slug;
         $this->description = $product->description;
         $this->price = $product->price;
         $this->digital_assets = $product->digital_assets;
@@ -96,7 +119,6 @@ class ProductList extends Component
 
     public function selectMedia($url)
     {
-        // Fungsi pembantu saat user memilih gambar dari Media Library
         $this->media_id = $url;
     }
 
@@ -106,65 +128,57 @@ class ProductList extends Component
 
         $imageValue = $this->existingImage;
 
-        // 1. Handle Image Source
         switch ($this->image_source) {
-            case 'upload':
-
+        case 'upload':
             if ($this->image) {
-
-                $mimeType = $this->image->getMimeType();
-
-                if (str_starts_with($mimeType, 'image/')) {
-                    $type = 'image';
-                    $directory = 'media/images';
-                } elseif (str_starts_with($mimeType, 'video/')) {
-                    $type = 'video';
-                    $directory = 'media/videos';
-                } else {
-                    $this->addError(
-                        'image',
-                        'Tipe file tidak didukung.'
-                    );
-                    return;
-                }
-
-                $path = $this->image->store(
-                    $directory,
-                    'public'
-                );
-
-                $storagePath = '/storage/' . $path;
-
+                $imageValue = $this->uploadImageAsWebp($this->image);
                 Media::create([
-                    'name' => $this->name ?: \Illuminate\Support\Str::random(10),
-                    'file' => $storagePath,
-                    'type' => $type,
-                    'size' => $this->image->getSize(),
+                    'title' => $this->title ?: \Illuminate\Support\Str::random(10),
+                    'file'  => $imageValue,
+                    'type'  => 'image',
+                    'size'  => $this->image->getSize(),
                 ]);
-
-                $imageValue = $storagePath;
             }
-
             break;
-            case 'url':
-                $imageValue = $this->image_url;
-                break;
-            case 'media':
-                $imageValue = $this->media_id;
-                break;
+        case 'url':
+            $imageValue = $this->image_url;
+            break;
+        case 'media':
+            $imageValue = $this->media_id;
+            break;
         }
 
-        // 2. Handle Digital Asset File
         $digitalAssetValue = $this->digital_assets;
-        if ($this->digital_asset_file) {
-            $digitalAssetValue = $this->digital_asset_file->store('digital_assets', 'local'); 
-            // Disarankan menggunakan disk 'local' atau 'private' agar tidak bisa diakses publik langsung
+
+        if ($this->asset_source === 'upload' && $this->digital_asset_file) {
+            $file = $this->digital_asset_file;
+            $path = $file->store('digital_assets', 'public');
+            
+            $extension = $file->getClientOriginalExtension();
+            $name = $file->getClientOriginalName();
+            
+            $digitalAssetValue = json_encode([
+                'name' => $name,
+                'path' => $path,
+                'type' => strtolower($extension),
+                'mime' => $file->getMimeType(),
+                'size' => $file->getSize(),
+            ]);
+        }
+
+        elseif ($this->asset_source === 'link' && $this->digital_asset_url) {
+            $digitalAssetValue = json_encode([
+                'type' => 'link',
+                'url'  => $this->digital_asset_url,
+            ]);
         }
 
         Product::updateOrCreate(
             ['id' => $this->editingId],
             [
-                'name' => $this->name,
+                'title' => $this->title,
+                'slug' => $this->slug,
+                'type' => $this->asset_type,
                 'description' => $this->description,
                 'price' => $this->price,
                 'image_source' => $this->image_source,
@@ -175,50 +189,41 @@ class ProductList extends Component
         );
 
         if ($this->editMode) {
-        $sections = LandingPageSection::whereIn('type', ['product', 'product2'])->get();
+            $newData = [
+                'title' => $this->title,
+                'slug' => $this->slug,
+                'description' => $this->description,
+                'price' => $this->price,
+                'image' => $imageValue
+            ];
 
-        foreach ($sections as $section) {
-            $content = $section->content;
-            $updated = false;
-
-            // 1. Cek jika struktur data berupa produk satuan biasa
-            if (($content['product_id'] ?? null) == $this->editingId) {
-                $content['name'] = $this->name;
-                $content['description'] = $this->description;
-                $content['price'] = $this->price;
-                $content['image_url'] = $imageValue;
-                $updated = true;
-            }
-
-            // 2. Cek jika yang di-edit adalah Produk 1 di dalam bundling
-            if (($content['product_id_1'] ?? null) == $this->editingId) {
-                $content['name_1'] = $this->name;
-                $content['description_1'] = $this->description;
-                $content['price_1'] = $this->price;
-                $content['image_url_1'] = $imageValue;
-                $updated = true;
-            } 
-            
-            // 3. Cek jika yang di-edit adalah Produk 2 di dalam bundling
-            if (($content['product_id_2'] ?? null) == $this->editingId) {
-                $content['name_2'] = $this->name;
-                $content['description_2'] = $this->description;
-                $content['price_2'] = $this->price;
-                $content['image_url_2'] = $imageValue;
-                $updated = true;
-            }
-
-            // Jika id produk tidak ditemukan sama sekali di section ini, lewati
-            if (!$updated) {
-                continue;
-            }
-
-            // Simpan perubahan kembali ke database
-            $section->update([
-                'content' => $content
-            ]);
+           $this->updateLandingPageSections(['product', 'product2'], [
+            [
+                'id_key'         => 'product_id', 
+                'title_key'      => 'title', 
+                'slug_key'       => 'slug', 
+                'desc_key'       => 'description', 
+                'price_key'      => 'price', 
+                'image_key'      => 'image_url'
+            ],
+            [
+                'id_key'         => 'product_id_1', 
+                'title_key'      => 'title_1', 
+                'slug_key'       => 'slug_1', 
+                'desc_key'       => 'description_1', 
+                'price_key'      => 'price_1', 
+                'image_key'      => 'image_url_1'
+            ],
+            [
+                'id_key'         => 'product_id_2', 
+                'title_key'      => 'title_2', 
+                'slug_key'       => 'slug_2', 
+                'desc_key'       => 'description_2', 
+                'price_key'      => 'price_2', 
+                'image_key'      => 'image_url_2'
+            ]
+        ], $this->editingId, $newData);
         }
-    }
 
         session()->flash(
             'message',
@@ -238,7 +243,8 @@ class ProductList extends Component
     public function resetForm()
     {
         $this->editingId = null;
-        $this->name = null;
+        $this->title = null;
+        $this->slug = null;
         $this->description = null;
         $this->price = null;
         $this->digital_assets = null;
@@ -256,17 +262,17 @@ class ProductList extends Component
     {
         // Query untuk Produk (Main Pagination)
         $products = Product::query()
-            ->when($this->search, fn ($q) => $q->where('name', 'like', '%' . $this->search . '%'))
+            ->when($this->search, fn ($q) => $q->where('title', 'like', '%' . $this->search . '%'))
             ->when($this->filterStatus, fn ($q) => $q->where('status', $this->filterStatus))
             ->latest()
             ->paginate(12, ['*'], 'page');
 
         $mediaItems = Media::query()
-            ->when($this->searchMedia, fn ($q) => $q->where('name', 'like', '%' . $this->searchMedia . '%'))
+            ->when($this->searchMedia, fn ($q) => $q->where('title', 'like', '%' . $this->searchMedia . '%'))
             ->latest()
             ->paginate(8, ['*'], 'mediaPage');
 
-        return view('livewire.product.list', [
+        return view('livewire.admin.product.list', [
             'products' => $products,
             'mediaItems' => $mediaItems,
         ]);

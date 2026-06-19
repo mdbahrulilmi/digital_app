@@ -10,7 +10,7 @@ class ProductSection
     public static function getDefault(): array
     {
         return [
-            'name' => 'Nama Produk',
+            'title' => 'Nama Produk',
             'price' => 0,
             'description' => 'Tuliskan deskripsi singkat atau spesifikasi produk Anda di sini.',
             'button_text' => 'Masukkan Keranjang',
@@ -28,13 +28,13 @@ class ProductSection
     public static function get2Default(): array
     {
         return [
-            'name_1'         => 'Nama Produk',
+            'title_1'        => 'Nama Produk',
             'price_1'        => 0,
             'description_1'  => 'Deskripsi singkat produk.',
             'image_url_1'    => '',
             'button_url_1'   => '#',
 
-            'name_2'         => 'Nama Produk',
+            'title_2'        => 'Nama Produk',
             'price_2'        => 0,
             'description_2'  => 'Deskripsi singkat produk.',
             'image_url_2'    => '',
@@ -101,7 +101,7 @@ class ProductSection
         if (!empty($content['product_id'])) {
             $product = Product::find($content['product_id']);
             if ($product) {
-                $content['name']        = $product->name;
+                $content['title']       = $product->title;
                 $content['price']       = $product->price;
                 $content['description'] = $product->description;
                 $content['image_url']   = $product->image ?? '';
@@ -126,15 +126,13 @@ class ProductSection
 
                 if ($product) {
 
-                    // 🔥 OVERRIDE FIELD LAMA
-                    $content["name_{$index}"] = $product->name;
+                    $content["title_{$index}"] = $product->title;
                     $content["price_{$index}"] = $product->price;
                     $content["description_{$index}"] = $product->description;
                     $content["image_url_{$index}"] = $product->image;
 
                 }
 
-                // 🔥 HAPUS SNAPSHOT BIAR GAK MUNCUL
                 unset($content["product_{$index}"]);
             }
         }

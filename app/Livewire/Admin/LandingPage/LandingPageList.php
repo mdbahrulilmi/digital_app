@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\LandingPage;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\LandingPage;
+use App\Models\Program;
 
 class LandingPageList extends Component
 {
@@ -25,6 +26,23 @@ class LandingPageList extends Component
     public $home = false; 
     public $cart = false; 
     public $blog = false;
+    public $homeExists = false;
+
+    public $program_page_id;
+    public $program_id;
+
+    public function mount() {
+        $this->checkHomeStatus();
+    }
+
+    public function checkHomeStatus()
+    {
+        $this->homeExists = LandingPage::where('home', true)
+            ->when($this->pageId, function($query) {
+                $query->where('id', '!=', $this->pageId);
+            })
+            ->exists();
+    }
 
     public function updatingSearch()
     {
@@ -39,21 +57,25 @@ class LandingPageList extends Component
         $this->description = '';
         $this->status = 'published';
         $this->templateType = 'blank';
+        $this->product_id = null;
+        $this->program_page_id = null;
     }
 
     public function create()
     {
         $this->resetFields();
+        $this->checkHomeStatus();
         $this->editMode = false;
         $this->openModal = true;
     }
 
     public function edit($id)
     {
+        $this->checkHomeStatus();
         $this->resetFields();
         $page = LandingPage::findOrFail($id);
-
-
+        $this->program_id = $page->program_id;
+        $this->program_page_id = $page->program_page_id;
         $this->pageId = $page->id;
         $this->title = $page->title;
         $this->slug = $page->slug;
@@ -70,7 +92,7 @@ class LandingPageList extends Component
     {
         $rules = [
             'title' => 'required|string|max:255',
-            'slug' => $this->home ? 'nullable' : 'required|alpha_dash|unique:landing_pages,slug,' . $this->pageId,
+            'slug' => $this->home ? 'nullable' : 'required|unique:landing_pages,slug,' . $this->pageId,
             'description' => 'required|string',
             'status' => 'required|in:published,draft',
             'templateType' => 'nullable',
@@ -92,6 +114,8 @@ class LandingPageList extends Component
         $this->home = $this->home ? 1 : 0;
         $this->cart = $this->cart ? 1 : 0;
         $this->blog = $this->blog ? 1 : 0;
+
+        $validatedData['program_page_id'] = $this->program_page_id ?: null;
 
         if ($this->home == 1) {
             LandingPage::where('id', '!=', $this->pageId)
@@ -137,11 +161,14 @@ class LandingPageList extends Component
             ->when($this->filterStatus, function ($query) {
                 $query->where('status', $this->filterStatus);
             })
+            ->whereNull('program_id')
             ->latest()
-            ->paginate(5);
+            ->paginate(10);
 
-        return view('livewire.landing-page.list', [
-            'pages' => $pages
+        return view('livewire.admin.landing-page.list', [
+            'pages' => $pages,
+            'program_pages' => LandingPage::whereNotNull('program_id')->paginate(10),
+            'relation_pages' => LandingPage::whereNotNull('program_id')->get(),
         ]);
     }
     public function updatedIsHome($value)

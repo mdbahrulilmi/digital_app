@@ -4,11 +4,10 @@ namespace App\Livewire\Payment;
 
 use Livewire\Component;
 use Midtrans\Config;
-use Midtrans\CoreApi; // Ubah ke CoreApi
-
+use Midtrans\CoreApi;
 class Qris extends Component
 {
-    public $qrUrl; // Simpan URL gambar QR Code
+    public $qrUrl;
     public $orderId;
 
     public function generateQr()
@@ -21,7 +20,7 @@ class Qris extends Component
         $this->orderId = 'INV-' . time();
 
         $params = [
-            'payment_type' => 'qris', // Wajib di Core API
+            'payment_type' => 'qris',
             'transaction_details' => [
                 'order_id' => $this->orderId,
                 'gross_amount' => 10000,

@@ -8,8 +8,9 @@ class OrderItem extends Model
 {
     protected $guarded = [];
 
-    public function items()
+    public function order()
     {
-        return $this->hasMany(OrderItem::class, 'order_id', 'order_id');
+        return $this->belongsTo(Order::class, 'order_id', 'order_id');
     }
+
 }

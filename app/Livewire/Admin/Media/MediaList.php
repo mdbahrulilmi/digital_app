@@ -8,10 +8,12 @@ use Livewire\WithFileUploads;
 use App\Models\Media;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\MediaHandler;
+
 
 class MediaList extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithPagination, WithFileUploads, MediaHandler;
 
     public $search = '';
 
@@ -19,7 +21,7 @@ class MediaList extends Component
     public $editMode = false;
     public $editingId = null;
 
-    public $name;
+    public $title;
     public $file;
     public $type;
 
@@ -33,7 +35,7 @@ class MediaList extends Component
     public function resetForm()
     {
         $this->editingId = null;
-        $this->name = null;
+        $this->title = null;
         $this->file = null;
         $this->type = null;
     }
@@ -41,32 +43,15 @@ class MediaList extends Component
    public function save()
     {
         $this->validate([
-            'file' => 'required|file|max:51200', // 50 MB
+            'file' => 'required|file|max:51200',
         ]);
 
-        $mimeType = $this->file->getMimeType();
-
-        if (str_starts_with($mimeType, 'image/')) {
-            $type = 'image';
-            $directory = 'media/images';
-        } elseif (str_starts_with($mimeType, 'video/')) {
-            $type = 'video';
-            $directory = 'media/videos';
-        } else {
-            $this->addError('file', 'Tipe file tidak didukung.');
-            return;
-        }
-
-        $path = $this->file->store($directory, 'public');
-        $storagePath = '/storage/' . $path;
+        $imageValue = $this->uploadImageAsWebp($this->file);
 
         Media::create([
-            'name' => $this->name ?: pathinfo(
-                $this->file->getClientOriginalName(),
-                PATHINFO_FILENAME
-            ),
-            'file' => $storagePath,
-            'type' => $type,
+            'title' => $this->title ?: \Illuminate\Support\Str::random(10),
+            'file' => $imageValue,
+            'type' => 'image',
             'size' => $this->file->getSize(),
         ]);
 
@@ -95,12 +80,12 @@ class MediaList extends Component
     {
         $media = Media::query()
             ->when($this->search, fn($q) =>
-                $q->where('name', 'like', "%{$this->search}%")
+                $q->where('title', 'like', "%{$this->search}%")
             )
             ->latest()
             ->paginate(12);
 
-        return view('livewire.media.list', [
+        return view('livewire.admin.media.list', [
             'media' => $media
         ]);
     }

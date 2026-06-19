@@ -8,13 +8,16 @@ use Livewire\WithFileUploads;
 use App\Models\LandingPage;
 use App\Models\Media;
 use App\Models\Product;
+use App\Models\Program;
 use App\Models\LandingPageSection;
 use App\Livewire\Admin\LandingPage\Components\TextSection;
 use App\Livewire\Admin\LandingPage\Components\ButtonSection;
+use App\Livewire\Admin\LandingPage\Components\ButtonCheckoutSection;
 use App\Livewire\Admin\LandingPage\Components\ImageSection;
 use App\Livewire\Admin\LandingPage\Components\VideoSection;
 use App\Livewire\Admin\LandingPage\Components\ScriptSection;
 use App\Livewire\Admin\LandingPage\Components\ProductSection;
+use App\Livewire\Admin\LandingPage\Components\ProgramSection;
 
 class LandingPageEditor extends Component
 {
@@ -32,11 +35,28 @@ class LandingPageEditor extends Component
     public $imageFile;
     public $videoFile;
 
+    public $relationUrl = false;
+    public $url = '';
+    public $isProgram = false;
+
     protected $listeners = ['updateSectionsOrder'];
 
     public function mount($id)
     {
         $this->landingPageId = $id;
+
+        $landingPage = LandingPage::findOrFail($id);
+
+        $this->isProgram = !empty($landingPage->program_id);
+
+        if (!empty($landingPage->program_page_id)) {
+            $relatedPage = LandingPage::find($landingPage->program_page_id);
+
+            if ($relatedPage) {
+                $this->relationUrl = true;
+                $this->url = $relatedPage->slug;
+            }
+        }
     }
 
     public function getLandingPageProperty()
@@ -52,6 +72,9 @@ class LandingPageEditor extends Component
         $section = LandingPageSection::findOrFail($sectionId);
         $this->editingSectionName = $section->name;
         $this->editingContent = [];
+
+        $section['relation_url'] = $this->relationUrl;
+        $section['url'] = $this->url;
 
         switch ($section->type) {
            case 'text':
@@ -70,6 +93,10 @@ class LandingPageEditor extends Component
                 $this->editingContent = ButtonSection::getForm($section);
             break;
             
+            case 'button_checkout':
+                $this->editingContent = ButtonCheckoutSection::getForm($section);
+            break;
+            
             case 'script':
                 $this->editingContent = ScriptSection::getForm($section);
             break;
@@ -81,6 +108,15 @@ class LandingPageEditor extends Component
             case 'product2':
                 $this->editingContent = ProductSection::get2Form($section);
             break;
+            
+            case 'program':
+                $this->editingContent = ProgramSection::getForm($section);
+            break;
+            
+            case 'program2':
+                $this->editingContent = ProgramSection::get2Form($section);
+            break;
+            
 
 
             default:
@@ -109,7 +145,7 @@ class LandingPageEditor extends Component
             $storagePath = '/storage/' . $path;
 
             $mediaPusat = Media::create([
-                'name' => $this->newFile->getClientOriginalName(),
+                'title' => $this->newFile->getClientOriginalName(),
                 'file' => $storagePath,
                 'type' => $this->newFile->getMimeType(),
                 'size' => round($this->newFile->getSize() / 1024),
@@ -133,14 +169,23 @@ class LandingPageEditor extends Component
         if ($section->type === 'product2') {
             $res = $this->editingContent = ProductSection::mutateBeforeSave2($this->editingContent);
         }
+        
+        if ($section->type === 'program') {
+            $this->editingContent = ProgramSection::mutateBeforeSave($this->editingContent);
+        }
+        
+        if ($section->type === 'program2') {
+            $res = $this->editingContent = ProgramSection::mutateBeforeSave2($this->editingContent);
+        }
 
         // ==================== PROSES UPDATE AKHIR ====================
         $section->update([
             'content' => $this->editingContent,
              'name' => Str::limit(
                 strip_tags(
-                    $this->editingContent['text']
-                    ?? $this->editingContent['title']
+                    $this->editingContent['title'] ?? ucfirst($section->type)
+                    ?? $this->editingContent['text']
+                    ?? $this->editingContent['name']
                     ?? ucfirst($section->type)
                 ),
                 35,
@@ -182,6 +227,9 @@ class LandingPageEditor extends Component
             'button' => 'Tombol',
             'product' => 'Produk',
             'product2' => 'Produk Grid',
+            'program' => 'Program',
+            'program2' => 'Program Grid',
+            'button_checkout' => 'Tombol Checkout',
             'script' => 'script',
         ];
 
@@ -190,9 +238,15 @@ class LandingPageEditor extends Component
         $defaultContent = match($type) {
             'text' => ['text' => 'Ketik teks narasi Anda di sini.'],
             'video' => ['title' => 'Tonton Video Kami', 'video_url' => ''],
-            'button' => ['title' => 'Tombol'],
+            'button' => ButtonSection::getDefault(
+                $this->relation_url,
+                $this->url
+            ),
             'product' => ProductSection::getDefault(),
             'product2' => ProductSection::get2Default(),
+            'program' => ProgramSection::getDefault(),
+            'program2' => ProgramSection::get2Default(),
+            'button_checkout' => ButtonCheckoutSection::getDefault(),
             'script' => ['script' => ''],
             default => []
         };
@@ -228,10 +282,11 @@ class LandingPageEditor extends Component
 
     public function render()
     {
-        return view('livewire.landing-page.editor', [
+        return view('livewire.admin.landing-page.editor', [
             'landingPage' => $this->landingPage,
             'mediaItems' => Media::latest()->get(),
-            'products' => Product::latest()->get()
+            'products' => Product::latest()->get(),
+            'programs' => Program::latest()->get()
         ]);
     }
 }

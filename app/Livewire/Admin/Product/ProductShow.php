@@ -18,33 +18,28 @@ class ProductShow extends Component
 
     public function downloadAsset()
     {
-        // 1. (Opsional) Cek proteksi di sini jika diperlukan, misal:
-        // if (!auth()->user()->hasPurchased($this->product->id)) {
-        //     session()->flash('error', 'Anda harus membeli produk ini terlebih dahulu.');
-        //     return;
-        // }
+        $digitalAssets = is_string($this->product->digital_assets) 
+            ? json_decode($this->product->digital_assets, true) 
+            : $this->product->digital_assets;
 
-        $path = $this->product->digital_assets;
-
-        // 2. Pastikan path file tidak kosong dan filenya benar-benar ada di disk local
-        if ($path && Storage::disk('local')->exists($path)) {
-            
-            // Mengambil ekstensi file asli (misal: pdf, zip)
-            $extension = pathinfo($path, PATHINFO_EXTENSION);
-            
-            // Membersihkan nama produk untuk dijadikan nama file saat didownload
-            $safeName = str($this->product->name)->slug() . '-asset.' . $extension;
-
-            // 3. Trigger download langsung dari storage internal aman
-            return Storage::disk('local')->download($path, $safeName);
+        if (isset($digitalAssets['type']) && $digitalAssets['type'] === 'link') {
+            $url = $digitalAssets['url'] ?? '#';
+            return redirect()->away($url);
         }
 
-        // Jika file tidak ditemukan di server
-        session()->flash('error', 'File digital asset tidak ditemukan atau belum diunggah.');
+        $path = $digitalAssets['path'] ?? null;
+
+        if ($path && Storage::disk('public')->exists($path)) {
+            $extension = pathinfo($path, PATHINFO_EXTENSION);
+            $safeTitle = str($this->product->title)->slug() . '-asset.' . $extension;
+            return Storage::disk('public')->download($path, $safeTitle);
+        }
+
+        session()->flash('error', 'Aset tidak ditemukan atau link tidak valid.');
     }
 
     public function render()
     {
-        return view('livewire.product.product-show');
+        return view('livewire.admin.product.show');
     }
 }

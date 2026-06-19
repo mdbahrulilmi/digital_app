@@ -74,9 +74,9 @@
 
             {{-- JIKA RITEL (ALFA/INDO) --}}
             @if($paymentCode)
-                <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-4">
-                    <span class="text-xs font-bold text-indigo-600 block mb-1">Kode Pembayaran Ritel</span>
-                    <span class="text-3xl font-black tracking-widest text-slate-800 select-all">{{ $paymentCode }}</span>
+                <div class="relative group cursor-pointer" onclick="navigator.clipboard.writeText('{{ $paymentCode }}'); alert('Kode disalin!');">
+                    <span class="text-3xl font-black tracking-widest text-slate-800">{{ $paymentCode }}</span>
+                    <span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[9px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">Klik untuk salin</span>
                 </div>
                 <p class="text-[11px] text-slate-400">Tunjukkan kode ini ke kasir <span class="uppercase font-bold">{{ $method }}</span> saat melakukan pembayaran.</p>
             @endif
@@ -84,12 +84,25 @@
     </div>
 
     {{-- Info Sandbox Simulator (Hanya muncul jika status belum sukses) --}}
-    @if($paymentStatus !== 'success' && $paymentStatus !== 'settlement')
-        <div class="mt-4 bg-amber-50 border border-amber-100 rounded-xl p-4 text-xs text-amber-800 space-y-1">
-            <p class="font-bold">⚠️ Mode Sandbox Simulator:</p>
-            <p>1. Buka <a href="https://simulator.sandbox.midtrans.com/" target="_blank" class="underline font-bold">Simulator Midtrans</a>.</p>
-            <p>2. Pilih menu sesuai tipe pembayaran Anda.</p>
-            <p>3. Masukkan <strong>{{ $method === 'qris' ? 'Order ID' : 'Kode Pembayaran' }}</strong> lalu klik Bayar untuk menembak webhook.</p>
-        </div>
-    @endif
+    <div class="mt-8 p-4 bg-slate-900 text-white rounded-xl text-[10px] font-mono overflow-x-auto">
+    <p class="font-bold text-yellow-400 uppercase mb-2">Debug Internal (Developer Only):</p>
+    <table class="w-full">
+        <tr>
+            <td class="text-slate-400">Order Status:</td>
+            <td>{{ $paymentStatus }}</td>
+        </tr>
+        <tr>
+            <td class="text-slate-400">Method:</td>
+            <td>{{ $method }}</td>
+        </tr>
+        <tr>
+            <td class="text-slate-400">Payment Code:</td>
+            <td class="break-all">{{ $paymentCode ?? 'NULL' }}</td>
+        </tr>
+        <tr>
+            <td class="text-slate-400">QR Content:</td>
+            <td class="break-all">{{ $qrUrl ? 'TERSEDIA' : 'NULL' }}</td>
+        </tr>
+    </table>
+</div>
 </div>

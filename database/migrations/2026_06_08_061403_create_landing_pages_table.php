@@ -20,6 +20,8 @@ return new class extends Migration
             $table->boolean('cart')->default(false);
             $table->boolean('blog')->default(false);
             $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->foreignId('program_id')->nullable()->constrained('programs')->onDelete('set null');
+            $table->foreignId('program_page_id')->nullable()->constrained('landing_pages')->onDelete('cascade');
             $table->timestamps();
         });
     }

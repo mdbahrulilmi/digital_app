@@ -31,34 +31,52 @@ class Page extends Component
             abort(404, 'Halaman tidak ditemukan');
         }
 
-        // 2. Ambil kriteria sections yang hanya is_visible = true di sini
         $this->sections = $this->landingPage->sections()
             ->where('is_visible', true)
             ->get();
     }
 
-    public function addToCart($sectionId, $productName, $price)
+    public function addToCart($id, $name, $price, $type)
     {
-        $cart = session()->get('cart', []);
+        if ($type === 'checkout_program') {
 
-        if (isset($cart[$sectionId])) {
-            $cart[$sectionId]['qty']++;
+            session()->forget('cart');
+
+            session()->put('cart', [
+                'program_'.$id => [
+                    'id'    => $id,
+                    'name'  => $name,
+                    'qty'   => 1,
+                    'price' => $price,
+                    'type'  => 'program',
+                ]
+            ]);
+
+            $this->redirect(route('public.checkout'), navigate: true);
+            return;
+        }
+        $cart = session()->get('cart', []);
+        $cartKey = $type . '_' . $id; 
+
+        if (isset($cart[$cartKey])) {
+            $cart[$cartKey]['qty']++;
         } else {
-            $cart[$sectionId] = [
-                'name'  => $productName,
+            $cart[$cartKey] = [
+                'id'    => $id,
+                'name'  => $name,
                 'qty'   => 1,
                 'price' => $price,
+                'type'  => $type, // Simpan tipenya
             ];
         }
 
         session()->put('cart', $cart);
         $this->dispatch('cartUpdated');
-        session()->flash('success', 'Produk berhasil ditambahkan!');
+        session()->flash('success', 'Berhasil ditambahkan!');
     }
 
     public function render()
     {
-        // 3. Fungsi render sekarang sangat bersih, tinggal melempar properti class ke layout
         return view('livewire.public.page')
             ->layout('layouts.public', [
                 'landingPage' => $this->landingPage

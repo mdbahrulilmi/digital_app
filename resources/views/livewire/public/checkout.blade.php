@@ -2,7 +2,7 @@
     
     {{-- Header --}}
     <div class="bg-white px-4 py-4 border-b border-slate-100 flex items-center sticky top-0 z-10 shadow-sm">
-        <a href="{{ url('/cart') }}" class="text-slate-600 hover:text-slate-900 mr-3">
+        <a href="javascript:void(0)" onclick="history.back()" class="text-slate-600 hover:text-slate-900 mr-3">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         </a>
         <h2 class="text-lg font-bold text-slate-800">Formulir Checkout</h2>
@@ -33,6 +33,22 @@
                     @error('name') <span class="text-[11px] text-rose-500 font-medium mt-0.5">{{ $message }}</span> @enderror
                 </div>
                 <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">
+                    Email
+                </label>
+                <input 
+                    type="email"
+                    wire:model.defer="email"
+                    class="w-full text-sm px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 @error('email') border-rose-500 @enderror"
+                    placeholder="Contoh: user@email.com">
+
+                @error('email')
+                    <span class="text-[11px] text-rose-500 font-medium mt-0.5">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+                <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp</label>
                     <input type="text" wire:model.defer="whatsapp" class="w-full text-sm px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 @error('whatsapp') border-rose-500 @enderror" placeholder="Contoh: 081234567890">
                     @error('whatsapp') <span class="text-[11px] text-rose-500 font-medium mt-0.5">{{ $message }}</span> @enderror
@@ -46,31 +62,42 @@
         </div>
 
         {{-- Pilihan Metode Pembayaran Terintegrasi --}}
-        <div class="space-y-3">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Metode Pembayaran</h3>
-            
-            @error('payment_method') <span class="text-[11px] text-rose-500 font-medium block px-1">{{ $message }}</span> @enderror
-            
-            <div class="grid grid-cols-1 gap-2">
-                <label class="border rounded-xl p-3 flex items-center justify-between bg-white cursor-pointer transition hover:border-slate-300 {{ $payment_method === 'qris' ? 'border-indigo-600 ring-2 ring-indigo-50/50' : 'border-slate-200' }}">
-                    <div class="flex items-center gap-3">
-                        <input type="radio" wire:model="payment_method" value="qris" class="text-indigo-600 focus:ring-indigo-500">
-                        <div class="text-sm font-bold text-slate-800">QRIS (Otomatis / E-Wallet)</div>
+        <div class="text-xs p-4">
+            DEBUG: Metode yang terpilih adalah: {{ $payment_method }}
+        </div>
+       <div class="space-y-6">
+            @foreach($paymentGroups as $groupName => $methods)
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                    <h4 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-100 pb-2">
+                        {{ $groupName }}
+                    </h4>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        @foreach($methods as $key => $data)
+                            <div wire:key="method-{{ $key }}"
+                                wire:click="$set('payment_method', '{{ $key }}')"
+                                class="relative flex flex-col items-center justify-center p-4 rounded-xl border transition cursor-pointer hover:bg-slate-50
+                                {{ $payment_method === $key ? 'border-indigo-600 bg-indigo-50/50 ring-1 ring-indigo-500' : 'border-slate-200 bg-white' }}">
+                                
+                                {{-- Ikon --}}
+                                <img src="{{ $data['icon'] }}" class="w-10 h-10 object-contain mb-2">
+                                
+                                {{-- Label --}}
+                                <span class="text-[11px] font-bold text-slate-600 text-center leading-tight">
+                                    {{ $data['label'] }}
+                                </span>
+
+                                {{-- Indikator Terpilih --}}
+                                @if($payment_method === $key)
+                                    <div class="absolute top-2 right-2">
+                                        <div class="w-3 h-3 bg-indigo-600 rounded-full"></div>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
-                </label>
-                <label class="border rounded-xl p-3 flex items-center justify-between bg-white cursor-pointer transition hover:border-slate-300 {{ $payment_method === 'alfamart' ? 'border-indigo-600 ring-2 ring-indigo-50/50' : 'border-slate-200' }}">
-                    <div class="flex items-center gap-3">
-                        <input type="radio" wire:model="payment_method" value="alfamart" class="text-indigo-600 focus:ring-indigo-500">
-                        <div class="text-sm font-bold text-slate-800">Alfamart Gerai Ritel</div>
-                    </div>
-                </label>
-                <label class="border rounded-xl p-3 flex items-center justify-between bg-white cursor-pointer transition hover:border-slate-300 {{ $payment_method === 'indomaret' ? 'border-indigo-600 ring-2 ring-indigo-50/50' : 'border-slate-200' }}">
-                    <div class="flex items-center gap-3">
-                        <input type="radio" wire:model="payment_method" value="indomaret" class="text-indigo-600 focus:ring-indigo-500">
-                        <div class="text-sm font-bold text-slate-800">Indomaret Gerai Ritel</div>
-                    </div>
-                </label>
-            </div>
+                </div>
+            @endforeach
         </div>
 
         <div class="bg-white p-4 border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] space-y-3 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-20">

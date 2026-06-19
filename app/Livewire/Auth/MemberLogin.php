@@ -21,7 +21,7 @@ class MemberLogin extends Component
 
         if (Auth::guard('member')->attempt(['whatsapp' => $this->whatsapp, 'password' => $this->password])) {
             request()->session()->regenerate();
-            return redirect()->to('/member/dashboard');
+            return redirect()->to('/member/');
         }
 
         session()->flash('error', 'Nomor WhatsApp atau password salah.');

@@ -5,6 +5,7 @@ namespace App\Livewire\Public;
 use Livewire\Component;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Program;
 
 class Checkout extends Component
 {
@@ -12,20 +13,31 @@ class Checkout extends Component
     public $totalPrice = 0;
 
     public $name;
+    public $email;
     public $whatsapp;
     public $address;
     public $payment_method;
 
+    public $password;
+    public $password_confirmation;
+
+    public $paymentGroups;
+
+    
+
     protected $rules = [
         'name' => 'required|min:3',
+        'email' => 'required|email',
         'whatsapp' => 'required|numeric|digits_between:10,15',
         'address' => 'required|min:10',
-        'payment_method' => 'required|in:qris,alfamart,indomaret,cod',
+        'payment_method' => 'required',
     ];
 
     protected $messages = [
         'name.required' => 'Nama lengkap wajib diisi.',
         'name.min' => 'Nama lengkap minimal 3 karakter.',
+        'email.required' => 'Email wajib diisi.',
+        'email.email' => 'Format email tidak valid.',
         'whatsapp.required' => 'Nomor WhatsApp wajib diisi.',
         'whatsapp.numeric' => 'Nomor WhatsApp harus berupa angka.',
         'whatsapp.digits_between' => 'Nomor WhatsApp harus di antara 10 sampai 15 digit.',
@@ -38,6 +50,43 @@ class Checkout extends Component
     public function mount()
     {
         $this->cart = session()->get('cart', []);
+
+        $this->paymentGroups = [
+            'E-Wallet & QRIS' => [
+                'qris'      => ['label' => 'QRIS', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                'ovo'       => ['label' => 'OVO', 'icon' => asset('assets_content/icon/payment/ovo.svg')],
+                'shopeepay' => ['label' => 'ShopeePay', 'icon' => asset('assets_content/icon/payment/shopee.svg')],
+                'dana'      => ['label' => 'DANA', 'icon' => asset('assets_content/icon/payment/dana.svg')],
+                // 'linkaja'   => ['label' => 'LinkAja', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'isaku'     => ['label' => 'i.Saku', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+            ],
+            'Virtual Account (SNAP)' => [
+                'va_bca'    => ['label' => 'BCA', 'icon' => asset('assets_content/icon/payment/bca.svg')],
+                'va_mandiri'=> ['label' => 'Mandiri', 'icon' => asset('assets_content/icon/payment/mandiri.svg')],
+                'va_bni'    => ['label' => 'BNI', 'icon' => asset('assets_content/icon/payment/bni.svg')],
+                'va_bri'    => ['label' => 'BRI', 'icon' => asset('assets_content/icon/payment/bri.svg')],
+                'va_cimb'   => ['label' => 'CIMB Niaga', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                'va_bsi'    => ['label' => 'BSI', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_permata'=> ['label' => 'Permata', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_danamon'=> ['label' => 'Danamon', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_btn'    => ['label' => 'BTN', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_bjb'    => ['label' => 'BJB', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_ocbc'   => ['label' => 'OCBC', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_sinarmas'=> ['label' => 'Sinarmas', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_maybank'=> ['label' => 'Maybank', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_bnc'    => ['label' => 'BNC', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'va_bpdbali'=> ['label' => 'BPD Bali', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+            ],
+            'Retail & Paylater' => [
+                'alfamart'  => ['label' => 'Alfamart', 'icon' => asset('assets_content/icon/payment/alfamart.svg')],
+                'indomaret' => ['label' => 'Indomaret', 'icon' => asset('assets_content/icon/payment/indomaret.svg')],
+                // 'akulaku'   => ['label' => 'Akulaku', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'kredivo'   => ['label' => 'Kredivo', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'indodana'  => ['label' => 'Indodana', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'bri_ceria' => ['label' => 'BRI Ceria', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'jenius'    => ['label' => 'Jenius Pay', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+            ]
+        ];
         
         if (count($this->cart) === 0) {
             return redirect()->to('/cart');
@@ -57,38 +106,37 @@ class Checkout extends Component
     public function processOrder()
     {
         $this->validate();
-
-        // --- PROTEKSI BACK-END: QUERY ULANG PRODUK & HITUNG ULANG HARGA ASLI ---
         $serverTotalPrice = 0;
         $secureCart = [];
 
         foreach ($this->cart as $item) {
-            // Ambil data produk asli langsung dari database berdasarkan ID
-            $product = Product::find($item['product_id']);
+            if ($item['type'] === 'product') {
+                $data = Product::find($item['id']);
+            } else {
+                $data = Program::find($item['id']);
+            }
 
-            // Jika produk tiba-tiba tidak ditemukan di DB
-            if (!$product) {
-                session()->flash('error', "Produk {$item['name']} sudah tidak tersedia.");
+            if (!$data) {
+                session()->flash('error', "Produk/Program {$item['name']} sudah tidak tersedia.");
                 return redirect()->to('/cart');
             }
 
-            // Hitung subtotal menggunakan harga asli dari database, BUKAN dari properti Livewire
-            $serverTotalPrice += $product->price * $item['qty'];
+            $serverTotalPrice += $data->price * $item['qty'];
 
-            // Susun ulang struktur cart yang aman untuk snapshot database
             $secureCart[] = [
-                'product_id' => $product->id,
-                'name'       => $product->name,
-                'qty'        => $item['qty'],
-                'price'      => $product->price, // Menggunakan harga resmi DB
+                'id'    => $data->id,
+                'name'  => $data->title,
+                'qty'   => $item['qty'],
+                'price' => $data->price,
+                'type'  => $item['type'],
             ];
         }
-        // ----------------------------------------------------------------------
 
         $orderId = 'INV-' . time();
         Order::create([
             'order_id'          => $orderId,
             'customer_name'     => $this->name,
+            'customer_email'     => $this->email,
             'customer_whatsapp' => $this->whatsapp,
             'customer_address'  => $this->address,
             'amount'            => $serverTotalPrice,

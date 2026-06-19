@@ -21,7 +21,7 @@ class AdminLogin extends Component
 
         if (Auth::guard('web')->attempt(['email' => $this->email, 'password' => $this->password])) {
             request()->session()->regenerate();
-            return redirect()->to('/admin/landing-page');
+            return redirect()->to('/admin/');
         }
 
         session()->flash('error', 'Email atau password Admin salah.');
@@ -29,6 +29,6 @@ class AdminLogin extends Component
 
     public function render()
     {
-        return view('livewire.auth.admin-login')->layout('layouts.public');
+        return view('livewire.auth.admin-login')->layout('layouts.blank');
     }
 }
