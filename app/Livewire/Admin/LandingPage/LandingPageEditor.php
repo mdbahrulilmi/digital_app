@@ -239,8 +239,8 @@ class LandingPageEditor extends Component
             'text' => ['text' => 'Ketik teks narasi Anda di sini.'],
             'video' => ['title' => '', 'video_url' => ''],
             'button' => ButtonSection::getDefault(
-                $this->relation_url,
-                $this->url
+                $this->section->relation_url ?? false,
+                $this->section->url ?? ''
             ),
             'product' => ProductSection::getDefault(),
             'product2' => ProductSection::get2Default(),
