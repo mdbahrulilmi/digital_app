@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('task_submissions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('member_id')->constrained();
-            $table->foreignId('task_id')->constrained(); // Link ke tabel tasks
+            $table->foreignId('program_schedule_id')->constrained(); // Link ke tabel tasks
             $table->string('file_path'); // Path file di storage
             $table->text('comment')->nullable();
             $table->timestamps();

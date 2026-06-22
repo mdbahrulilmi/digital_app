@@ -1,0 +1,88 @@
+@if($showModal && $selectedProduct)
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+            
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-xl font-bold text-slate-800">{{ $selectedProduct->title }}</h2>
+                <button wire:click="closeModal" class="text-slate-400 hover:text-slate-600">✕</button>
+            </div>
+    
+            <div class="space-y-4">
+                @php $asset = $selectedProduct->decoded_asset; @endphp
+
+                @if(isset($asset['type']) && $asset['type'] === 'link')
+                    @php $url = $asset['url']; @endphp
+                    
+                    @if(str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be'))
+                        @php
+                            $videoId = '';
+                            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/', $url, $matches)) {
+                                $videoId = $matches[1];
+                            }
+                        @endphp
+                        <div class="w-full aspect-video bg-black rounded-2xl overflow-hidden">
+                            <iframe 
+                                class="w-full h-full"
+                                src="https://www.youtube.com/embed/{{ $videoId }}" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    @else
+                        <img src="{{ $url }}" class="w-full rounded-2xl shadow-sm" alt="Asset Image">
+                    @endif
+
+                @elseif(isset($asset['path']) && str_ends_with($asset['name'], '.pdf'))
+                    <div class="w-full h-[80vh] bg-slate-100 rounded-2xl overflow-hidden border border-slate-200">
+                        <iframe src="{{ Storage::url($asset['path']) }}#toolbar=0&navpanes=0" class="w-full h-full"></iframe>
+                    </div>
+
+                @elseif(isset($asset['path']) && (str_ends_with($asset['name'], '.mp4') || str_ends_with($asset['name'], '.mov')))
+                    <div class="w-full bg-black rounded-2xl overflow-hidden">
+                        <video controls playsinline class="w-full h-auto max-h-[70vh]">
+                            <source src="{{ Storage::url($asset['path']) }}" type="video/mp4">
+                        </video>
+                    </div>
+
+                @elseif(isset($asset['path']))
+                    <img src="{{ Storage::url($asset['path']) }}" class="w-full rounded-2xl shadow-sm">
+                @endif
+            </div>
+        </div>
+    </div>
+    @endif
+    {{-- Ubah kondisi if nya menjadi $showUploadModal saja --}}
+    @if($showUploadModal)
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8">
+                <h2 class="text-xl font-black text-slate-900 mb-2">Kumpul Tugas</h2>
+                
+                <form wire:submit.prevent="submitTask" class="space-y-6">
+                    {{-- Input File --}}
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest">Pilih File</label>
+                        <input type="file" wire:model="taskFile" 
+                            class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-slate-200 rounded-2xl p-2 cursor-pointer">
+                        
+                        @error('taskFile') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        <p class="text-[10px] text-slate-400">Maksimal ukuran file: 2MB.</p>
+                    </div>
+                    
+                    {{-- Action Buttons --}}
+                    <div class="flex justify-end gap-3">
+                        <button type="button" wire:click="closeUploadModal" 
+                            class="px-6 py-3 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors">
+                            Batal
+                        </button>
+                        
+                        <button type="submit" 
+                            wire:loading.attr="disabled"
+                            class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-2xl text-sm font-bold transition-all active:scale-95 disabled:opacity-50">
+                            <span wire:loading.remove wire:target="submitTask">Kirim Tugas</span>
+                            <span wire:loading wire:target="submitTask">Mengirim...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
