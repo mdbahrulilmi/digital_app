@@ -151,13 +151,18 @@
                             @error('price') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                         </div>
                         <div class="grid grid-cols-2 gap-4">
+                            {{-- Tgl Mulai --}}
                             <div>
                                 <label class="block text-sm font-semibold text-slate-700 mb-1">Tgl Mulai</label>
                                 <input type="date" wire:model="start_date" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50">
+                                @error('start_date') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                             </div>
+
+                            {{-- Tgl Selesai --}}
                             <div>
                                 <label class="block text-sm font-semibold text-slate-700 mb-1">Tgl Selesai</label>
                                 <input type="date" wire:model="end_date" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50">
+                                @error('end_date') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                             </div>
                         </div>
                         <div>

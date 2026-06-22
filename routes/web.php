@@ -102,7 +102,7 @@ Route::post('/member/logout', function () {
     request()->session()->invalidate();
     request()->session()->regenerateToken();
     
-    return redirect()->to('/member/login');
+    return redirect()->to('/login');
 })->name('member.logout');
 
 // Invoice
