@@ -78,7 +78,7 @@ class ProgramList extends Component
 
     public function edit($id) {
         $this->resetForm();
-        $program = Program::with('products')->findOrFail($id);
+        $program = Program::findOrFail($id);
         
         $this->editingId = $program->id;
         $this->title = $program->title;
@@ -95,7 +95,6 @@ class ProgramList extends Component
         if ($this->image_source === 'url') $this->image_url = $program->image;
         if ($this->image_source === 'media') $this->media_id = $program->image;
 
-        $this->selectedProducts = $program->products->pluck('id')->toArray();
         $this->editMode = true;
         $this->openModal = true;
     }
