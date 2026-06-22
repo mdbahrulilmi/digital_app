@@ -63,8 +63,8 @@ class Checkout extends Component
                 'va_mandiri'=> ['label' => 'Mandiri', 'icon' => asset('assets_content/icon/payment/mandiri.svg')],
                 'va_bni'    => ['label' => 'BNI', 'icon' => asset('assets_content/icon/payment/bni.svg')],
                 'va_bri'    => ['label' => 'BRI', 'icon' => asset('assets_content/icon/payment/bri.svg')],
-                'va_cimb'   => ['label' => 'CIMB Niaga', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                'va_bsi'    => ['label' => 'BSI', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                'va_cimb'   => ['label' => 'CIMB Niaga', 'icon' => asset('assets_content/icon/payment/cimb.svg')],
+                'va_bsi'    => ['label' => 'BSI', 'icon' => asset('assets_content/icon/payment/bsi.svg')],
             ],
             // 'Retail & Paylater' => [
             //     'alfamart'  => ['label' => 'Alfamart', 'icon' => asset('assets_content/icon/payment/alfamart.svg')],

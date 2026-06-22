@@ -33,6 +33,13 @@ class Invoice extends Component
         if (empty($order->payment_code) && $this->paymentStatus === 'pending') {
             $this->processPayment($dokuService, $order);
         }
+
+        if ($order && $order->status === 'paid') {
+            $member = Member::where('whatsapp', $order->customer_whatsapp)->first();
+            if ($member && !Auth::guard('member')->check()) {
+                Auth::guard('member')->login($member);
+            }
+        }
     }
 
     public function processPayment(DokuService $dokuService, $order)
