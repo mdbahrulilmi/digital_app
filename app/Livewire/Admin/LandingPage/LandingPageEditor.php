@@ -237,7 +237,7 @@ class LandingPageEditor extends Component
 
         $defaultContent = match($type) {
             'text' => ['text' => 'Ketik teks narasi Anda di sini.'],
-            'video' => ['title' => 'Tonton Video Kami', 'video_url' => ''],
+            'video' => ['title' => '', 'video_url' => ''],
             'button' => ButtonSection::getDefault(
                 $this->relation_url,
                 $this->url

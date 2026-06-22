@@ -9,6 +9,10 @@
         @if($section->type === 'image')
             @include('livewire.admin.landing-page.components.image-preview', ['section' => $section])
         @endif
+        
+        @if($section->type === 'video')
+            @include('livewire.admin.landing-page.components.video-preview', ['section' => $section])
+        @endif
 
         @if($section->type === 'button')
             @include('livewire.admin.landing-page.components.button-preview', ['section' => $section])

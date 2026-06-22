@@ -8,6 +8,6 @@ class Success extends Component
 {
     public function render()
     {
-        return view('livewire.payment.success');
+        return view('livewire.payment.success')->layout('layouts.public');
     }
 }

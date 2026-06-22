@@ -8,18 +8,25 @@
                 + Tambah Sesi
             </button>
             
-            <button type="button" wire:click="saveZooms" 
+            <button type="button" wire:click="save" 
                     class="cursor-pointer bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition flex items-center gap-2 shadow-sm">
-                <span wire:loading.remove wire:target="saveZooms">Simpan Jadwal</span>
-                <span wire:loading wire:target="saveZooms">Menyimpan...</span>
+                <span wire:loading.remove wire:target="save">Simpan Jadwal</span>
+                <span wire:loading wire:target="save">Menyimpan...</span>
             </button>
         </div>
     </div>
     
-    {{-- Pesan Sukses --}}
-    @if (session()->has('message'))
-        <div class="bg-green-50 text-green-700 p-3 rounded-lg text-sm mb-4 border border-green-200">
+    {{-- Notifikasi --}}
+    @if(session()->has('message'))
+        <div class="mb-4 flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2.5">
+            <x-heroicon-o-check-circle class="w-4 h-4 shrink-0" />
             {{ session('message') }}
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class="mb-4 flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
+            <x-heroicon-o-x-circle class="w-4 h-4 shrink-0" />
+            {{ session('error') }}
         </div>
     @endif
 

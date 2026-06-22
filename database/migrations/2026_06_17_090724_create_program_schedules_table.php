@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('program_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->date('date')->index();
+            $table->boolean('upload_required')->default(false);
             $table->timestamps();
         });
     }

@@ -8,15 +8,13 @@ class Enrollment extends Model
 {
     protected $guarded = [];
 
-    public function members()
+    public function member()
     {
-        return $this->belongsToMany(Member::class, 'enrollments', 'program_id', 'member_id')
-                    ->withTimestamps();
+        return $this->belongsTo(Member::class, 'member_id');
     }
 
-    public function programs()
+    public function program()
     {
-        return $this->belongsToMany(Program::class, 'enrollments', 'member_id', 'program_id')
-                    ->withTimestamps();
+        return $this->belongsTo(Program::class, 'program_id');
     }
 }

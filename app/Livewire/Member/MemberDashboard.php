@@ -15,8 +15,8 @@ class MemberDashboard extends Component
     {
         $this->member = Auth::guard('member')->user();
         $this->orders = Order::where('customer_whatsapp', $this->member->whatsapp)
-            ->latest()
-            ->get();
+        ->latest()
+        ->get();
     }
 
     public function render()

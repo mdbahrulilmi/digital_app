@@ -17,6 +17,15 @@ use App\Livewire\Admin\Member\MemberList;
 
 // Member
 use App\Livewire\Member\MemberDashboard;
+use App\Livewire\Member\Product\ProductList as MemberProductList;
+use App\Livewire\Member\Product\ProductShow as MemberProductShow;
+use App\Livewire\Member\Riwayat\RiwayatList as MemberRiwayatList;
+
+use App\Livewire\Member\Program\ProgramList as MemberProgramList;
+use App\Livewire\Member\Program\Components\Today as ProgramToday;
+use App\Livewire\Member\Program\Components\Journal as ProgramJournal;
+use App\Livewire\Member\Program\Components\Webinar as  ProgramWebinar;
+use App\Livewire\Member\Program\Components\Material as ProgramMaterial;
 
 // Auth
 use App\Livewire\Auth\AdminLogin;
@@ -29,6 +38,7 @@ use App\Livewire\Public\Checkout;
 
 // Payment
 use App\Livewire\Payment\Invoice;
+use App\Livewire\Payment\Success;
 use App\Http\Controllers\Payment\MidtransWebhookController;
 use App\Http\Controllers\Payment\DokuController;    
 
@@ -65,10 +75,20 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
             return redirect()->route('admin.login');
         })->name('admin.logout');
 });
-
-Route::middleware(['auth:member'])->group(function () {
+Route::middleware(['auth:member'])->prefix('member')->group(function () {
+    Route::get('/', MemberDashboard::class)->name('member.dashboard');
     
-    Route::get('/member', MemberDashboard::class)->name('member.dashboard');
+    Route::get('/program', MemberProgramList::class)->name('member.program.list');
+    Route::get('/product', MemberProductList::class)->name('member.product.list');
+    Route::get('/product/{id}', MemberProductShow::class)->name('member.product.show');
+    Route::get('/riwayat', MemberProductList::class)->name('member.riwayat.list');
+    
+    Route::prefix('program/{slug}')->group(function () {
+        Route::get('/', ProgramToday::class)->name('member.program.hari-ini');
+        Route::get('/jurnal', ProgramJournal::class)->name('member.program.jurnal');
+        Route::get('/webinar', ProgramWebinar::class)->name('member.program.webinar');
+        Route::get('/materi', ProgramMaterial::class)->name('member.program.materi');
+    });
 
 });
 
@@ -82,9 +102,7 @@ Route::post('/member/logout', function () {
 
 // Invoice
 Route::get('/payment', Invoice::class)->name('payment.invoice');
-Route::get('/payment/success', function () {
-    return view('payment.success');
-})->name('payment.success');
+Route::get('/payment/success', Success::class)->name('payment.success');
 
 // Midtrans
 Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handleNotification']);

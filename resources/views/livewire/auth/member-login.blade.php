@@ -1,29 +1,45 @@
-<div class="max-w-md mx-auto mt-12 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
-    <h2 class="text-xl font-black text-slate-800 mb-2 text-center">Login Member Area</h2>
-    <p class="text-xs text-slate-400 text-center mb-6">Gunakan nomor WhatsApp Anda untuk mengakses riwayat produk.</p>
-
-    @if (session()->has('error'))
-        <div class="mb-4 p-3 bg-rose-50 text-rose-600 border border-rose-200 rounded-xl text-xs font-semibold">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <form wire:submit.prevent="login" class="space-y-4">
-        <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Nomor WhatsApp</label>
-            <input type="text" wire:model="whatsapp" placeholder="Contoh: 08123456789" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:outline-none focus:border-indigo-600">
-            @error('whatsapp') <span class="text-rose-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+<div class="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+    <div class="w-full max-w-sm bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 p-8">
+        
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-extrabold text-slate-900 mb-2 tracking-tight">Selamat Datang</h2>
+            <p class="text-sm text-slate-500">Silakan masuk ke Member Area Anda</p>
         </div>
 
-        <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Password</label>
-            <input type="password" wire:model="password" placeholder="Masukkan password Anda" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:outline-none focus:border-indigo-600">
-            <span class="text-[10px] text-slate-400 mt-1 block">*Password bawaan Anda saat pertama beli adalah Nomor WhatsApp Anda sendiri.</span>
-            @error('password') <span class="text-rose-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-        </div>
+        @if (session()->has('error'))
+            <div class="mb-6 p-4 bg-rose-50 text-rose-600 border border-rose-100 rounded-2xl text-xs font-medium flex items-center">
+                <span class="mr-2">⚠️</span> {{ session('error') }}
+            </div>
+        @endif
 
-        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3 rounded-xl transition shadow-sm">
-            Masuk Ke Member Area
-        </button>
-    </form>
+        <form wire:submit.prevent="login" class="space-y-5">
+            <div>
+                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">Nomor WhatsApp</label>
+                <input type="text" wire:model="whatsapp" placeholder="0812xxxx" 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none">
+                @error('whatsapp') <span class="text-rose-500 text-[11px] mt-1.5 ml-1 block">{{ $message }}</span> @enderror
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Password</label>
+                </div>
+                <input type="password" wire:model="password" placeholder="••••••••" 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none">
+                <p class="text-[10px] text-slate-400 mt-2 ml-1 leading-relaxed">
+                    *Password default adalah nomor WhatsApp Anda.
+                </p>
+                @error('password') <span class="text-rose-500 text-[11px] mt-1.5 ml-1 block">{{ $message }}</span> @enderror
+            </div>
+
+            <button type="submit" 
+                class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-semibold text-sm py-3.5 rounded-2xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-indigo-500/20">
+                Masuk Sekarang
+            </button>
+        </form>
+
+        {{-- <div class="mt-8 text-center">
+            <p class="text-[11px] text-slate-400">Butuh bantuan? <a href="#" class="text-indigo-600 font-bold hover:underline">Hubungi Admin</a></p>
+        </div> --}}
+    </div>
 </div>

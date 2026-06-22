@@ -3,7 +3,7 @@
         <thead class="bg-gray-100 border-b border-gray-200">
             <tr>
                 <th class="p-4 font-semibold text-gray-700">Order ID</th>
-                <th class="p-4 font-semibold text-gray-700">Produk</th>
+                <th class="p-4 font-semibold text-gray-700">Name</th>
                 <th class="p-4 font-semibold text-gray-700">Total</th>
                 <th class="p-4 font-semibold text-gray-700">Status</th>
             </tr>
@@ -13,7 +13,7 @@
                 <tr class="hover:bg-gray-50 transition">
                     <td class="p-4 font-mono text-sm text-blue-600">{{ $order->order_id }}</td>
                     <td class="p-4">
-                        @php $items = json_decode($order->cart_snapshot, true); @endphp
+                        @php $items = $order->items @endphp
                         @foreach($items as $item)
                             {{ $item['name'] }}@if(!$loop->last), @endif
                         @endforeach

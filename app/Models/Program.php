@@ -25,4 +25,9 @@ class Program extends Model
     {
         return $this->hasMany(LandingPage::class, 'program_id');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(ProgramSchedule::class, 'program_id');
+    }
 }

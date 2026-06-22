@@ -11,34 +11,31 @@
 
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 antialiased">
+<body class="bg-slate-50 text-slate-800 antialiased" x-data="{ sidebarOpen: false }">
 
 @php
 $menuGroups = [
-    'Dashboard' => [
-        ['label' => 'Dashboard', 'icon' => 'home', 'url' => url('/member')]
+    'Menu Utama' => [
+        ['label' => 'Dashboard', 'icon' => 'home', 'url' => url('/member')],
+        ['label' => 'Program', 'icon' => 'box', 'url' => url('/member/program')],
+        ['label' => 'Product', 'icon' => 'image', 'url' => url('/member/product')],
+        ['label' => 'Riwayat', 'icon' => 'users', 'url' => url('/member/riwayat')],
+    ],
+    'Akun' => [
+        ['label' => 'Settings', 'icon' => 'settings', 'url' => url('/member/settings')],
     ]
 ];
 
-function icon($name)
-{
+function icon($name) {
     return match ($name) {
         'home' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M4 10v10h5v-6h6v6h5V10"/></svg>',
         'box' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/></svg>',
@@ -50,72 +47,48 @@ function icon($name)
 }
 @endphp
 
- <!-- SIDEBAR -->
-    <aside class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 text-slate-300 flex flex-col">
+    <div x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 bg-black/50 z-30 lg:hidden" x-cloak></div>
 
-        <!-- Header -->
-        <div class="h-16 flex items-center px-6 border-b border-slate-800 flex-shrink-0">
-            <span class="text-lg font-bold text-white">
-                Member Dashboard
-            </span>
+    <aside class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 text-slate-300 flex flex-col transform transition-transform duration-300 lg:translate-x-0"
+           :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
+
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <span class="text-lg font-bold text-white">Member Dashboard</span>
         </div>
 
-        <!-- Menu -->
-        <div class="flex-1 overflow-hidden px-4 py-6">
+        <div class="flex-1 overflow-y-auto px-4 py-6">
             @foreach ($menuGroups as $groupName => $items)
-
                 <div class="mb-8">
-
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">
-                        {{ $groupName }}
-                    </p>
-
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">{{ $groupName }}</p>
                     <nav class="space-y-1">
-
                         @foreach ($items as $menu)
-
-                            @php
-                                $isActive = request()->url() === $menu['url'];
-                            @endphp
-
-                            <a href="{{ $menu['url'] }}"
-                               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
-                               {{ $isActive
-                                    ? 'bg-indigo-600 text-white'
-                                    : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' }}">
-
+                            @php $isActive = request()->url() === $menu['url']; @endphp
+                            <a href="{{ $menu['url'] }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition {{ $isActive ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' }}">
                                 {!! icon($menu['icon']) !!}
                                 <span>{{ $menu['label'] }}</span>
-
                             </a>
-
                         @endforeach
-
                     </nav>
-
                 </div>
-
             @endforeach
         </div>
 
-        <!-- Logout -->
-        <div class="p-4 border-t border-slate-800 flex-shrink-0">
+        <div class="p-4 border-t border-slate-800">
             <form action="{{ route('member.logout') }}" method="POST">
                 @csrf
-
-                <button
-                    type="submit"
-                    class="w-full py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition">
-                    Logout
-                </button>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition">Logout</button>
             </form>
         </div>
-
     </aside>
 
-    <!-- CONTENT -->
-    <div class="h-screen overflow-y-auto" style="margin-left: 260px">
-        <main class="p-6 min-w-0">
+    <div class="lg:ml-64 min-h-screen transition-all">
+        <div class="lg:hidden h-16 bg-white border-b flex items-center px-4">
+            <button @click="sidebarOpen = true" class="p-2 text-slate-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+
+        <main class="p-6">
             {{ $slot ?? '' }}
         </main>
     </div>

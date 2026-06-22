@@ -116,7 +116,6 @@
                                     ])
                                 @endif
 
-                                {{-- D. VIDEO SECTION PREVIEW --}}
                                 @if($section->type === 'video')
                                     @include('livewire.admin.landing-page.components.video-preview', [
                                         'section' => $section
@@ -205,8 +204,12 @@
                     @include('livewire.admin.landing-page.components.text-form')
                 @endif
 
-                @if($currentType === 'image' || $currentType === 'video')
+                @if($currentType === 'image')
                     @include('livewire.admin.landing-page.components.image-form')
+                @endif
+                
+                @if($currentType === 'video')
+                    @include('livewire.admin.landing-page.components.video-form')
                 @endif
 
                 @if($currentType === 'button')
