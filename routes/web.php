@@ -45,8 +45,11 @@ use App\Http\Controllers\Payment\DokuController;
 
 Route::get('/test-doku', [DokuController::class, 'generateQr']);
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware(['already_admin'])->group(function () {
     Route::get('/admin/login', AdminLogin::class)->name('admin.login');
+});
+
+Route::middleware(['already_member'])->group(function () {
     Route::get('/login', MemberLogin::class)->name('login');
     Route::get('/register', MemberRegister::class)->name('register');
 });

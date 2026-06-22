@@ -22,9 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'already_admin' => \App\Http\Middleware\RedirectAdmin::class,
+            'already_member' => \App\Http\Middleware\RedirectMember::class,
     ]);
 
-    $middleware->redirectTo('/member/login');
+    $middleware->redirectTo('/login');
     
     })
     ->withExceptions(function (Exceptions $exceptions) {
