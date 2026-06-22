@@ -7,7 +7,6 @@ use App\Models\LandingPage;
 
 class Page extends Component
 {
-    // 1. Deklarasikan properti public agar bisa diakses langsung di View Blade
     public $landingPage;
     public $sections = [];
     public $slug; 
@@ -16,9 +15,8 @@ class Page extends Component
     {
         $this->slug = $slug;
 
-        // Jika slug kosong/null, berarti sedang mengakses halaman utama (localhost:8000)
         if (empty($slug)) {
-            $this->landingPage = LandingPage::where('home', 1) // Sesuaikan jika biner 1
+            $this->landingPage = LandingPage::where('home', 1)
                 ->where('status', 'published')
                 ->first();
         } else {
@@ -66,7 +64,7 @@ class Page extends Component
                 'name'  => $name,
                 'qty'   => 1,
                 'price' => $price,
-                'type'  => $type, // Simpan tipenya
+                'type'  => $type,
             ];
         }
 

@@ -24,7 +24,7 @@
 </div>
 @else
 <div class="w-full py-2 px-4" style="text-align: {{ $section->content['alignment'] ?? 'center' }};">
-    <a wire:click="addToCart('{{ $landingPage->program_id }}', '{{ addslashes($landingPage->program_id) }}', {{ $landingPage->program->price }}, 'checkout_program')"
+    <a wire:click="addToCart('{{ $landingPage->program_id }}', '{{ addslashes($landingPage->program->title) }}', {{ $landingPage->program->price }}, 'checkout_program')"
         style="
             background: {{ $section->content['bg_color'] ?? '#4f46e5' }};
             color: {{ $section->content['text_color'] ?? '#fff' }};
