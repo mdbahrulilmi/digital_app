@@ -52,14 +52,12 @@ class Checkout extends Component
         $this->cart = session()->get('cart', []);
 
         $this->paymentGroups = [
-            'E-Wallet & QRIS' => [
-                'qris'      => ['label' => 'QRIS', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                'ovo'       => ['label' => 'OVO', 'icon' => asset('assets_content/icon/payment/ovo.svg')],
-                'shopeepay' => ['label' => 'ShopeePay', 'icon' => asset('assets_content/icon/payment/shopee.svg')],
-                'dana'      => ['label' => 'DANA', 'icon' => asset('assets_content/icon/payment/dana.svg')],
-                // 'linkaja'   => ['label' => 'LinkAja', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'isaku'     => ['label' => 'i.Saku', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-            ],
+            // 'E-Wallet & QRIS' => [
+            //     'qris'      => ['label' => 'QRIS', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+            //     'ovo'       => ['label' => 'OVO', 'icon' => asset('assets_content/icon/payment/ovo.svg')],
+            //     'shopeepay' => ['label' => 'ShopeePay', 'icon' => asset('assets_content/icon/payment/shopee.svg')],
+            //     'dana'      => ['label' => 'DANA', 'icon' => asset('assets_content/icon/payment/dana.svg')],
+            // ],
             'Virtual Account (SNAP)' => [
                 'va_bca'    => ['label' => 'BCA', 'icon' => asset('assets_content/icon/payment/bca.svg')],
                 'va_mandiri'=> ['label' => 'Mandiri', 'icon' => asset('assets_content/icon/payment/mandiri.svg')],
@@ -67,25 +65,11 @@ class Checkout extends Component
                 'va_bri'    => ['label' => 'BRI', 'icon' => asset('assets_content/icon/payment/bri.svg')],
                 'va_cimb'   => ['label' => 'CIMB Niaga', 'icon' => asset('assets_content/icon/payment/qris.svg')],
                 'va_bsi'    => ['label' => 'BSI', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_permata'=> ['label' => 'Permata', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_danamon'=> ['label' => 'Danamon', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_btn'    => ['label' => 'BTN', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_bjb'    => ['label' => 'BJB', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_ocbc'   => ['label' => 'OCBC', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_sinarmas'=> ['label' => 'Sinarmas', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_maybank'=> ['label' => 'Maybank', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_bnc'    => ['label' => 'BNC', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'va_bpdbali'=> ['label' => 'BPD Bali', 'icon' => asset('assets_content/icon/payment/qris.svg')],
             ],
-            'Retail & Paylater' => [
-                'alfamart'  => ['label' => 'Alfamart', 'icon' => asset('assets_content/icon/payment/alfamart.svg')],
-                'indomaret' => ['label' => 'Indomaret', 'icon' => asset('assets_content/icon/payment/indomaret.svg')],
-                // 'akulaku'   => ['label' => 'Akulaku', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'kredivo'   => ['label' => 'Kredivo', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'indodana'  => ['label' => 'Indodana', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'bri_ceria' => ['label' => 'BRI Ceria', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-                // 'jenius'    => ['label' => 'Jenius Pay', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-            ]
+            // 'Retail & Paylater' => [
+            //     'alfamart'  => ['label' => 'Alfamart', 'icon' => asset('assets_content/icon/payment/alfamart.svg')],
+            //     'indomaret' => ['label' => 'Indomaret', 'icon' => asset('assets_content/icon/payment/indomaret.svg')],
+            // ]
         ];
         
         if (count($this->cart) === 0) {

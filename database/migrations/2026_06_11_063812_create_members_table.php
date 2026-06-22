@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('whatsapp');
+            $table->string('email')->nullable()->unique();
+            $table->string('whatsapp')->unique();
             $table->text('address');
             $table->string('password');
             $table->timestamps();

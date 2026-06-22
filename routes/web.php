@@ -30,6 +30,7 @@ use App\Livewire\Member\Program\Components\Material as ProgramMaterial;
 // Auth
 use App\Livewire\Auth\AdminLogin;
 use App\Livewire\Auth\MemberLogin;
+use App\Livewire\Auth\MemberRegister;
 
 // Public
 use App\Livewire\Public\Page;
@@ -46,7 +47,8 @@ Route::get('/test-doku', [DokuController::class, 'generateQr']);
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/admin/login', AdminLogin::class)->name('admin.login');
-    Route::get('/member/login', MemberLogin::class)->name('login');
+    Route::get('/login', MemberLogin::class)->name('login');
+    Route::get('/register', MemberRegister::class)->name('register');
 });
 
 Route::prefix('admin')->middleware(['admin'])->group(function () {

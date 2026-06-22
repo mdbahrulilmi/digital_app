@@ -1,5 +1,10 @@
 <div class="min-h-screen flex items-center justify-center bg-slate-50 p-4">
     <div class="w-full max-w-sm bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 p-8">
+        @if (session()->has('message'))
+            <div class="p-4 mb-4 bg-emerald-50 text-emerald-600 rounded-2xl text-xs">
+                {{ session('message') }}
+            </div>
+        @endif
         
         <div class="text-center mb-8">
             <h2 class="text-2xl font-extrabold text-slate-900 mb-2 tracking-tight">Selamat Datang</h2>
@@ -38,8 +43,11 @@
             </button>
         </form>
 
-        {{-- <div class="mt-8 text-center">
-            <p class="text-[11px] text-slate-400">Butuh bantuan? <a href="#" class="text-indigo-600 font-bold hover:underline">Hubungi Admin</a></p>
-        </div> --}}
+        <div class="mt-6 text-center">
+            <p class="text-[11px] text-slate-400">
+                Belum punya akun? 
+                <a href="/register" class="text-indigo-600 font-bold hover:underline">Daftar Sekarang</a>
+            </p>
+        </div>
     </div>
 </div>
