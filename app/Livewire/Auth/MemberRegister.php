@@ -17,7 +17,7 @@ class MemberRegister extends Component
     protected $rules = [
         'name' => 'required|min:3',
         'whatsapp' => 'required|numeric|unique:members,whatsapp',
-        'password' => 'required|min:6',
+        'password' => 'required|min:8',
         'email' => 'nullable|email|unique:members,email',
         'address' => 'nullable|string',
     ];

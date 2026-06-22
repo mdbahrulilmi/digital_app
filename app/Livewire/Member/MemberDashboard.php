@@ -5,6 +5,7 @@ namespace App\Livewire\Member;
 use Livewire\Component;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class MemberDashboard extends Component
@@ -12,11 +13,19 @@ class MemberDashboard extends Component
     public $stats = [];
     public $jadwalHariIni = [];
     public $infoStats = [];
+    public $showPasswordModal = false;
+    public $newPassword;
 
     public function mount()
     {
         $member = Auth::guard('member')->user();
+
+        if (Hash::check($member->whatsapp, $member->password) && !session()->has('ignore_password_change')) {
+            $this->showPasswordModal = true;
+        }
+
         $today = Carbon::today();
+
 
         $programQuery = OrderItem::query()
             ->whereHas('order', function ($q) use ($member) {
@@ -64,6 +73,25 @@ class MemberDashboard extends Component
             ->whereDate('date', $today)
             ->orderBy('date', 'asc')
             ->get();
+    }
+
+    public function closeModal()
+    {
+        $this->showPasswordModal = false;
+        session()->put('ignore_password_change', true);
+    }
+
+    public function updatePassword()
+    {
+        $this->validate(['newPassword' => 'required|min:8']);
+        
+        $member = Auth::guard('member')->user();
+        $member->password = Hash::make($this->newPassword);
+        $member->save();
+        
+        $this->showPasswordModal = false;
+        session()->forget('ignore_password_change');
+        session()->flash('message', 'Password berhasil diubah!');
     }
 
     public function render()

@@ -77,4 +77,36 @@
             @endforelse
         </div>
     </section>
+
+    @if($showPasswordModal)
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+            <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Keamanan Akun</h2>
+                
+                <p class="text-sm text-gray-600 mb-4">
+                    Password Anda saat ini masih menggunakan <strong>Nomor WhatsApp</strong> Anda. 
+                    Demi keamanan, kami sangat menyarankan Anda untuk menggantinya sekarang.
+                </p>
+                
+                <form wire:submit.prevent="updatePassword" class="space-y-4">
+                    <div>
+                        <input type="password" wire:model="newPassword" placeholder="Masukkan password baru" 
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                        @error('newPassword') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition">
+                            Ubah Password
+                        </button>
+                        
+                        <button type="button" wire:click="closeModal" 
+                            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-lg transition">
+                            Tetap Pakai Password Lama
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
 </div>
