@@ -59,7 +59,7 @@ function icon($name) {
                     <nav class="space-y-1">
                         @foreach ($items as $menu)
                             @php $isActive = request()->url() === $menu['url']; @endphp
-                            <a href="{{ $menu['url'] }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition {{ $isActive ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' }}">
+                            <a href="{{ $menu['url'] }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition {{ $isActive ? 'bg-white-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' }}">
                                 {!! icon($menu['icon']) !!}
                                 <span>{{ $menu['label'] }}</span>
                             </a>
@@ -70,17 +70,21 @@ function icon($name) {
         </div>
 
         <div class="p-4 border-t border-slate-800">
-            <form action="{{ route('member.logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="w-full py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition">Logout</button>
-            </form>
+            <a
+                href="{{ route('member.dashboard') }}"
+                class="block w-full py-2.5 rounded-xl bg-white hover:bg-slate-100 text-center text-slate-900 font-semibold transition border border-slate-200"
+            >
+                Kembali ke Dashboard
+            </a>
         </div>
     </aside>
 
     <div class="lg:ml-64 min-h-screen transition-all">
-        <div class="lg:hidden h-16 bg-white border-b flex items-center px-4">
+        <div class="lg:hidden h-16 bg-white border-b flex items-center justify-end px-4">
             <button @click="sidebarOpen = true" class="p-2 text-slate-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
             </button>
         </div>
 

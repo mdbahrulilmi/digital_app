@@ -15,6 +15,8 @@ class ProgramList extends Component
         $orderItems = OrderItem::whereHas('order', function ($query) use ($member) {
                 $query->where('customer_whatsapp', $member->whatsapp);
             })
+            ->where('type', 'program')
+            ->where('status', 'paid')
             ->with('program')
             ->get();
 

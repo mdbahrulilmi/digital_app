@@ -15,6 +15,7 @@ class Today extends Component
     public $showModal = false;
     public $showUploadModal = false;
     public $selectedTask = null;
+    public $journalContent = '';
 
     public function mount($slug)
     {
@@ -59,11 +60,40 @@ class Today extends Component
         $this->selectedTask = null;
     }
 
+    public function saveJournal($scheduleId)
+    {
+        $this->validate([
+            'journalContent' => 'required|min:5',
+        ]);
+
+        \App\Models\Journal::create([
+            'program_schedule_id' => $scheduleId,
+            'member_id' => auth('member')->id(),
+            'content' => $this->journalContent,
+        ]);
+
+        $this->journalContent = ''; // Reset form
+        session()->flash('message', 'Jurnal berhasil disimpan!');
+    }
+
     public function render()
     {
-        $schedules = ProgramSchedule::where('program_id', $this->program->id)
-            ->whereDate('date', Carbon::today())
-            ->get();
+        $today = Carbon::today()->format('Y-m-d');
+        $schedules = ProgramSchedule::with(['product', 'tasks'])
+            ->where('program_id', $this->program->id)
+            ->whereDate('date', $today)
+            ->get()
+            ->groupBy(function($item) {
+                return Carbon::parse($item->date)->format('Y-m-d');
+            })
+            ->map(function ($items, $date) {
+                return (object) [
+                    'date' => $date,
+                    'materials' => $items->pluck('product')->filter(), 
+                    'tasks' => $items->flatMap->tasks->unique('id'),
+                ];
+            })
+            ->values();
 
         return view('livewire.member.program.components.today', [
             'schedules' => $schedules

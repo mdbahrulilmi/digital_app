@@ -25,4 +25,16 @@ class Member extends Authenticatable
     public function journals() {
         return $this->hasMany(Journal::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasManyThrough(
+            ProgramSchedule::class,
+            Enrollment::class,
+            'member_id',
+            'program_id',
+            'id',
+            'program_id'
+        );
+    }
 }
