@@ -23,12 +23,25 @@
                             </div>
 
                             <div class="shrink-0">
-                                @if($status === 'live')
-                                    <a href="{{ $session->url }}" target="_blank" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all">Join Now</a>
-                                @elseif($status === 'upcoming')
-                                    <button class="px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold cursor-not-allowed">Belum Mulai</button>
+                                @php
+                                    $sessionDate = \Carbon\Carbon::parse($session->date);
+                                    $today = \Carbon\Carbon::today();
+                                    $isHMinusOne = $today->copy()->addDay()->isSameDay($sessionDate);
+                                    $isPast = $sessionDate->isPast();
+                                @endphp
+
+                                @if($status === 'live' || $isHMinusOne)
+                                    <a href="{{ $session->url }}" target="_blank" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all">
+                                        {{ $status === 'live' ? 'Join Now' : 'Akses Zoom' }}
+                                    </a>
+                                @elseif($isPast && !empty($session->recording_url))
+                                    <a href="{{ $session->recording_url }}" target="_blank" class="px-6 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-slate-50">
+                                        Lihat Rekaman
+                                    </a>
                                 @else
-                                    <a href="{{ $session->recording_url }}" class="px-6 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-slate-50">Lihat Rekaman</a>
+                                    <button class="px-6 py-3 bg-slate-100 text-slate-400 rounded-xl font-bold cursor-not-allowed">
+                                        Belum Tersedia
+                                    </button>
                                 @endif
                             </div>
                         </div>
