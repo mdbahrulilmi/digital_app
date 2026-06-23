@@ -82,27 +82,5 @@
             @endif
         @endif
     </div>
-
-    {{-- Info Sandbox Simulator (Hanya muncul jika status belum sukses) --}}
-    <div class="mt-8 p-4 bg-slate-900 text-white rounded-xl text-[10px] font-mono overflow-x-auto">
-    <p class="font-bold text-yellow-400 uppercase mb-2">Debug Internal (Developer Only):</p>
-    <table class="w-full">
-        <tr>
-            <td class="text-slate-400">Order Status:</td>
-            <td>{{ $paymentStatus }}</td>
-        </tr>
-        <tr>
-            <td class="text-slate-400">Method:</td>
-            <td>{{ $method }}</td>
-        </tr>
-        <tr>
-            <td class="text-slate-400">Payment Code:</td>
-            <td class="break-all">{{ $paymentCode ?? 'NULL' }}</td>
-        </tr>
-        <tr>
-            <td class="text-slate-400">QR Content:</td>
-            <td class="break-all">{{ $qrUrl ? 'TERSEDIA' : 'NULL' }}</td>
-        </tr>
-    </table>
 </div>
 </div>

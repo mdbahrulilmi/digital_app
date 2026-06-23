@@ -1,7 +1,7 @@
 <div class="p-6 max-w-7xl mx-auto">
     <div class="flex items-end justify-between mb-10">
         <div>
-            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Semua Materi Program Ini</h2>
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Materi Program Ini</h2>
         </div>
     </div>
 

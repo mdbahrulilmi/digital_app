@@ -1,6 +1,8 @@
 <div class="p-6">
-    <div class="flex items-center justify-between mb-8">
-        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Log Jurnal</h2>
+    <div class="flex items-end justify-between mb-10">
+        <div>
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Riwayat Jurnal</h2>
+        </div>
     </div>
 
     <div class="space-y-6">
@@ -22,16 +24,6 @@
                 <p class="text-[14px] text-slate-700 leading-relaxed">
                     {{ $journal->entry }}
                 </p>
-                
-                <div class="mt-4 pt-4 border-t border-slate-50 flex items-center justify-between">
-                    <div class="text-lg">
-                        {{-- Jika punya kolom mood di DB, gunakan $journal->mood --}}
-                        📝
-                    </div>
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                        Entry #{{ $loop->iteration }}
-                    </span>
-                </div>
             </div>
         </div>
         @empty
