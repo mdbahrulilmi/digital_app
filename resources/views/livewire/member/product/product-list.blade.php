@@ -3,10 +3,10 @@
     
     @forelse($orderItems as $item)
     <div class="group flex flex-col bg-white rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_rgb(0,0,0,0.1)] hover:-translate-y-2">
-        
+        {{-- @dd($item->product); --}}
         {{-- Image Container --}}
         <div class="relative h-56 w-full overflow-hidden shrink-0">
-            <img src="{{ asset('storage/' . $item->image) }}" 
+            <img src="{{ asset($item->product->image) }}" 
                  alt="{{ $item->title }}" 
                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
         </div>
