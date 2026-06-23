@@ -5,7 +5,6 @@ namespace App\Livewire\Admin\Program\Components;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Program;
-use App\Models\ProgramSchedule;
 use App\Models\Journal;
 
 class ProgramMember extends Component
@@ -39,22 +38,17 @@ class ProgramMember extends Component
 
     public function getMemberJournals($memberId)
     {
-        $scheduleIds = ProgramSchedule::where('program_id', $this->program->id)
-        ->where('date', $dateKey)
-        ->pluck('id');
-
-        if ($scheduleIds->isEmpty()) {
-            return collect();
-        }
-
-        return Journal::where('member_id', $memberId)
-            ->where('program_schedule_id', $scheduleIds)
-            ->orderBy('date', 'desc')
+        return Journal::query()
+            ->join('program_schedules', 'journals.program_schedule_id', '=', 'program_schedules.id')
+            ->where('journals.member_id', $memberId)
+            ->where('program_schedules.program_id', $this->program->id)
+            ->orderBy('program_schedules.date', 'desc')
+            ->select('journals.*')
             ->paginate(5, ['*'], 'journalPage', $this->journalPage)
             ->through(function ($journal) {
                 return [
                     'title' => $journal->entry,
-                    'date'  => \Carbon\Carbon::parse($journal->date)->translatedFormat('d M Y')
+                    'date'  => \Carbon\Carbon::parse($journal->programSchedule->date)->translatedFormat('d M Y')
                 ];
             });
     }
