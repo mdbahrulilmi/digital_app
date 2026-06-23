@@ -77,9 +77,13 @@ class Today extends Component
     public function loadJournals()
     {
         $today = Carbon::today()->format('Y-m-d');
-        
+    
+        $todayScheduleIds = ProgramSchedule::where('program_id', $this->program->id)
+            ->where('date', $today)
+            ->pluck('id');
+
         $journals = Journal::where('member_id', auth('member')->id())
-            ->where('program_id', $this->program->id)
+            ->whereIn('program_schedule_id', $todayScheduleIds) // Gunakan whereIn
             ->where('date', $today)
             ->get();
 

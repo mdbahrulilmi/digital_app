@@ -60,11 +60,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- Pilihan Metode Pembayaran Terintegrasi --}}
-        <div class="text-xs p-4">
-            DEBUG: Metode yang terpilih adalah: {{ $payment_method }}
-        </div>
        <div class="space-y-6">
             @foreach($paymentGroups as $groupName => $methods)
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
