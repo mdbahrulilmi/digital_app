@@ -46,6 +46,8 @@ class ProductList extends Component
 {
     return [
         'title'              => ['required', 'string', 'max:255'],
+        'description'        => ['required', 'string'],
+        'asset_type'         => ['required'],
         'slug'               => ['required', 'string', 'unique:products,slug,' . ($this->editingId ?? 'NULL')],
         'price'              => ['required', 'numeric', 'min:0'],
         'status'             => ['required'],

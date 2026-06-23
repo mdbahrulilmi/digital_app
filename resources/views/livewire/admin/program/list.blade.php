@@ -178,6 +178,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Deskripsi</label>
                             <textarea wire:model="description" rows="3" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+                            @error('description') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">Sumber Gambar</label>

@@ -1,5 +1,5 @@
   <style>
-.d { padding: 1.5rem; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
+.d { margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
 
     /* Header */
     .hdr { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -75,10 +75,10 @@
       <h1>Dashboard</h1>
       <p>Jumat, 13 Juni 2025 — Selamat datang kembali</p>
     </div>
-    <div class="hdr-actions">
+    {{-- <div class="hdr-actions">
       <a href="#" class="btn"><i class="ti ti-download" style="font-size:13px"></i> Ekspor</a>
       <a href="/admin/product" class="btn btn-accent"><i class="ti ti-plus" style="font-size:13px"></i> Produk baru</a>
-    </div>
+    </div> --}}
   </div>
 
   <!-- Stats -->

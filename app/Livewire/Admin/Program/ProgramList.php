@@ -48,6 +48,7 @@ class ProgramList extends Component
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['required','string', 'unique:programs,slug,' . ($this->editingId ?? 'NULL')],
             'price' => ['required', 'numeric', 'min:0'],
+            'description' => ['required', 'string'],
             'status' => ['required'],
             'start_date' => ['required', 'date'],
             'end_date'   => ['required', 'date', 'after_or_equal:start_date'],

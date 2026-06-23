@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\Program;
+use App\Models\LandingPage;
 
 trait SlugGenerator
 {

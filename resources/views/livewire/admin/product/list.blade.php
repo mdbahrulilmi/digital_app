@@ -168,6 +168,7 @@
                             <div>
                                 <label class="block text-sm font-semibold text-slate-700 mb-1">Deskripsi</label>
                                 <textarea wire:model="description" rows="3" placeholder="Deskripsi lengkap produk..." class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+                                 @error('description') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                             </div>
 
                             <div>
@@ -187,7 +188,7 @@
                                     <label><input type="radio" wire:model.live="asset_source" value="upload"> Upload File</label>
                                     <label><input type="radio" wire:model.live="asset_source" value="link"> Masukkan Link</label>
                                 </div>
-
+                                
                                 <select wire:model="asset_type" class="w-full px-3 py-2 border rounded-xl text-sm">
                                     <option value="">-- Pilih Tipe --</option>
                                     <option value="file">Dokumen (Zip/PDF)</option>
@@ -195,7 +196,7 @@
                                     <option value="audio">Audio</option>
                                     <option value="video">Video</option>
                                 </select>
-
+                                @error('asset_type') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                                 @if($asset_source === 'upload')
                                     <input type="file" wire:model="digital_asset_file" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200">
                                 @error('digital_asset_file') <span class="text-xs text-red-500 block mt-1">{{ $message }}</span> @enderror

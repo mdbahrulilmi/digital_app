@@ -234,13 +234,19 @@ class LandingPageEditor extends Component
         ];
 
         $nextOrder = LandingPageSection::where('landing_page_id', $this->landingPageId)->max('sort_order') + 1;
+        
+        $landingPage = LandingPage::findOrFail($this->landingPageId);
+        $relatedPage = $landingPage->program_page_id ? LandingPage::find($landingPage->program_page_id) : null;
+        
+        $relationUrl = !empty($relatedPage);
+        $url = $relatedPage ? $relatedPage->slug : '';
 
         $defaultContent = match($type) {
             'text' => ['text' => 'Ketik teks narasi Anda di sini.'],
             'video' => ['title' => '', 'video_url' => ''],
             'button' => ButtonSection::getDefault(
-                $this->section->relation_url ?? false,
-                $this->section->url ?? ''
+                $this->relationUrl,
+                $this->url
             ),
             'product' => ProductSection::getDefault(),
             'product2' => ProductSection::get2Default(),

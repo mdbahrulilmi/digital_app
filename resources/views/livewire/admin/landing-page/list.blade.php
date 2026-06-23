@@ -236,7 +236,7 @@
                         {{-- Judul Halaman --}}
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Halaman</label>
-                            <input type="text" wire:model="title" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="Contoh: Tentang Kami">
+                            <input type="text" wire:model.live="title" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="Contoh: Tentang Kami">
                             @error('title') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
@@ -269,7 +269,8 @@
                                     wire:model="slug" 
                                     @if($home || $program_id) disabled @endif
                                     class="w-full px-4 py-2.5 border border-slate-200 rounded-r-xl outline-none transition-all {{ $home ? 'bg-slate-100 text-slate-400 cursor-not-allowed font-medium' : 'bg-slate-50 focus:ring-2 focus:ring-indigo-500' }}" 
-                                    placeholder="{{ $home ? '(Halaman Utama)' : 'tentang-kami' }}">
+                                    placeholder="{{ $home ? '(Halaman Utama)' : 'tentang-kami' }}"
+                                    disabled>
                             </div>
                             @error('slug') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                         </div>

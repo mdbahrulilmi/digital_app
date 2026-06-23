@@ -6,10 +6,11 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\LandingPage;
 use App\Models\Program;
+use App\Traits\SlugGenerator;
 
 class LandingPageList extends Component
 {
-    use WithPagination;
+    use WithPagination, SlugGenerator;
 
     public $search = '';
     public $filterStatus = '';
@@ -33,6 +34,11 @@ class LandingPageList extends Component
 
     public function mount() {
         $this->checkHomeStatus();
+    }
+
+    public function updatedTitle($value)
+    {
+        $this->slug = $this->generateUniqueSlug($value, LandingPage::class);
     }
 
     public function checkHomeStatus()
