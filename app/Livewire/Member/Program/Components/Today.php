@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Member\Program\Components;
 
+use App\Models\Product;
 use App\Models\Program;
+use App\Models\Journal;
 use App\Models\ProgramSchedule;
 use Livewire\Component;
 use Illuminate\Support\Carbon;
@@ -19,13 +21,15 @@ class Today extends Component
     public $showModal = false;
     public $showUploadModal = false;
     public $selectedScheduleId = null;
-    public $journalContent = '';
     public $taskFile;
+    public $journals;
+    public $journalContents = [];
 
     public function mount($slug)
     {
         $this->slug = $slug;
         $this->program = Program::where('slug', $slug)->firstOrFail();
+        $this->loadJournals();
     }
 
     public function openProduct($productId)
@@ -39,7 +43,7 @@ class Today extends Component
             return;
         }
 
-        $this->selectedProduct = \App\Models\Product::find($productId);
+        $this->selectedProduct = Product::find($productId);
 
         if ($this->selectedProduct && $this->selectedProduct->digital_assets) {
             $this->selectedProduct->decoded_asset = json_decode(
@@ -70,19 +74,34 @@ class Today extends Component
         $this->selectedScheduleId = null;
     }
 
-    public function saveJournal($scheduleId)
+    public function loadJournals()
     {
-        $this->validate([
-            'journalContent' => 'required|min:5',
-        ]);
+        $today = Carbon::today()->format('Y-m-d');
+    
+        $journal = Journal::where('member_id', auth('member')->id())
+            ->where('program_id', $this->program->id)
+            ->where('date', $today)
+            ->first();
 
-        \App\Models\Journal::create([
-            'program_schedule_id' => $scheduleId,
-            'member_id' => auth('member')->id(),
-            'content' => $this->journalContent,
-        ]);
+        $this->journalContents[$today] = $journal ? $journal->entry : '';
+    }
 
-        $this->journalContent = ''; // Reset form
+    public function saveJournal()
+    {
+        $today = Carbon::today()->format('Y-m-d');
+        $entry = $this->journalContents[$today] ?? '';
+
+        Journal::updateOrCreate(
+            [
+                'member_id' => auth('member')->id(),
+                'program_id' => $this->program->id,
+                'date' => $today,
+            ],
+            [
+                'entry' => $entry
+            ]
+        );
+
         session()->flash('message', 'Jurnal berhasil disimpan!');
     }
 

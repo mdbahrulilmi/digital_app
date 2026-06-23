@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('member_id')->constrained();
             $table->foreignId('program_id')->constrained();
-            $table->integer('day');
+            $table->date('date');
             $table->text('entry');
             $table->timestamps();
+            $table->index(['program_id', 'date']);
         });
     }
 

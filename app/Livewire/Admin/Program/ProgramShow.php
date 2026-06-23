@@ -10,7 +10,6 @@ class ProgramShow extends Component
 {
     public Program $program;
     
-    // Properti untuk data dashboard card
     public $totalMembers;
     public $uniqueProducts;
     public $activeDays;

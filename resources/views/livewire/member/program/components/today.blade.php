@@ -98,22 +98,49 @@
                     </div>
                 </div>
 
-                {{-- Jurnal --}}
+               {{-- Jurnal --}}
                 <div class="p-6 rounded-3xl border border-slate-100 bg-slate-50">
                     <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Catatan Refleksi
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 
+                        {{-- Logika: Cek apakah data untuk schedule hari ini ada di array journalContents --}}
+                        {{ isset($journalContents[$day->schedules_id]) ? 'Edit Catatan Refleksi' : 'Catatan Refleksi Baru' }}
                     </h3>
-                    <textarea wire:model="journalContent" class="w-full bg-white border-slate-200 rounded-2xl p-4 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-400 transition-all resize-none min-h-[80px]" placeholder="Apa insight kamu hari ini?"></textarea>
+                    
+                    <textarea 
+                        wire:model="journalContents.{{ $day->schedules_id }}" 
+                        class="w-full bg-white border-slate-200 rounded-2xl p-4 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-400 transition-all resize-none min-h-[80px]" 
+                        placeholder="Apa insight kamu hari ini?">
+                    </textarea>
+
                     <div class="flex justify-end">
-                        <button wire:click="saveJournal({{ $day->schedules_id }})" class="mt-4 px-8 py-3 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-600 transition-all">
-                            Simpan Catatan
+                        <button wire:click="saveJournal({{ $day->schedules_id }})" 
+                            class="mt-4 px-8 py-3 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-600 transition-all">
+                            {{ isset($journalContents[$day->schedules_id]) ? 'Update Catatan' : 'Simpan Catatan' }}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     @empty
-        <div class="text-center py-20 text-slate-400">Belum ada agenda tersedia.</div>
+        <div class="text-center py-20 text-slate-400">Hari ini cukup isi journal</div>
+        <div class="p-8 bg-white border border-slate-200 rounded-3xl shadow-sm">
+        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 
+            Catatan Refleksi Hari Ini
+        </h3>
+        
+        <textarea 
+            wire:model="journalContents.today" 
+            class="w-full bg-slate-50 border-slate-200 rounded-2xl p-4 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-400 transition-all resize-none min-h-[100px]" 
+            placeholder="Apa insight kamu hari ini?"></textarea>
+
+        <div class="flex justify-end">
+            <button wire:click="saveJournal" 
+                class="mt-4 px-8 py-3 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-600 transition-all">
+                {{ isset($journalContents['today']) ? 'Update Catatan' : 'Simpan Catatan' }}
+            </button>
+        </div>
+    </div>
     @endforelse
 
     @include('livewire.member.program.components.modals.today-modal')
