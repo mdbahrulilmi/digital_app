@@ -156,6 +156,7 @@ class Today extends Component
                 return (object) [
                     'date' => $items->first()->date,
                     'schedules_id' => $items->first()->id,
+                    'upload_required' => $items->first()->upload_required,
                     'materials' => $allMaterials,
                     'tasks' => $items->flatMap->tasks,
                 ];

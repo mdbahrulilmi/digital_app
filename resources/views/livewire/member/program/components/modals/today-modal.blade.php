@@ -65,7 +65,11 @@
                             class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-slate-200 rounded-2xl p-2 cursor-pointer">
                         
                         @error('taskFile') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                        <p class="text-[10px] text-slate-400">Maksimal ukuran file: 2MB.</p>
+                        
+                        {{-- Loading Bar saat file sedang diproses (sebelum disubmit) --}}
+                        <div wire:loading wire:target="taskFile" class="text-[10px] text-indigo-600 font-bold animate-pulse">
+                            Sedang menyiapkan file...
+                        </div>
                     </div>
                     
                     {{-- Action Buttons --}}
@@ -77,7 +81,11 @@
                         
                         <button type="submit" 
                             wire:loading.attr="disabled"
-                            class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-2xl text-sm font-bold transition-all active:scale-95 disabled:opacity-50">
+                            class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-2xl text-sm font-bold transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2">
+                            
+                            {{-- Indikator Loading --}}
+                            <span wire:loading wire:target="submitTask" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                            
                             <span wire:loading.remove wire:target="submitTask">Kirim Tugas</span>
                             <span wire:loading wire:target="submitTask">Mengirim...</span>
                         </button>

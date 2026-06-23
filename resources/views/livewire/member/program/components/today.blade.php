@@ -92,10 +92,12 @@
                                 $hasSubmitted = $submissions->has($day->schedules_id);
                             @endphp
 
-                            <button wire:click="openUploadModal({{ $day->schedules_id }})" 
-                                class="cursor-pointer w-full py-3 {{ $hasSubmitted ? 'bg-emerald-600' : 'bg-slate-900' }} text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:opacity-90 transition-all">
-                                {{ $hasSubmitted ? 'Ubah Jawaban' : 'Kumpulkan' }}
-                            </button>
+                            @if($day->upload_required == 1)
+                                <button wire:click="openUploadModal({{ $day->schedules_id }})" 
+                                    class="cursor-pointer w-full py-3 {{ $hasSubmitted ? 'bg-emerald-600' : 'bg-slate-900' }} text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:opacity-90 transition-all">
+                                    {{ $hasSubmitted ? 'Ubah Jawaban' : 'Kumpulkan' }}
+                                </button>
+                            @endif
                         @else
                             <div class="text-slate-400 text-xs italic text-center py-6">Tidak ada tugas.</div>
                         @endif
