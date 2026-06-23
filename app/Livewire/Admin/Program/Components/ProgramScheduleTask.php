@@ -195,16 +195,16 @@ class ProgramScheduleTask extends Component
 
     public function getMemberSubmissions($dateKey)
     {
-        $taskIds = Task::where('program_id', $this->program->id)
-            ->where('date', $dateKey)
-            ->pluck('id');
+        $scheduleIds = ProgramSchedule::where('program_id', $this->program->id)
+        ->where('date', $dateKey)
+        ->pluck('id');
 
-        if ($taskIds->isEmpty()) {
+        if ($scheduleIds->isEmpty()) {
             return collect();
         }
 
         return \App\Models\TaskSubmission::with('member')
-            ->whereIn('task_id', $taskIds)
+            ->whereIn('program_schedule_id', $scheduleIds)
             ->get();
     }
 
