@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Program\Components;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Program;
+use App\Models\ProgramSchedule;
 use App\Models\Journal;
 
 class ProgramMember extends Component
