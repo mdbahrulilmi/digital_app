@@ -38,8 +38,16 @@ class ProgramMember extends Component
 
     public function getMemberJournals($memberId)
     {
+        $scheduleIds = ProgramSchedule::where('program_id', $this->program->id)
+        ->where('date', $dateKey)
+        ->pluck('id');
+
+        if ($scheduleIds->isEmpty()) {
+            return collect();
+        }
+
         return Journal::where('member_id', $memberId)
-            ->where('program_id', $this->program->id)
+            ->where('program_schedule_id', $scheduleIds)
             ->orderBy('date', 'desc')
             ->paginate(5, ['*'], 'journalPage', $this->journalPage)
             ->through(function ($journal) {
