@@ -34,6 +34,7 @@
         <table class="w-full text-sm border-collapse">
             <thead>
                 <tr class="text-left text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100">
+                    <th class="pb-4 px-2 w-[20%]">Judul</th>
                     <th class="pb-4 px-2 w-[20%]">Tanggal</th>
                     <th class="pb-4 px-2 w-[15%]">Mulai</th>
                     <th class="pb-4 px-2 w-[15%]">Selesai</th>
@@ -44,6 +45,10 @@
             <tbody class="divide-y divide-slate-100">
                 @foreach($zoomLinks as $index => $link)
                 <tr class="group hover:bg-slate-50">
+                    <td class="py-3 px-2 align-top">
+                        <input type="text" wire:model="zoomLinks.{{$index}}.title" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none">
+                        @error("zoomLinks.$index.title") <div class="text-red-500 text-[10px] mt-1">{{ $message }}</div> @enderror
+                    </td>
                     <td class="py-3 px-2 align-top">
                         <input type="date" wire:model="zoomLinks.{{$index}}.date" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none">
                         @error("zoomLinks.$index.date") <div class="text-red-500 text-[10px] mt-1">{{ $message }}</div> @enderror

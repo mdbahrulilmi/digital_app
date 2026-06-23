@@ -23,6 +23,7 @@ class ProgramZoom extends Component
     {
         $this->zoomLinks[] = [
             'id' => null,
+            'title' => '',
             'date' => '',
             'start_time' => '',
             'end_time' => '',
@@ -41,6 +42,7 @@ class ProgramZoom extends Component
     public function save()
     {
         $this->validate([
+            'zoomLinks.*.title' => 'required',
             'zoomLinks.*.date' => 'required|date',
             'zoomLinks.*.start_time' => 'required',
             'zoomLinks.*.end_time' => 'required',
@@ -93,6 +95,7 @@ class ProgramZoom extends Component
             $this->program->zooms
             ->map(fn($zoom) => [
                 'id' => $zoom->id,
+                'title' => $zoom->title,
                 'date' => $zoom->date,
                 'start_time' => $zoom->start_time,
                 'end_time' => $zoom->end_time,

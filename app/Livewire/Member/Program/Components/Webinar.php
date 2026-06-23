@@ -2,12 +2,30 @@
 
 namespace App\Livewire\Member\Program\Components;
 
+use App\Models\Zoom;
+use App\Models\Program;
 use Livewire\Component;
 
 class Webinar extends Component
 {
+    public $slug;
+
+    public function mount($slug)
+    {
+        $this->slug = $slug;
+    }
+
     public function render()
     {
-        return view('livewire.member.program.components.webinar')->layout('layouts.program');
+        $program = Program::where('slug', $this->slug)->firstOrFail();
+        
+        $sessions = Zoom::where('program_id', $program->id)
+            ->orderBy('date', 'asc')
+            ->get()
+            ->groupBy(fn($item) => $item->status);
+
+        return view('livewire.member.program.components.webinar', [
+            'sessions' => $sessions
+        ])->layout('layouts.program');
     }
 }

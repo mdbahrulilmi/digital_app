@@ -27,7 +27,6 @@ class ProgramSchedule extends Model
     
     public function tasks()
     {
-        return $this->hasMany(\App\Models\Task::class, 'date', 'date')
-                    ->whereColumn('program_id', 'program_id');
+        return $this->hasMany(\App\Models\Task::class, 'program_schedule_id');
     }
 }

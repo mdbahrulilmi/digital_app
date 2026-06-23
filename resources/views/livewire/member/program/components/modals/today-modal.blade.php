@@ -52,7 +52,7 @@
     </div>
     @endif
     {{-- Ubah kondisi if nya menjadi $showUploadModal saja --}}
-    @if($showUploadModal)
+    @if(isset($showUploadModal) && $showUploadModal)
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
             <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8">
                 <h2 class="text-xl font-black text-slate-900 mb-2">Kumpul Tugas</h2>

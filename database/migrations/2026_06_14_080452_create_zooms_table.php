@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('zooms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('program_id')->constrained()->onDelete('cascade');
-                $table->date('date');
-                $table->time('start_time');
-                $table->time('end_time');
-                $table->string('url');
-                $table->timestamps();
+            $table->string('title');
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('url');
+            $table->timestamps();
         });
     }
 

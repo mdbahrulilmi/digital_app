@@ -41,6 +41,7 @@
                             <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Materi
                         </h3>
                         <div class="space-y-3">
+                            @if($day->materials->isNotEmpty())
                             @foreach($day->materials as $i => $product)
                                 <div 
                                 wire:click="openProduct({{ $product->id }})"
@@ -54,6 +55,9 @@
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                 </div>
                             @endforeach
+                            @else
+                                <div class="text-slate-400 text-xs italic text-center py-6">Tidak ada materi.</div>
+                            @endif
                         </div>
                     </div>
 
@@ -71,7 +75,7 @@
                                     @endphp
                                     
                                     <div class="p-3 rounded-2xl bg-white border border-amber-100">
-                                        <span class="text-xs font-bold text-slate-700 block mb-1">{{ $task->title }}</span>
+                                        <span class="text-xs font-bold text-slate-700 block mb-1">{{ $task->task }}</span>
                                         
                                         @if($sub)
                                             <div class="mt-2 pt-2 border-t border-slate-50">
@@ -120,25 +124,6 @@
             </div>
         </div>
     @empty
-        <div class="text-center py-20 text-slate-400">Hari ini cukup isi journal</div>
-        <div class="p-8 bg-white border border-slate-200 rounded-3xl shadow-sm">
-        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 
-            Catatan Refleksi Hari Ini
-        </h3>
-        
-        <textarea 
-            wire:model="journalContents.today" 
-            class="w-full bg-slate-50 border-slate-200 rounded-2xl p-4 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-400 transition-all resize-none min-h-[100px]" 
-            placeholder="Apa insight kamu hari ini?"></textarea>
-
-        <div class="flex justify-end">
-            <button wire:click="saveJournal" 
-                class="mt-4 px-8 py-3 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-600 transition-all">
-                {{ isset($journalContents['today']) ? 'Update Catatan' : 'Simpan Catatan' }}
-            </button>
-        </div>
-    </div>
     @endforelse
 
     @include('livewire.member.program.components.modals.today-modal')

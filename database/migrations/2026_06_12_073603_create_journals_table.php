@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('member_id')->constrained();
-            $table->foreignId('program_id')->constrained();
-            $table->date('date');
+            $table->foreignId('program_schedule_id')->constrained();
             $table->text('entry');
             $table->timestamps();
-            $table->index(['program_id', 'date']);
         });
     }
 

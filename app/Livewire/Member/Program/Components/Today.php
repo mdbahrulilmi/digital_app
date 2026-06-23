@@ -77,28 +77,26 @@ class Today extends Component
     public function loadJournals()
     {
         $today = Carbon::today()->format('Y-m-d');
-    
-        $journal = Journal::where('member_id', auth('member')->id())
+        
+        $journals = Journal::where('member_id', auth('member')->id())
             ->where('program_id', $this->program->id)
             ->where('date', $today)
-            ->first();
+            ->get();
 
-        $this->journalContents['today'] = $journal ? $journal->entry : '';
-        $this->journalContents[$today] = $journal ? $journal->entry : '';
+        foreach ($journals as $journal) {
+            $this->journalContents[$journal->program_schedule_id] = $journal->entry;
+        }
     }
 
     public function saveJournal($scheduleId = null) 
     {
         $today = Carbon::today()->format('Y-m-d');
-
-        $key = $scheduleId ?? 'today';
-        $entry = $this->journalContents[$key] ?? '';
+        $entry = $this->journalContents[$scheduleId] ?? '';
 
         Journal::updateOrCreate(
             [
                 'member_id' => auth('member')->id(),
-                'program_id' => $this->program->id,
-                'date' => $today,
+                'program_schedule_id' => $scheduleId,
             ],
             [
                 'entry' => $entry
