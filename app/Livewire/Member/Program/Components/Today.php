@@ -91,15 +91,7 @@ class Today extends Component
         $this->validate([
             'taskFile' => 'required|file|max:2048',
         ]);
-
-        // Tambahan: Cari ID task berdasarkan schedule yang dipilih
-        $task = \App\Models\Task::where('program_schedule_id', $this->selectedScheduleId)->first();
         
-        if (!$task) {
-            session()->flash('error', 'Tugas tidak ditemukan.');
-            return;
-        }
-
         $member = auth('member')->user();
         $memberWhatsapp = $member->whatsapp ?? 'NO_WA'; 
         $programName = str_replace(' ', '_', $this->program->name);
@@ -108,14 +100,12 @@ class Today extends Component
         $fileName = "{$memberWhatsapp}_{$programName}_{$dateCreated}." . $this->taskFile->getClientOriginalExtension();
         $path = $this->taskFile->storeAs('tasks', $fileName, 'public');
 
-        // Gunakan updateOrCreate dengan kunci program_schedule_id
         \App\Models\TaskSubmission::updateOrCreate(
             [
                 'member_id' => $member->id,
-                'program_schedule_id' => $this->selectedScheduleId, // Kunci utama hari ini
+                'program_schedule_id' => $this->selectedScheduleId,
             ],
             [
-                'task_id'   => $task->id,
                 'file_path' => $path,
             ]
         );
