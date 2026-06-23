@@ -26,8 +26,9 @@
             </div>
             
             <div class="mt-auto pt-4 border-t border-slate-50">
-                <a href="{{ route('product.show', $item->slug) }}" class="flex items-center justify-center w-full py-3.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 transition-all duration-300">
-                    Lihat Produk
+                <a href="{{ route('member.product.show', ['slug' => $item->product->slug]) }}" 
+                    class="flex items-center justify-center w-full py-3.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 transition-all duration-300">
+                        Lihat Produk
                 </a>
             </div>
         </div>

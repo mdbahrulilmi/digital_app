@@ -86,7 +86,7 @@ Route::middleware(['auth:member'])->prefix('member')->group(function () {
     
     Route::get('/program', MemberProgramList::class)->name('member.program.list');
     Route::get('/product', MemberProductList::class)->name('member.product.list');
-    Route::get('/product/{id}', MemberProductShow::class)->name('member.product.show');
+    Route::get('/product/{slug}', MemberProductShow::class)->name('member.product.show');
     Route::get('/riwayat', MemberRiwayatList::class)->name('member.riwayat.list');
     Route::get('/settings', MemberSettings::class)->name('member.settings');
     
