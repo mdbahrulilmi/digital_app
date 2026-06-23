@@ -27,7 +27,9 @@ class ProgramShow extends Component
         
         $this->totalMembers = $this->program->members()->count();
     
-        $this->uniqueProducts = $this->program->schedules()->distinct('product_id')->count();
+        $this->uniqueProducts = \App\Models\ProgramProduct::whereHas('schedule', function($query) {
+            $query->where('program_id', $this->program->id);
+        })->distinct('product_id')->count('product_id');
 
         $this->activeDays = $this->program->schedules()
             ->where('date', '>=', $today)

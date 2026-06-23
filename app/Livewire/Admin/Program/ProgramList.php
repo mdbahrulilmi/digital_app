@@ -12,6 +12,8 @@ use Livewire\WithFileUploads;
 use App\Traits\SlugGenerator;
 use App\Traits\MediaHandler;
 use App\Traits\LandingPageHandler;
+use App\Models\ProgramSchedule;
+use Carbon\CarbonPeriod;
 
 class ProgramList extends Component
 {
@@ -143,6 +145,27 @@ class ProgramList extends Component
                 'image_source' => $this->image_source,
             ]
         );
+
+        if ($this->start_date && $this->end_date) {
+            $period = CarbonPeriod::create($this->start_date, $this->end_date);
+            $newDates = [];
+
+            foreach ($period as $date) {
+                $newDates[] = $date->format('Y-m-d');
+            }
+
+            foreach ($newDates as $dateString) {
+                ProgramSchedule::updateOrCreate(
+                    [
+                        'program_id' => $program->id,
+                        'date'       => $dateString,
+                    ],
+                    [
+                        'upload_required' => false,
+                    ]
+                );
+            }
+        }
 
         if (!$this->editMode) {
             LandingPage::create([

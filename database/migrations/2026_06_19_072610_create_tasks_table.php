@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('program_id')->constrained();
-            $table->date('date');
-            $table->string('title');
-            $table->text('description')->nullable();
+            $table->foreignId('program_schedule_id')->constrained();
+            $table->text('task');
             $table->timestamps();
         });
     }

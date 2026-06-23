@@ -53,30 +53,58 @@ class ProgramScheduleTask extends Component
 
     private function loadSchedules()
     {
-        $savedSchedules = ProgramSchedule::where(
-            'program_id',
-            $this->program->id
-        )->get();
+        $savedSchedules = ProgramSchedule::with('programProducts') 
+            ->where('program_id', $this->program->id)
+            ->get();
 
         foreach ($savedSchedules as $schedule) {
-            $this->schedules[$schedule->date][] = $schedule->product_id;
+            // Ambil array product_id dari tabel pivot/relasi
+            $this->schedules[$schedule->date] = $schedule->programProducts->pluck('product_id')->toArray();
             $this->uploadSettings[$schedule->date]['upload'] = (bool) $schedule->upload_required;
         }
+    }
 
+    private function saveSchedules()
+    {
+        $keepScheduleIds = [];
+
+        foreach ($this->schedules as $date => $productIds) {
+            $schedule = ProgramSchedule::updateOrCreate(
+                ['program_id' => $this->program->id, 'date' => $date],
+                ['upload_required' => $this->uploadSettings[$date]['upload'] ?? false]
+            );
+
+            $keepScheduleIds[] = $schedule->id;
+
+            // 2. Update Produk untuk jadwal ini
+            \App\Models\ProgramProduct::where('program_schedule_id', $schedule->id)->delete();
+            foreach ($productIds as $productId) {
+                if (empty($productId)) continue;
+                \App\Models\ProgramProduct::create([
+                    'program_schedule_id' => $schedule->id,
+                    'product_id'          => $productId
+                ]);
+            }
+        }
+
+        // 3. Hapus jadwal yang sudah tidak ada di form
+        ProgramSchedule::where('program_id', $this->program->id)
+            ->whereNotIn('id', $keepScheduleIds)
+            ->delete();
     }
 
     private function loadTasks()
     {
-        $savedTasks = Task::where(
-            'program_id',
-            $this->program->id
-        )->get();
+        $scheduleIds = \App\Models\ProgramSchedule::where('program_id', $this->program->id)
+            ->pluck('id');
+        $savedTasks = Task::whereIn('program_schedule_id', $scheduleIds)->get();
 
         foreach ($savedTasks as $task) {
+            $date = $task->schedule->date; 
 
-            $this->tasks[$task->date][] = [
-                'id' => $task->id,
-                'title' => $task->title
+            $this->tasks[$date][] = [
+                'id'   => $task->id,
+                'task' => $task->task
             ];
         }
     }
@@ -156,43 +184,6 @@ class ProgramScheduleTask extends Component
         );
     }
 
-    private function saveSchedules()
-    {
-        $existing = ProgramSchedule::where('program_id', $this->program->id)
-            ->get()
-            ->keyBy(fn($item) => $item->date . '-' . $item->product_id);
-
-        $keepIds = [];
-
-        foreach ($this->schedules as $date => $products) {
-            
-            $isUploadEnabled = $this->uploadSettings[$date]['upload'] ?? false;
-
-            foreach ($products as $productId) {
-                if (!$productId) continue;
-
-                $key = $date . '-' . $productId;
-
-                $schedule = ProgramSchedule::updateOrCreate(
-                    [
-                        'program_id' => $this->program->id,
-                        'product_id' => $productId,
-                        'date' => $date
-                    ],
-                    [
-                        'upload_required' => $isUploadEnabled 
-                    ]
-                );
-
-                $keepIds[] = $schedule->id;
-            }
-        }
-
-        ProgramSchedule::where('program_id', $this->program->id)
-            ->whereNotIn('id', $keepIds)
-            ->delete();
-    }
-
     public function getMemberSubmissions($dateKey)
     {
         $scheduleIds = ProgramSchedule::where('program_id', $this->program->id)
@@ -213,38 +204,27 @@ class ProgramScheduleTask extends Component
         $keepTaskIds = [];
 
         foreach ($this->tasks as $date => $taskList) {
+            $schedule = ProgramSchedule::where('program_id', $this->program->id)
+                                    ->where('date', $date)->first();
+            if (!$schedule) continue;
 
             foreach ($taskList as $taskData) {
-
-                if (empty($taskData['title'])) {
-                    continue;
-                }
+                if (empty($taskData['task'])) continue;
 
                 $task = Task::updateOrCreate(
+                    ['id' => $taskData['id'] ?? null],
                     [
-                        'id' =>
-                        $taskData['id'] ?? null
-                    ],
-                    [
-                        'program_id' =>
-                            $this->program->id,
-                        'date' =>
-                            $date,
-                        'title' =>
-                            $taskData['title']
+                        'program_schedule_id' => $schedule->id,
+                        'task'               => $taskData['task']
                     ]
                 );
-
                 $keepTaskIds[] = $task->id;
             }
         }
 
-        Task::where(
-            'program_id',
-            $this->program->id
-        )
-        ->whereNotIn('id', $keepTaskIds)
-        ->delete();
+        Task::whereIn('program_schedule_id', ProgramSchedule::where('program_id', $this->program->id)->pluck('id'))
+            ->whereNotIn('id', $keepTaskIds)
+            ->delete();
     }
 
     public function render()

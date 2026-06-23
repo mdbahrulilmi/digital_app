@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Program\Components;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Program;
+use App\Models\Journal;
 
 class ProgramMember extends Component
 {
@@ -16,6 +17,7 @@ class ProgramMember extends Component
 
     public $selectedMember = null;
     public $showJournalModal = false;
+    public $journalPage = 1;
 
     public function mount(Program $program)
     {
@@ -32,6 +34,25 @@ class ProgramMember extends Component
     {
         $this->showJournalModal = false;
         $this->selectedMember = null;
+    }
+
+    public function getMemberJournals($memberId)
+    {
+        return Journal::where('member_id', $memberId)
+            ->where('program_id', $this->program->id)
+            ->orderBy('date', 'desc')
+            ->paginate(5, ['*'], 'journalPage', $this->journalPage)
+            ->through(function ($journal) {
+                return [
+                    'title' => $journal->entry,
+                    'date'  => \Carbon\Carbon::parse($journal->date)->translatedFormat('d M Y')
+                ];
+            });
+    }
+
+    public function loadMoreJournals()
+    {
+        $this->journalPage++;
     }
 
     public function render()

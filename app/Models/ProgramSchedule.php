@@ -8,9 +8,21 @@ class ProgramSchedule extends Model
 {
     protected $guarded = [];
 
-    public function product()
+    public function programProducts()
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->hasMany(ProgramProduct::class, 'program_schedule_id');
+    }
+
+    public function products()
+    {
+        return $this->hasManyThrough(
+            Product::class, 
+            ProgramProduct::class, 
+            'program_schedule_id', 
+            'id',
+            'id',
+            'product_id'
+        );
     }
     
     public function tasks()

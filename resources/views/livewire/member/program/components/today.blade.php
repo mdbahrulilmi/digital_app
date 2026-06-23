@@ -98,11 +98,9 @@
                     </div>
                 </div>
 
-               {{-- Jurnal --}}
                 <div class="p-6 rounded-3xl border border-slate-100 bg-slate-50">
                     <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 
-                        {{-- Logika: Cek apakah data untuk schedule hari ini ada di array journalContents --}}
                         {{ isset($journalContents[$day->schedules_id]) ? 'Edit Catatan Refleksi' : 'Catatan Refleksi Baru' }}
                     </h3>
                     

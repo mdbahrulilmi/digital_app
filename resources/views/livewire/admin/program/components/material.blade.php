@@ -131,7 +131,7 @@
                         {{-- List Tugas --}}
                         @foreach(($tasks[$dateKey] ?? []) as $taskIndex => $task)
                             <div class="mb-2 flex gap-2">
-                                <input type="text" wire:model="tasks.{{ $dateKey }}.{{ $taskIndex }}.title" placeholder="Tulis soal…" class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 focus:border-indigo-300">
+                                <input type="text" wire:model="tasks.{{ $dateKey }}.{{ $taskIndex }}.task" placeholder="Tulis soal…" class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 focus:border-indigo-300">
                                 <button type="button" wire:click="removeTaskSlot('{{ $dateKey }}', {{ $taskIndex }})" class="text-slate-300 hover:text-red-400">
                                     <x-heroicon-o-x-mark class="w-3.5 h-3.5" />
                                 </button>

@@ -83,13 +83,16 @@ class Today extends Component
             ->where('date', $today)
             ->first();
 
+        $this->journalContents['today'] = $journal ? $journal->entry : '';
         $this->journalContents[$today] = $journal ? $journal->entry : '';
     }
 
-    public function saveJournal()
+    public function saveJournal($scheduleId = null) 
     {
         $today = Carbon::today()->format('Y-m-d');
-        $entry = $this->journalContents[$today] ?? '';
+
+        $key = $scheduleId ?? 'today';
+        $entry = $this->journalContents[$key] ?? '';
 
         Journal::updateOrCreate(
             [
@@ -137,24 +140,26 @@ class Today extends Component
     {
         $today = Carbon::today()->format('Y-m-d');
         
-        $schedules = ProgramSchedule::with(['product', 'tasks'])
+        $schedules = ProgramSchedule::with(['programProducts.product', 'tasks']) 
             ->where('program_id', $this->program->id)
             ->where('date', '=', $today) 
-            ->orderBy('date', 'ASC')
             ->get()
             ->groupBy(function($item) {
                 return Carbon::parse($item->date)->format('Y-m-d');
             })
-            ->map(function ($items, $date) {
+            ->map(function ($items) {
+                $allMaterials = $items->flatMap(function($schedule) {
+                    return $schedule->programProducts->map(fn($pp) => $pp->product);
+                })->filter();
+
                 return (object) [
-                    'date' => $date,
+                    'date' => $items->first()->date,
                     'schedules_id' => $items->first()->id,
-                    'materials' => $items->pluck('product')->filter(),
-                    'tasks' => $items->flatMap->tasks->unique('id'),
+                    'materials' => $allMaterials,
+                    'tasks' => $items->flatMap->tasks,
                 ];
             });
 
-        // UBAH: KeyBy jadi program_schedule_id agar cocok dengan tombol di blade
         $submissions = TaskSubmission::where('member_id', auth('member')->id())
             ->get()
             ->keyBy('program_schedule_id');
