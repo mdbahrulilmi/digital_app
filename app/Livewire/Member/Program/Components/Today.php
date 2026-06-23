@@ -83,8 +83,7 @@ class Today extends Component
             ->pluck('id');
 
         $journals = Journal::where('member_id', auth('member')->id())
-            ->whereIn('program_schedule_id', $todayScheduleIds) // Gunakan whereIn
-            ->where('date', $today)
+            ->whereIn('program_schedule_id', $todayScheduleIds)
             ->get();
 
         foreach ($journals as $journal) {
