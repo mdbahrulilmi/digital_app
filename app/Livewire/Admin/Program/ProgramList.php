@@ -167,15 +167,28 @@ class ProgramList extends Component
             }
         }
 
-        if (!$this->editMode) {
-            LandingPage::create([
+        $existingLP = LandingPage::where('program_id', $program->id)->first();
+    
+        if ($this->editMode && $existingLP && $existingLP->title === $this->title) {
+            $landingPageSlug = $existingLP->slug;
+        } else {
+            $landingPageSlug = $this->generateUniqueSlug(
+                $this->title, 
+                LandingPage::class, 
+                $existingLP ? $existingLP->id : null
+            );
+        }
+
+        $landingPage = LandingPage::updateOrCreate(
+            ['program_id' => $program->id],
+            [
                 'title'       => $this->title,
-                'slug'        => $this->slug,
+                'slug'        => $landingPageSlug,
                 'description' => 'Program ' . $this->title,
                 'status'      => 'published',
-                'program_id'  => $program->id,
-            ]);
-        }
+            ]
+        );
+        
         
         if ($this->editMode) {
             $newData = [

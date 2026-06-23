@@ -34,11 +34,12 @@
         <table class="w-full text-sm border-collapse">
             <thead>
                 <tr class="text-left text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100">
-                    <th class="pb-4 px-2 w-[20%]">Judul</th>
-                    <th class="pb-4 px-2 w-[20%]">Tanggal</th>
-                    <th class="pb-4 px-2 w-[15%]">Mulai</th>
-                    <th class="pb-4 px-2 w-[15%]">Selesai</th>
-                    <th class="pb-4 px-2 w-[40%]">Zoom URL</th>
+                    <th class="pb-4 px-2 w-[25%]">Judul</th>
+                    <th class="pb-4 px-2 w-[10%]">Tanggal</th>
+                    <th class="pb-4 px-2 w-[10%]">Mulai</th>
+                    <th class="pb-4 px-2 w-[10%]">Selesai</th>
+                    <th class="pb-4 px-2 w-[20%]">Zoom URL</th>
+                    <th class="pb-4 px-2 w-[20%]">Rekaman URL</th>
                     <th class="pb-4 px-2 w-[10%] text-center">Aksi</th>
                 </tr>
             </thead>
@@ -64,6 +65,10 @@
                     <td class="py-3 px-2 align-top">
                         <input type="text" wire:model="zoomLinks.{{$index}}.url" placeholder="https://zoom.us/j/..." class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none">
                         @error("zoomLinks.$index.url") <div class="text-red-500 text-[10px] mt-1">{{ $message }}</div> @enderror
+                    </td>
+                    <td class="py-3 px-2 align-top">
+                        <input type="text" wire:model="zoomLinks.{{$index}}.recording_url" placeholder="" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none">
+                        @error("zoomLinks.$index.recording_url") <div class="text-red-500 text-[10px] mt-1">{{ $message }}</div> @enderror
                     </td>
                     <td class="py-3 px-2 text-center align-top">
                         <button type="button" 

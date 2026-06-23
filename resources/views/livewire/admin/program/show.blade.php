@@ -1,4 +1,4 @@
-<div class="p-4 max-w-7xl mx-auto space-y-6">
+<div class="p-4 mx-auto space-y-6">
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <div class="bg-white border border-slate-100 shadow-sm rounded-xl p-5">
         <p class="text-xs text-slate-400 mb-1">Total Member</p>

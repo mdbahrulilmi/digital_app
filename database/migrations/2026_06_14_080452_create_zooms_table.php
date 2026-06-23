@@ -19,6 +19,7 @@ return new class extends Migration
             $table->time('start_time');
             $table->time('end_time');
             $table->string('url');
+            $table->string('recording_url')->nullable();
             $table->timestamps();
         });
     }

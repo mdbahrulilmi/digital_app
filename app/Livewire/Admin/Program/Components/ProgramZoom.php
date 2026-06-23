@@ -28,6 +28,7 @@ class ProgramZoom extends Component
             'start_time' => '',
             'end_time' => '',
             'url' => '',
+            'recording_url' => '',
         ];
     }
 
@@ -100,6 +101,7 @@ class ProgramZoom extends Component
                 'start_time' => $zoom->start_time,
                 'end_time' => $zoom->end_time,
                 'url' => $zoom->url,
+                'recording_url' => $zoom->recording_url,
             ])
             ->toArray();
     }
