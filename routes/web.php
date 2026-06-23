@@ -118,16 +118,6 @@ Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handleNotif
 Route::get('/cart', Cart::class)->name('public.cart');
 Route::get('/checkout', Checkout::class)->name('public.checkout');
 
-Route::get('/test', function(){
-    return response('
-        <html>
-            <body>
-                <h1>Test Traffic</h1>
-                <a href="http://localhost:8000/">Klik menuju dashboard</a>
-            </body>
-        </html>
-    ');
-});
 // Landing Page
 Route::get('/{slug?}', Page::class)
     ->where('slug', '[A-Za-z0-9\-_]+')
