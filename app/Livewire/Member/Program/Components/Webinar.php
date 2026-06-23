@@ -19,10 +19,11 @@ class Webinar extends Component
     {
         $program = Program::where('slug', $this->slug)->firstOrFail();
         
-        $sessions = Zoom::where('program_id', $program->id)
+        $allSessions = Zoom::where('program_id', $program->id)
             ->orderBy('date', 'asc')
-            ->get()
-            ->groupBy(fn($item) => $item->status);
+            ->get();
+            
+        $sessions = $allSessions->groupBy('status');
 
         return view('livewire.member.program.components.webinar', [
             'sessions' => $sessions
