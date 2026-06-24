@@ -37,6 +37,7 @@ use App\Livewire\Auth\MemberRegister;
 use App\Livewire\Public\Page;
 use App\Livewire\Public\Cart;
 use App\Livewire\Public\Checkout;
+use App\Livewire\Public\PublicProductShow;
 
 // Payment
 use App\Livewire\Payment\Invoice;
@@ -107,16 +108,12 @@ Route::post('/member/logout', function () {
     return redirect()->to('/login');
 })->name('member.logout');
 
-// Invoice
+// Public
 Route::get('/payment', Invoice::class)->name('payment.invoice');
 Route::get('/payment/success', Success::class)->name('payment.success');
-
-// Midtrans
-Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handleNotification']);
-
-// Cart n Checkout
 Route::get('/cart', Cart::class)->name('public.cart');
 Route::get('/checkout', Checkout::class)->name('public.checkout');
+Route::get('/produk/{slug}', PublicProductShow::class)->name('public.product.show');
 
 // Landing Page
 Route::get('/{slug?}', Page::class)

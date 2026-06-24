@@ -17,14 +17,14 @@ return new class extends Migration
             
             $table->string('customer_name');
             $table->string('customer_email');
-            $table->string('customer_whatsapp');
+            $table->string('customer_whatsapp')->index();
             $table->text('customer_address');
             
             $table->integer('amount');
             $table->string('payment_method');
             $table->string('payment_code')->nullable();
             $table->text('cart_snapshot')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('status')->default('pending')->index();
             $table->timestamps();
         });
     }
