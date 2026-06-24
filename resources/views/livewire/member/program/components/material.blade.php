@@ -1,52 +1,43 @@
 <div class="p-6 max-w-7xl mx-auto">
-    <div class="flex items-end justify-between mb-10">
+    <div class="flex items-end justify-between mb-8">
         <div>
-            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Materi Program Ini</h2>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Materi Program</h2>
         </div>
     </div>
 
-    {{-- GRID PRODUK --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+    {{-- GRID PRODUK: Diubah menjadi 4 kolom di layar besar --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         
         @forelse($products as $product)
-        <div class="group flex flex-col bg-white rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_rgb(0,0,0,0.1)] hover:-translate-y-2">
+        <div class="group flex flex-col bg-white rounded-2xl border border-slate-200 hover:border-indigo-200 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 overflow-hidden">
             
-            {{-- Image Container (Menggunakan thumbnail atau image dari model) --}}
-            <div class="relative h-56 w-full overflow-hidden shrink-0">
-                <div class="absolute inset-0 bg-slate-900/10 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            {{-- Image Container (Lebih ramping) --}}
+            <div class="relative h-40 w-full overflow-hidden shrink-0">
                 <img src="{{ $product->image }}" 
                      alt="{{ $product->title }}" 
-                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             </div>
 
-            <div class="p-8 flex flex-col flex-grow">
-                <div class="mb-4">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">
-                        Kursus Premium
-                    </span>
-                </div>
-
-                <div class="h-12 mb-6">
-                    <h3 class="text-[17px] font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">
+            <div class="p-5 flex flex-col flex-grow">
+                <div class="h-12 mb-4">
+                    <h3 class="text-sm font-bold text-slate-800 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
                         {{ $product->title }}
                     </h3>
                 </div>
                 
-                {{-- Tombol Lihat Materi --}}
                 <button type="button" 
-                    wire:click="openProduct({{ $product->id }})" 
-                    class="flex items-center justify-center w-full py-3.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 transition-all duration-300">
+                        wire:click="openProduct({{ $product->id }})" 
+                        class="w-full py-2.5 border border-slate-900 text-slate-900 text-sm font-bold rounded-lg hover:bg-slate-900 hover:text-white transition-all duration-300">
                     Lihat Materi
                 </button>
-
-
             </div>
         </div>
         @empty
             <div class="col-span-full text-center py-20 text-slate-400">
-                Belum ada materi yang tersedia dalam program ini.
+                <p>Belum ada materi yang tersedia.</p>
             </div>
         @endforelse
     </div>
+    
     @include('livewire.member.program.components.modals.today-modal')
 </div>

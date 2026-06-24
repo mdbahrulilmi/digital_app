@@ -18,7 +18,7 @@
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 antialiased" x-data="{ sidebarOpen: false }">
+<body class="bg-white text-slate-800 antialiased" x-data="{ sidebarOpen: false }">
 
 @php
 $currentSlug = request()->route('slug');
@@ -88,7 +88,7 @@ function icon($name) {
             </button>
         </div>
 
-        <main class="p-6">
+        <main class="bg-white">
             {{ $slot ?? '' }}
         </main>
     </div>
