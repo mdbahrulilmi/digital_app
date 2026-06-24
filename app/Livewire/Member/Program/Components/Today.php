@@ -10,6 +10,7 @@ use Livewire\Component;
 use Illuminate\Support\Carbon;
 use Livewire\WithFileUploads;
 use App\Models\TaskSubmission;
+use Illuminate\Support\Facades\Storage;
 
 class Today extends Component
 {
@@ -111,30 +112,26 @@ class Today extends Component
 
     public function submitTask()
     {
-        $this->validate([
-            'taskFile' => 'required|file|max:2048',
-        ]);
-        
-        $member = auth('member')->user();
-        $memberWhatsapp = $member->whatsapp ?? 'NO_WA'; 
-        $programName = str_replace(' ', '_', $this->program->name);
-        $dateCreated = now()->format('Ymd_His');
+        $this->validate(['taskFile' => 'required|file|max:5120']);
 
-        $fileName = "{$memberWhatsapp}_{$programName}_{$dateCreated}." . $this->taskFile->getClientOriginalExtension();
-        $path = $this->taskFile->storeAs('tasks', $fileName, 'public');
+        $memberId = auth('member')->id();
+        
+        $oldSubmission = \App\Models\TaskSubmission::where('member_id', $memberId)
+            ->where('program_schedule_id', $this->selectedScheduleId)
+            ->first();
+
+        if ($oldSubmission && $oldSubmission->file_path) {
+            Storage::disk('public')->delete($oldSubmission->file_path);
+        }
+
+        $path = $this->taskFile->store('submissions', 'public');
 
         \App\Models\TaskSubmission::updateOrCreate(
-            [
-                'member_id' => $member->id,
-                'program_schedule_id' => $this->selectedScheduleId,
-            ],
-            [
-                'file_path' => $path,
-            ]
+            ['member_id' => $memberId, 'program_schedule_id' => $this->selectedScheduleId],
+            ['file_path' => $path]
         );
 
         $this->closeUploadModal();
-        session()->flash('message', 'Tugas berhasil disimpan!');
     }
 
     public function render()

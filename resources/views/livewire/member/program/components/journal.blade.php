@@ -80,10 +80,10 @@
                     @endphp
 
                     @if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
-                        <img src="{{ asset('storage/' . $path) }}" class="w-full h-auto rounded-2xl" alt="Tugas">
+                        <img src="{{ asset('storage/' . $path) }}" class="w-full max-h-[60vh] object-contain rounded-2xl" alt="Tugas">
                     
                     @elseif($extension === 'pdf')
-                        <iframe src="{{ asset('storage/' . $path) }}" class="w-full h-[400px]" frameborder="0"></iframe>
+                        <iframe src="{{ asset('storage/' . $path) }}" class="w-full h-[60vh]" frameborder="0"></iframe>
                     
                     @else
                         <div class="p-8 text-center">
