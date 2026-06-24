@@ -1,7 +1,7 @@
 <div class="w-full max-w-md min-h-screen bg-white shadow-xl mx-auto border-x border-slate-200/50 flex flex-col relative">
     
     <div class="flex-grow p-6 pb-24">
-        <img src="{{ asset('storage/' . $this->product->image) }}" class="w-full h-64 object-cover rounded-3xl mb-6">
+        <img src="{{ asset($this->product->image) }}" class="w-full h-64 object-cover rounded-3xl mb-6">
         
         <h1 class="text-2xl font-black text-slate-900">{{ $this->product->title }}</h1>
         <p class="text-xl font-bold text-indigo-600 my-4">Rp {{ number_format($this->product->price, 0, ',', '.') }}</p>

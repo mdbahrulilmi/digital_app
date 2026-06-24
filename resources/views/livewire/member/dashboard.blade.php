@@ -50,11 +50,11 @@
         </div>
     </section>
 
+    @if($programs->isNotEmpty())
     <section>
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-black text-slate-900 border-l-4 border-indigo-600 pl-4">Program Terbaru</h3>
         </div>
-        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($programs as $prog)
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden group cursor-pointer">
@@ -81,7 +81,8 @@
             @endforeach
         </div>
     </section>
-
+    @endif
+    @if($products->isNotEmpty())
     <section>
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-black text-slate-900 border-l-4 border-orange-500 pl-4">Produk Pilihan</h3>
@@ -112,7 +113,8 @@
             @endforeach
         </div>
     </section>
-
+    @endif
+    @if($blogs->isNotEmpty())
     <section>
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-black text-slate-900 border-l-4 border-teal-500 pl-4">Artikel Blog</h3>
@@ -154,4 +156,5 @@
             @endforeach
         </div>
     </section>
+    @endif
 </div>
