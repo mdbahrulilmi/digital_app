@@ -20,9 +20,9 @@
             @endif
         </div>
         
-        <button class="relative z-10 w-full md:w-auto bg-white text-indigo-700 font-bold py-4 px-10 rounded-2xl hover:scale-105 transition-transform shadow-lg whitespace-nowrap">
+        <a href={{" member/program/$programUtama->slug "}} class="relative z-10 w-full md:w-auto bg-white text-indigo-700 font-bold py-4 px-10 rounded-2xl hover:scale-105 transition-transform shadow-lg whitespace-nowrap">
             LANJUTKAN SESI
-        </button>
+        </a>
     </section>
 
     <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
