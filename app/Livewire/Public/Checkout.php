@@ -51,6 +51,15 @@ class Checkout extends Component
     {
         $this->cart = session()->get('cart', []);
 
+        if (auth('member')->check()) {
+            $member = auth('member')->user();
+            
+            $this->name = $member->name;
+            $this->email = $member->email;
+            $this->whatsapp = $member->whatsapp;
+            $this->address = $member->address;
+        }
+
         $this->paymentGroups = [
             // 'E-Wallet & QRIS' => [
             //     'qris'      => ['label' => 'QRIS', 'icon' => asset('assets_content/icon/payment/qris.svg')],
@@ -117,17 +126,23 @@ class Checkout extends Component
         }
 
         $orderId = 'INV-' . time();
-        Order::create([
+        $orderData = [
             'order_id'          => $orderId,
             'customer_name'     => $this->name,
-            'customer_email'     => $this->email,
+            'customer_email'    => $this->email,
             'customer_whatsapp' => $this->whatsapp,
             'customer_address'  => $this->address,
             'amount'            => $serverTotalPrice,
             'payment_method'    => $this->payment_method,
             'cart_snapshot'     => json_encode($secureCart),
             'status'            => 'pending',
-        ]);
+        ];
+
+        if (auth('member')->check()) {
+            $orderData['member_id'] = auth('member')->id();
+        }
+
+        Order::create($orderData);
 
         session()->forget('cart');
 

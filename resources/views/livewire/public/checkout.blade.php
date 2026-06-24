@@ -23,6 +23,8 @@
         </div>
 
         {{-- Data Pengiriman Form --}}
+        @auth('member')
+        @else
         <div class="space-y-4">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Informasi Pengiriman</h3>
             
@@ -60,6 +62,7 @@
                 </div>
             </div>
         </div>
+        @endauth
        <div class="space-y-6">
             @foreach($paymentGroups as $groupName => $methods)
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
