@@ -251,6 +251,9 @@ class ProductList extends Component
         $this->price = null;
         $this->digital_assets = null;
         $this->digital_asset_file = null;
+        $this->digital_asset_url = null;
+        $this->asset_source = 'upload';
+        $this->asset_type = null;
         $this->status = 'active';
         $this->image_source = 'upload';
         $this->image = null;

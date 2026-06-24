@@ -147,7 +147,7 @@
                     </p>
                     
                     <div class="mt-4 flex justify-end">
-                        <a href="{{ $prog->slug }}"  class="text-[10px] font-black uppercase tracking-widest text-teal-600 hover:text-teal-700 transition">
+                        <a href="{{ $blog->slug }}"  class="text-[10px] font-black uppercase tracking-widest text-teal-600 hover:text-teal-700 transition">
                                 Lihat Selengkapnya
                             </a>
                     </div>
