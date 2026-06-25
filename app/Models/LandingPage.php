@@ -7,13 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LandingPage extends Model
 {
-    protected $fillable = ['title', 'slug',
-    'description', 'home', 'cart', 'blog', 'status',
-    'program_id', 'program_page_id'];
+    protected $guarded = [];
 
-    /**
-     * Relasi ke seksi-seksi di dalamnya, otomatis diurutkan berdasarkan 'sort_order'
-     */
     public function sections(): HasMany
     {
         return $this->hasMany(LandingPageSection::class, 'landing_page_id')->orderBy('sort_order', 'asc');
