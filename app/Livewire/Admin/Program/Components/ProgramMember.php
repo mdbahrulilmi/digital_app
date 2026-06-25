@@ -18,6 +18,9 @@ class ProgramMember extends Component
     public $selectedMember = null;
     public $showJournalModal = false;
     public $journalPage = 1;
+    public $selectedJournalId = null;
+    public $commentText = '';
+    public $showCommentModal = false;
 
     public function mount(Program $program)
     {
@@ -47,8 +50,12 @@ class ProgramMember extends Component
             ->paginate(5, ['*'], 'journalPage', $this->journalPage)
             ->through(function ($journal) {
                 return [
-                    'title' => $journal->entry,
-                    'date'  => \Carbon\Carbon::parse($journal->programSchedule->date)->translatedFormat('d M Y')
+                    'id'      => $journal->id,
+                    'title'   => $journal->entry,
+                    'comment' => $journal->comment,
+                    'date'    => \Carbon\Carbon::parse(
+                        $journal->programSchedule->date
+                    )->translatedFormat('d M Y')
                 ];
             });
     }
@@ -56,6 +63,34 @@ class ProgramMember extends Component
     public function loadMoreJournals()
     {
         $this->journalPage++;
+    }
+
+    public function openCommentModal($journalId)
+    {
+        $journal = Journal::findOrFail($journalId);
+
+        $this->selectedJournalId = $journal->id;
+        $this->commentText = $journal->comment ?? '';
+        $this->showCommentModal = true;
+    }
+
+    public function closeCommentModal()
+    {
+        $this->reset([
+            'selectedJournalId',
+            'commentText',
+            'showCommentModal'
+        ]);
+    }
+
+    public function saveComment()
+    {
+        Journal::where('id', $this->selectedJournalId)
+            ->update([
+                'comment' => $this->commentText
+            ]);
+
+        $this->closeCommentModal();
     }
 
     public function render()

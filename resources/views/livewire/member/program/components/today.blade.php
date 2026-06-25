@@ -1,5 +1,4 @@
 <div class="space-y-12">
-    {{-- Notifikasi --}}
     <div x-data="{ show: false, message: '' }" 
         x-on:show-notification.window="
             message = $event.detail.message; 
@@ -17,7 +16,6 @@
         style="display: none;">
         <span x-text="message"></span>
     </div>
-
     @forelse($schedules as $day)
         @php $isToday = \Carbon\Carbon::parse($day->date)->isToday(); @endphp
 

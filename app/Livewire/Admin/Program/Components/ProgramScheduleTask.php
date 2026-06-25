@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Task;
 use App\Models\TaskSubmission;
 use App\Models\ProgramSchedule;
+use App\Models\ProgramProduct;
 
 class ProgramScheduleTask extends Component
 {
@@ -21,7 +22,10 @@ class ProgramScheduleTask extends Component
     public $tasks = [];
     public $uploadRequired = false;
     public $allProducts = [];
-    public $uploadSettings = [];    
+    public $uploadSettings = [];
+    public bool $showCommentModal = false;
+    public $selectedSubmissionId = null;
+    public $commentText = '';
 
     public function mount(Program $program)
     {
@@ -58,7 +62,6 @@ class ProgramScheduleTask extends Component
             ->get();
 
         foreach ($savedSchedules as $schedule) {
-            // Ambil array product_id dari tabel pivot/relasi
             $this->schedules[$schedule->date] = $schedule->programProducts->pluck('product_id')->toArray();
             $this->uploadSettings[$schedule->date]['upload'] = (bool) $schedule->upload_required;
         }
@@ -76,18 +79,16 @@ class ProgramScheduleTask extends Component
 
             $keepScheduleIds[] = $schedule->id;
 
-            // 2. Update Produk untuk jadwal ini
-            \App\Models\ProgramProduct::where('program_schedule_id', $schedule->id)->delete();
+            ProgramProduct::where('program_schedule_id', $schedule->id)->delete();
             foreach ($productIds as $productId) {
                 if (empty($productId)) continue;
-                \App\Models\ProgramProduct::create([
+                ProgramProduct::create([
                     'program_schedule_id' => $schedule->id,
                     'product_id'          => $productId
                 ]);
             }
         }
 
-        // 3. Hapus jadwal yang sudah tidak ada di form
         ProgramSchedule::where('program_id', $this->program->id)
             ->whereNotIn('id', $keepScheduleIds)
             ->delete();
@@ -95,7 +96,7 @@ class ProgramScheduleTask extends Component
 
     private function loadTasks()
     {
-        $scheduleIds = \App\Models\ProgramSchedule::where('program_id', $this->program->id)
+        $scheduleIds = ProgramSchedule::where('program_id', $this->program->id)
             ->pluck('id');
         $savedTasks = Task::whereIn('program_schedule_id', $scheduleIds)->get();
 
@@ -124,10 +125,6 @@ class ProgramScheduleTask extends Component
         return $dates;
     }
 
-    // ==================
-    // PRODUCT SCHEDULE
-    // ==================
-
     public function addProductSlot($date)
     {
         $this->schedules[$date][] = '';
@@ -140,10 +137,6 @@ class ProgramScheduleTask extends Component
         $this->schedules[$date] =
             array_values($this->schedules[$date]);
     }
-
-    // ==================
-    // TASK
-    // ==================
 
     public function addTaskSlot($date)
     {
@@ -169,10 +162,6 @@ class ProgramScheduleTask extends Component
             array_values($this->tasks[$date]);
     }
 
-    // ==================
-    // SAVE
-    // ==================
-
     public function save()
     {
         $this->saveSchedules();
@@ -182,21 +171,6 @@ class ProgramScheduleTask extends Component
             'message',
             'Schedule & Task berhasil disimpan'
         );
-    }
-
-    public function getMemberSubmissions($dateKey)
-    {
-        $scheduleIds = ProgramSchedule::where('program_id', $this->program->id)
-        ->where('date', $dateKey)
-        ->pluck('id');
-
-        if ($scheduleIds->isEmpty()) {
-            return collect();
-        }
-
-        return \App\Models\TaskSubmission::with('member')
-            ->whereIn('program_schedule_id', $scheduleIds)
-            ->get();
     }
 
     private function saveTasks()
@@ -225,6 +199,54 @@ class ProgramScheduleTask extends Component
         Task::whereIn('program_schedule_id', ProgramSchedule::where('program_id', $this->program->id)->pluck('id'))
             ->whereNotIn('id', $keepTaskIds)
             ->delete();
+    }
+
+    public function getMemberSubmissions($dateKey)
+    {
+        $scheduleIds = ProgramSchedule::where('program_id', $this->program->id)
+        ->where('date', $dateKey)
+        ->pluck('id');
+
+        if ($scheduleIds->isEmpty()) {
+            return collect();
+        }
+
+        return TaskSubmission::with('member')
+            ->whereIn('program_schedule_id', $scheduleIds)
+            ->get();
+    }
+
+    public function openCommentModal($submissionId)
+    {
+        $submission = TaskSubmission::findOrFail($submissionId);
+
+        $this->selectedSubmissionId = $submission->id;
+        $this->commentText = $submission->comment ?? '';
+        $this->showCommentModal = true;
+    }
+
+    public function closeCommentModal()
+    {
+        $this->reset([
+            'showCommentModal',
+            'selectedSubmissionId',
+            'commentText'
+        ]);
+    }
+
+    public function saveComment()
+    {
+        TaskSubmission::where('id', $this->selectedSubmissionId)
+            ->update([
+                'comment' => $this->commentText
+            ]);
+
+        $this->closeCommentModal();
+
+        session()->flash(
+            'message',
+            'Komentar berhasil disimpan'
+        );
     }
 
     public function render()

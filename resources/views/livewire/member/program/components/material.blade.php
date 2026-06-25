@@ -4,14 +4,10 @@
             <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Materi Program</h2>
         </div>
     </div>
-
-    {{-- GRID PRODUK: Diubah menjadi 4 kolom di layar besar --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         
         @forelse($products as $product)
         <div class="group flex flex-col bg-white rounded-2xl border border-slate-200 hover:border-indigo-200 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 overflow-hidden">
-            
-            {{-- Image Container (Lebih ramping) --}}
             <div class="relative h-40 w-full overflow-hidden shrink-0">
                 <img src="{{ $product->image }}" 
                      alt="{{ $product->title }}" 
@@ -24,7 +20,6 @@
                         {{ $product->title }}
                     </h3>
                 </div>
-                
                 <button type="button" 
                         wire:click="openProduct({{ $product->id }})" 
                         class="w-full py-2.5 border border-slate-900 text-slate-900 text-sm font-bold rounded-lg hover:bg-slate-900 hover:text-white transition-all duration-300">

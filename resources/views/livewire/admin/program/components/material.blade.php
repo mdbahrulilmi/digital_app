@@ -145,7 +145,6 @@
                 </div>
             </div>
         
-        {{-- BAGIAN TUGAS MEMBER --}}
         @php $submissions = $this->getMemberSubmissions($dateKey); @endphp
 
         <div class="space-y-2 mt-5">
@@ -162,10 +161,14 @@
                             Lihat
                         </a>
                         
-                        <button type="button" 
-                                class="text-[10px] font-medium bg-indigo-600 text-white px-2.5 py-1 rounded-md shadow-sm hover:bg-indigo-700 transition">
-                            Komentari
+                        <button
+                            type="button"
+                            wire:click="openCommentModal({{ $submission->id }})"
+                            class="text-[10px] font-medium bg-indigo-600 text-white px-2.5 py-1 rounded-md"
+                        >
+                            {{ $submission->comment ? 'Edit Komentar' : 'Komentari' }}
                         </button>
+                        
                     </div>
                 </div>
             @empty
@@ -176,4 +179,41 @@
         </div>
     </div>
 @endforeach
+@if($showCommentModal)
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-5">
+
+        <h3 class="text-lg font-semibold mb-4">
+            Komentar Tugas
+        </h3>
+
+        <textarea
+            wire:model="commentText"
+            rows="5"
+            class="w-full border border-slate-300 rounded-lg p-3"
+            placeholder="Tulis komentar..."
+        ></textarea>
+
+        <div class="flex justify-end gap-2 mt-4">
+
+            <button
+                type="button"
+                wire:click="closeCommentModal"
+                class="px-4 py-2 border rounded-lg"
+            >
+                Batal
+            </button>
+
+            <button
+                type="button"
+                wire:click="saveComment"
+                class="px-4 py-2 bg-indigo-600 text-white rounded-lg"
+            >
+                Simpan
+            </button>
+
+        </div>
+    </div>
+</div>
+@endif
 </div>

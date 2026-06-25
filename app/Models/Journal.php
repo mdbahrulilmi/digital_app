@@ -13,9 +13,16 @@ class Journal extends Model
         return $this->belongsTo(ProgramSchedule::class);
     }
 
-   public function submission() 
+   public function getSubmissionAttribute()
     {
-        return $this->hasOne(\App\Models\TaskSubmission::class, 'program_schedule_id', 'program_schedule_id')
-                ->where('member_id', $this->member_id);
+        return TaskSubmission::where(
+            'program_schedule_id',
+            $this->program_schedule_id
+        )
+        ->where(
+            'member_id',
+            $this->member_id
+        )
+        ->first();
     }
 }
