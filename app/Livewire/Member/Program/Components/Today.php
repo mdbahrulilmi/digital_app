@@ -107,7 +107,7 @@ class Today extends Component
             ]
         );
 
-        session()->flash('message', 'Jurnal berhasil disimpan!');
+        $this->dispatch('show-notification', message: 'Catatan berhasil disimpan!');
     }
 
     public function submitTask()

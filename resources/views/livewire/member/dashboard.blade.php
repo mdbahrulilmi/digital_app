@@ -20,9 +20,13 @@
             @endif
         </div>
         
-        <a href={{" member/program/$programUtama->slug "}} class="relative z-10 w-full md:w-auto bg-white text-indigo-700 font-bold py-4 px-10 rounded-2xl hover:scale-105 transition-transform shadow-lg whitespace-nowrap">
-            LANJUTKAN SESI
-        </a>
+        @if($programUtama)
+            <a href="{{ url('member/program/' . $programUtama->slug) }}" class="...">
+                LANJUTKAN SESI
+            </a>
+        @else
+            <button disabled class="...">Sesi Belum Tersedia</button>
+        @endif
     </section>
 
     <section class="grid grid-cols-2 md:grid-cols-4 gap-4">

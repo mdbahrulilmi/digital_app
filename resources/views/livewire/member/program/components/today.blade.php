@@ -1,10 +1,22 @@
 <div class="space-y-12">
     {{-- Notifikasi --}}
-    @if (session()->has('message'))
-        <div class="p-4 bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-2xl text-sm font-bold shadow-sm">
-            {{ session('message') }}
-        </div>
-    @endif
+    <div x-data="{ show: false, message: '' }" 
+        x-on:show-notification.window="
+            message = $event.detail.message; 
+            show = true; 
+            setTimeout(() => show = false, 3000)
+        "
+        x-show="show"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-2"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 -translate-y-2"
+        class="fixed top-5 right-5 z-50 p-4 bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-2xl text-sm font-bold shadow-lg"
+        style="display: none;">
+        <span x-text="message"></span>
+    </div>
 
     @forelse($schedules as $day)
         @php $isToday = \Carbon\Carbon::parse($day->date)->isToday(); @endphp

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('member_id')->constrained();
             $table->foreignId('program_schedule_id')->constrained();
             $table->text('entry');
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
