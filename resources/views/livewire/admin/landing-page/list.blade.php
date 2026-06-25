@@ -208,5 +208,5 @@
     </div>
 
     </div>
-<livewire:admin.components.landing-page-form-modal />
+<livewire:admin.landingpage.components.modal.landing-page-form-modal />
 </div>

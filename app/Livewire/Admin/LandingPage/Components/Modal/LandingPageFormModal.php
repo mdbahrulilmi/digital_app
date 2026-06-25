@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Components;
+namespace App\Livewire\Admin\LandingPage\Components\Modal;
 
 use Livewire\Component;
 use App\Models\LandingPage;
@@ -269,7 +269,7 @@ class LandingPageFormModal extends Component
             ->latest()
             ->paginate(8, ['*'], 'mediaPage');
 
-        return view('livewire.admin.components.landing-page-form-modal', [
+        return view('livewire.admin.landing-page.components.modal.landing-page-form-modal', [
             'mediaItems' => $mediaItems,
         ]);
     }

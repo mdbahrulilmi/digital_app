@@ -15,13 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->string('description')->nullable();
+            $table->string('image_url')->nullable();;
+            $table->string('image_source')->nullable();;
+            $table->string('description');
             $table->boolean('home')->default(false);
             $table->boolean('cart')->default(false);
             $table->boolean('blog')->default(false);
             $table->enum('status', ['draft', 'published'])->default('draft');
             $table->foreignId('program_id')->nullable()->constrained('programs')->onDelete('set null');
             $table->foreignId('program_page_id')->nullable()->constrained('landing_pages')->onDelete('cascade');
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->string('canonical_url')->nullable();
+            $table->enum('robots', ['index,follow', 'noindex,follow', 'index,nofollow', 'noindex,nofollow'])->default('index,follow');
             $table->timestamps();
         });
     }

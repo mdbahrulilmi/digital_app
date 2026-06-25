@@ -192,7 +192,10 @@
                         {{-- Opsi 1: Upload File --}}
                         @if($image_source === 'upload')
                             <div class="space-y-2">
-                                <input type="file" wire:model="image" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+                                <x-image-cropper
+                                                    wire-model="image"
+                                                    :aspect-ratio="1"
+                                                />
                                 @error('image') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                                 @if ($image)
                                     <div class="mt-2 w-32 h-32 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
