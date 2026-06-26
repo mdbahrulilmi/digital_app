@@ -153,7 +153,7 @@
                                     ])
                                 @endif
 
-                                @if($section->type === 'button_checkout')
+                                @if($section->type === 'botton-checkout')
                                    @include('livewire.admin.landing-page.components.button-checkout-preview', [
                                         'section' => $section,
                                         'isPreview' => true
@@ -232,7 +232,7 @@
                     @include('livewire.admin.landing-page.components.program2-form')
                 @endif
                 
-                @if($currentType === 'button_checkout')
+                @if($currentType === 'botton-checkout')
                     @include('livewire.admin.landing-page.components.button-checkout-form')
                 @endif
                 

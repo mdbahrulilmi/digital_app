@@ -236,17 +236,21 @@
                                             </div>
                                             @endif
 
-                                            @if(!$editMode)
-                                            <div>
-                                                <label class="block text-sm font-semibold text-slate-700 mb-2">Pilih Template Bawaan</label>
-                                                <select wire:model="templateType" class="cursor-pointer w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-white">
+                                            @php
+                                                $templateList = \App\Livewire\Admin\LandingPage\Templates\LandingPageTemplate::all();
+                                                @endphp
+
+                                                @if(!$editMode)
+                                                <select wire:model="templateType">
                                                     <option value="blank">Tanpa Template</option>
-                                                    <option value="landing_page">Template Standar Landing Page</option>
-                                                    <option value="checkout">Template Ringkas Form Checkout</option>
-                                                    <option value="product_page">Template Ringkas Produk</option>
+
+                                                    @foreach($templateList as $key => $template)
+                                                        <option value="{{ $key }}">
+                                                            {{ $template['label'] }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
-                                            </div>
-                                            @endif
+                                                @endif
 
                                             <div class="pt-2">
                                                 <label class="block text-sm font-semibold text-slate-700 mb-2">Fitur Tambahan</label>

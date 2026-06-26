@@ -9,6 +9,7 @@ use Livewire\WithFileUploads;
 use App\Traits\MediaHandler;
 use App\Models\Media;
 use Livewire\WithPagination;
+use App\Livewire\Admin\LandingPage\Templates\LandingPageTemplate;
 
 class LandingPageFormModal extends Component
 {
@@ -244,6 +245,11 @@ class LandingPageFormModal extends Component
 
             $page = LandingPage::create($validated);
 
+            
+            if ($this->templateType !== 'blank') {
+                $this->generateTemplateSections($page, $this->templateType);
+            }
+
             session()->flash('message', 'Halaman berhasil dibuat.');
 
             $this->dispatch('refreshList');
@@ -257,6 +263,22 @@ class LandingPageFormModal extends Component
         $this->openModal = false;
 
         $this->dispatch('refreshList');
+    }
+
+    protected function generateTemplateSections($page, $templateType)
+    {
+        $sections = LandingPageTemplate::get($templateType);
+
+        foreach ($sections as $index => $section) {
+            \App\Models\LandingPageSection::create([
+                'landing_page_id' => $page->id,
+                'name' => $section['name'],
+                'type' => $section['type'],
+                'sort_order' => $index + 1,
+                'is_visible' => true,
+                'content' => $section['content'],
+            ]);
+        }
     }
 
     public function render()

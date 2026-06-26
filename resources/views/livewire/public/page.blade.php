@@ -6,7 +6,7 @@
                 $viewName = 'livewire.admin.landing-page.components.' . $section->type . '-preview';
             @endphp
 
-            @includeIf($viewName, ['section' => $section])
+            @includeIf($viewName, ['section' => $section, 'isPreview' => false,])
         </div>
     @endforeach
 

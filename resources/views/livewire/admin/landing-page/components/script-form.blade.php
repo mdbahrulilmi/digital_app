@@ -38,8 +38,8 @@
                     <label class="text-[9px] font-black text-slate-400 uppercase mb-1">Tinggi (px)</label>
                     <input
                         type="number"
-                        min="100"
-                        step="50"
+                        min="1"
+                        step="1"
                         class="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-700 w-24 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
                         placeholder="100"
                         x-model="height"
