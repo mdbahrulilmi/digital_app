@@ -127,6 +127,7 @@ class LandingPageEditor extends Component
         $this->mediaMethod = 'upload';
         $this->selectedMediaId = null;
         $this->newFile = null;
+        $this->dispatch('init-quill', id: $this->editingSectionId);
     }
 
     public function saveContent()

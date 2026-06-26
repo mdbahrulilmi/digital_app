@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 
 
     @livewireStyles
@@ -28,6 +29,43 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* WRAPPER */
+.quill-wrapper {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+/* TOOLBAR */
+.ql-toolbar {
+    border: none !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    background: #f8fafc;
+    padding: 8px !important;
+}
+
+/* EDITOR AREA */
+.ql-container {
+    border: none !important;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+}
+
+/* CONTENT AREA */
+.ql-editor {
+    min-height: 180px;
+    padding: 12px;
+    color: #0f172a;
+    line-height: 1.6;
+}
+
+/* PLACEHOLDER */
+.ql-editor.ql-blank::before {
+    color: #94a3b8;
+    font-style: normal;
+}
     </style>
 </head>
 
@@ -197,6 +235,68 @@ function icon($name)
 @stack('scripts')
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<!-- Include the Quill library -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+document.addEventListener('livewire:init', () => {
+
+    Livewire.on('init-quill', (data) => {
+        const id = data.id;
+
+        const editorEl = document.getElementById('editor-' + id);
+        const inputEl  = document.getElementById('content-' + id);
+
+        if (!editorEl || editorEl.__quill) return;
+
+        const quill = new Quill(editorEl, {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    // Font & Size
+                    [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+                    
+                    // Formatting
+                    ['bold', 'italic', 'underline', 'strike'],
+                    
+                    // Color & Background
+                    [{ 'color': [] }, { 'background': [] }],
+                    
+                    // Alignment
+                    [{ 'align': [] }],
+                    
+                    // Lists & Indent
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    
+                    // Headers, Blockquote, Code
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['blockquote', 'code-block'],
+                    
+                    // Clean formatting
+                    ['clean']
+                ]
+            }
+        });
+
+        editorEl.__quill = quill;
+
+        // 🔥 INIT VALUE (kalau edit data lama)
+        if (inputEl.value) {
+            quill.root.innerHTML = inputEl.value;
+        }
+
+        // 🔥 SYNC tiap ada perubahan
+        quill.on('text-change', () => {
+            // Menggunakan quill.root.innerHTML untuk mendapatkan HTML
+            inputEl.value = quill.root.innerHTML;
+
+            // Trigger event agar Livewire menangkap perubahan
+            inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+    });
+
+});
+</script>
 @livewireScripts
 </body>
 </html>
