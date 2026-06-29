@@ -135,7 +135,7 @@
                                             @if($component->is_visible)
                                                 @includeIf(
                                                     'livewire.admin.landing-page.components.' . $component->type . '-preview',
-                                                    ['component' => $component, 'section' => $section, 'isPreview' => false]
+                                                    ['component' => $component, 'section' => $section, 'isPreview' => true]
                                                 )
                                             @endif
                                         @endforeach

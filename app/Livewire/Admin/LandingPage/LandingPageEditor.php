@@ -16,6 +16,7 @@ use App\Models\LandingPageComponent;
 use App\Traits\MediaHandler;
 
 use App\Livewire\Admin\LandingPage\Components\ButtonSection;
+use App\Livewire\Admin\LandingPage\Components\ButtonCheckoutSection;
 use App\Livewire\Admin\LandingPage\Components\TextSection;
 use App\Livewire\Admin\LandingPage\Components\ImageSection;
 use App\Livewire\Admin\LandingPage\Components\VideoSection;
@@ -154,6 +155,10 @@ class LandingPageEditor extends Component
                 $this->relationUrl,
                 $this->url
             ),
+            'button-checkout' => ButtonCheckoutSection::getDefault(
+                $this->relationUrl,
+                $this->url
+            ),
             'spacer' => ['height' => 40],
             default => []
         };
@@ -192,6 +197,7 @@ class LandingPageEditor extends Component
 
         $this->editingContent = match ($c->type) {
             'button' => ButtonSection::getForm($c),
+            'button-checkout' => ButtonCheckoutSection::getForm($c),
             'text'   => TextSection::getForm($c),
             'image'  => ImageSection::getForm($c),
             'video'  => VideoSection::getForm($c),

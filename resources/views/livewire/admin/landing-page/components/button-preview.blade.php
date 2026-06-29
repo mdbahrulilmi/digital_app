@@ -1,6 +1,9 @@
 <div class="w-full py-2 px-4" style="text-align: {{ $component->content['alignment'] ?? 'center' }};">
-    <a
+    <a  @if($isPreview)
+            href = "javascript:void(0)"
+        @else
         href="{{ $component->content['url'] ?? '#' }}"
+        @endif
         style="
             background: {{ $component->content['bg_color'] ?? '#4f46e5' }};
             color: {{ $component->content['text_color'] ?? '#fff' }};
