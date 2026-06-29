@@ -13,14 +13,20 @@ return new class extends Migration
     {
         Schema::create('landing_page_sections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('landing_page_id')->constrained('landing_pages')->onDelete('cascade');
+
+            $table->foreignId('landing_page_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
             $table->string('name');
-            $table->string('type'); 
-            
-            $table->json('content')->nullable(); 
-            
+
+            // section | col-2 | col-3
+            $table->string('layout')->default('section');
+
             $table->integer('sort_order')->default(0);
+
             $table->boolean('is_visible')->default(true);
+
             $table->timestamps();
         });
     }

@@ -7,14 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LandingPageSection extends Model
 {
-    protected $fillable = [
-        'landing_page_id', 
-        'name', 
-        'type', 
-        'content', 
-        'sort_order', 
-        'is_visible'
-    ];
+    protected $guarded = [];
 
     /**
      * Otomatis melakukan casting data JSON ke Array PHP saat dipanggil
@@ -31,5 +24,11 @@ class LandingPageSection extends Model
     public function landingPage(): BelongsTo
     {
         return $this->belongsTo(LandingPage::class);
+    }
+
+    public function components()
+    {
+        return $this->hasMany(LandingPageComponent::class,'section_id')
+            ->orderBy('sort_order');
     }
 }

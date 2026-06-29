@@ -267,17 +267,31 @@ class LandingPageFormModal extends Component
 
     protected function generateTemplateSections($page, $templateType)
     {
-        $sections = LandingPageTemplate::get($templateType);
+        $template = LandingPageTemplate::get($templateType);
 
-        foreach ($sections as $index => $section) {
-            \App\Models\LandingPageSection::create([
+        foreach ($template as $sectionIndex => $sectionData) {
+
+            // buat section
+            $section = \App\Models\LandingPageSection::create([
                 'landing_page_id' => $page->id,
-                'name' => $section['name'],
-                'type' => $section['type'],
-                'sort_order' => $index + 1,
-                'is_visible' => true,
-                'content' => $section['content'],
+                'name'            => $sectionData['name'],
+                'layout'          => $sectionData['layout'] ?? 'stack',
+                'sort_order'      => $sectionIndex + 1,
+                'is_visible'      => true,
             ]);
+
+            // buat component
+            foreach ($sectionData['components'] as $componentIndex => $component) {
+
+                \App\Models\LandingPageComponent::create([
+                    'section_id' => $section->id,
+                    'type'       => $component['type'],
+                    'content'    => $component['content'],
+                    'sort_order' => $componentIndex + 1,
+                    'is_visible' => true,
+                ]);
+
+            }
         }
     }
 

@@ -15,23 +15,34 @@ class Page extends Component
     {
         $this->slug = $slug;
 
+        $query = LandingPage::with([
+            'sections' => function ($q) {
+                $q->where('is_visible', true)
+                ->orderBy('sort_order');
+            },
+            'sections.components' => function ($q) {
+                $q->where('is_visible', true)
+                ->orderBy('sort_order');
+            }
+        ]);
+
         if (empty($slug)) {
-            $this->landingPage = LandingPage::where('home', 1)
+            $this->landingPage = $query
+                ->where('home', 1)
                 ->where('status', 'published')
                 ->first();
         } else {
-            $this->landingPage = LandingPage::where('slug', $slug)
+            $this->landingPage = $query
+                ->where('slug', $slug)
                 ->where('status', 'published')
                 ->first();
         }
 
         if (!$this->landingPage) {
-            abort(404, 'Halaman tidak ditemukan');
+            abort(404);
         }
 
-        $this->sections = $this->landingPage->sections()
-            ->where('is_visible', true)
-            ->get();
+        $this->sections = $this->landingPage->sections;
     }
 
     public function addToCart($id, $name, $price, $type)

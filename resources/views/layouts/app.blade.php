@@ -227,7 +227,7 @@ function icon($name)
 
     <!-- CONTENT -->
     <div class="h-screen overflow-y-auto" style="margin-left: 260px">
-        <main class="p-6 min-w-0">
+        <main class="{{ $padding ?? 'p-6' }} min-w-0">
             {{ $slot ?? '' }}
         </main>
     </div>
@@ -237,6 +237,7 @@ function icon($name)
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <!-- Include the Quill library -->
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
 <script>
 document.addEventListener('livewire:init', () => {
 
@@ -293,6 +294,66 @@ document.addEventListener('livewire:init', () => {
             // Trigger event agar Livewire menangkap perubahan
             inputEl.dispatchEvent(new Event('input', { bubbles: true }));
         });
+    });
+
+});
+
+document.addEventListener('livewire:init', () => {
+
+    new Sortable(document.getElementById('section-list'), {
+        animation:150,
+        handle:'.drag-handle',
+
+        onEnd(){
+
+            let order=[];
+
+            document.querySelectorAll('#section-list > div').forEach((el,index)=>{
+
+                order.push({
+                    id:el.dataset.id,
+                    sort:index+1
+                });
+
+            });
+
+            Livewire.dispatch('section-sorted',{
+                order
+            });
+
+        }
+
+    });
+
+});
+
+document.querySelectorAll('.component-list').forEach(list => {
+
+    new Sortable(list, {
+
+        animation: 150,
+        handle: '.component-handle',
+
+        onEnd() {
+
+            let order = [];
+
+            list.querySelectorAll('[data-id]').forEach((el, index) => {
+
+                order.push({
+                    id: el.dataset.id,
+                    sort: index + 1
+                });
+
+            });
+
+            Livewire.dispatch('component-sorted', [
+                list.dataset.section,
+                order
+            ]);
+
+        }
+
     });
 
 });

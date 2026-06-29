@@ -7,22 +7,10 @@ class LandingPageTemplate
     public static function all(): array
     {
         return [
-            'authority' => [
-                'label' => 'The Authority',
+            'basic' => [
+                'label' => 'Basic',
                 'description' => 'Produk Digital, Course, Software',
-                'sections' => self::authority(),
-            ],
-
-            'converter' => [
-                'label' => 'The Converter',
-                'description' => 'Produk Fisik, Flash Sale',
-                'sections' => self::converter(),
-            ],
-
-            'service' => [
-                'label' => 'The Service',
-                'description' => 'Jasa, Agency, Consulting',
-                'sections' => self::service(),
+                'sections' => self::basic(),
             ],
         ];
     }
@@ -32,206 +20,378 @@ class LandingPageTemplate
         return self::all()[$template]['sections'] ?? [];
     }
 
-   protected static function authority(): array
+    protected static function basic(): array
     {
         return [
-            [
-                'name' => 'Hero',
-                'type' => 'script',
-                'content' => [
-                    'script' => '<!-- height:220 -->
-            <style>
-            .hero-wrap { padding: 32px 20px; text-align: center; background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%); }
-            .hero-badge { display: inline-block; background: #e0e7ff; color: #4338ca; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 99px; margin-bottom: 14px; }
-            .hero-title { font-size: 22px; font-weight: 800; color: #1e293b; line-height: 1.35; margin-bottom: 12px; }
-            .hero-sub { font-size: 13px; color: #64748b; line-height: 1.6; }
-            </style>
-            <div class="hero-wrap">
-                <span class="hero-badge">🚀 Program 2026</span>
-                <h1 class="hero-title">Capai Level Pro dalam<br>30 Hari Tanpa Ribet</h1>
-                <p class="hero-sub">Belajar dari nol hingga siap kerja bersama mentor berpengalaman.</p>
-            </div>',
-                ],
-            ],
-            [
-                'name' => 'Visual',
-                'type' => 'video',
-                'content' => [
-                    'title' => 'Tonton Demo',
-                    'video_url' => 'https://youtube.com/embed/xyz',
-                ],
-            ],
-            [
-                'name' => 'Benefit',
-                'type' => 'script',
-                'content' => [
-                    'script' => '<!-- height:260 -->
-            <style>
-            .benefit-wrap { padding: 20px 16px; }
-            .benefit-title { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 14px; }
-            .benefit-list { display: flex; flex-direction: column; gap: 10px; }
-            .benefit-item { display: flex; align-items: flex-start; gap: 10px; background: #f8fafc; border-radius: 10px; padding: 12px 14px; border: 1px solid #e2e8f0; }
-            .benefit-icon { width: 28px; height: 28px; background: #d1fae5; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
-            .benefit-text { font-size: 13px; color: #334155; font-weight: 500; line-height: 1.5; }
-            .benefit-desc { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-            </style>
-            <div class="benefit-wrap">
-                <p class="benefit-title">Mengapa belajar dengan kami?</p>
-                <div class="benefit-list">
-                    <div class="benefit-item">
-                        <div class="benefit-icon">📚</div>
-                        <div>
-                            <div class="benefit-text">Kurikulum terupdate 2026</div>
-                            <div class="benefit-desc">Materi selalu diperbarui mengikuti industri terkini</div>
-                        </div>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">💬</div>
-                        <div>
-                            <div class="benefit-text">Grup diskusi eksklusif</div>
-                            <div class="benefit-desc">Komunitas aktif dan mentor siap membantu 24/7</div>
-                        </div>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">♾️</div>
-                        <div>
-                            <div class="benefit-text">Akses lifetime</div>
-                            <div class="benefit-desc">Bayar sekali, akses selamanya tanpa biaya tambahan</div>
-                        </div>
-                    </div>
-                </div>
-            </div>',
-                ],
-            ],
-            [
-                'name' => 'Produk',
-                'type' => 'script',
-                'content' => [
-                    'script' => '<!-- height:280 -->
-            <style>
-            .prod-wrap { padding: 16px; }
-            .prod-card { border-radius: 14px; border: 1px solid #e2e8f0; overflow: hidden; background: #fff; }
-            .prod-banner { background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 20px; text-align: center; }
-            .prod-banner-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-            .prod-banner-sub { font-size: 12px; color: #c7d2fe; }
-            .prod-body { padding: 16px; }
-            .prod-price { font-size: 22px; font-weight: 800; color: #4338ca; margin-bottom: 4px; }
-            .prod-desc { font-size: 12px; color: #64748b; margin-bottom: 14px; }
-            .prod-features { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-            .prod-feature { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #334155; }
-            .prod-btn { display: block; width: 100%; padding: 12px; background: #6366f1; color: #fff; text-align: center; border-radius: 10px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
-            </style>
-            <div class="prod-wrap">
-                <div class="prod-card">
-                    <div class="prod-banner">
-                        <div class="prod-banner-title">Full Access Pass</div>
-                        <div class="prod-banner-sub">Akses seluruh modul dan tool eksklusif</div>
-                    </div>
-                    <div class="prod-body">
-                        <div class="prod-price">Rp 750.000</div>
-                        <div class="prod-desc">Bayar sekali, nikmati selamanya.</div>
-                        <div class="prod-features">
-                            <div class="prod-feature"><span style="color:#22c55e">✓</span> Semua modul video HD</div>
-                            <div class="prod-feature"><span style="color:#22c55e">✓</span> Sertifikat resmi</div>
-                            <div class="prod-feature"><span style="color:#22c55e">✓</span> Grup mentoring eksklusif</div>
-                            <div class="prod-feature"><span style="color:#22c55e">✓</span> Update materi gratis selamanya</div>
-                        </div>
-                        <button class="prod-btn">Daftar Sekarang</button>
-                    </div>
-                </div>
-            </div>',
-                ],
-            ],
-            [
-                'name' => 'Testi',
-                'type' => 'script',
-                'content' => [
-                    'script' => '<!-- height:320 -->
-            <style>
-            .testi-wrap { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-            .testi-card { background: #f8fafc; border-left: 4px solid #6366f1; border-radius: 8px; padding: 14px 16px; }
-            .testi-text { font-size: 14px; color: #334155; font-style: italic; line-height: 1.6; margin-bottom: 8px; }
-            .testi-author { font-size: 12px; font-weight: 600; color: #6366f1; }
-            </style>
-            <div class="testi-wrap">
-                <div class="testi-card">
-                    <p class="testi-text">"Kurikulum paling lengkap yang pernah saya ikuti. Worth it banget!"</p>
-                    <span class="testi-author">— Andi, Web Developer</span>
-                </div>
-                <div class="testi-card">
-                    <p class="testi-text">"Dalam 30 hari saya sudah bisa bikin project sendiri. Mentor-nya juga responsif."</p>
-                    <span class="testi-author">— Sari, Fresh Graduate</span>
-                </div>
-                <div class="testi-card">
-                    <p class="testi-text">"Materinya up-to-date dan langsung bisa dipraktikkan. Highly recommended!"</p>
-                    <span class="testi-author">— Budi, Freelancer</span>
-                </div>
-            </div>',
-                ],
-            ],
-            [
-                'name' => 'FAQ',
-                'type' => 'script',
-                'content' => [
-                    'script' => '<!-- height:380 -->
-            <style>
-            .faq-wrap { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-            .faq-title { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
-            .faq-item { background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; }
-            .faq-q { padding: 12px 16px; font-size: 13px; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0; background: #fff; }
-            .faq-a { padding: 12px 16px; font-size: 13px; color: #475569; line-height: 1.6; }
-            </style>
-            <div class="faq-wrap">
-                <p class="faq-title">Pertanyaan Umum</p>
-                <div class="faq-item">
-                    <div class="faq-q">Apakah ada sertifikat?</div>
-                    <div class="faq-a">Ya, setelah menyelesaikan seluruh modul kamu akan mendapatkan sertifikat resmi yang bisa dicantumkan di LinkedIn.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-q">Berapa lama akses materi?</div>
-                    <div class="faq-a">Akses lifetime, tidak ada batas waktu. Kamu bisa mengulang materi kapan saja.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-q">Apakah ada sesi live mentoring?</div>
-                    <div class="faq-a">Ada sesi live setiap minggu dan kamu bisa bertanya langsung kepada mentor berpengalaman.</div>
-                </div>
-            </div>',
-                ],
-            ],
-            [
-                'name' => 'CTA',
-                'type' => 'button_checkout',
-                'content' => [
-                    'title' => 'Mulai Belajar',
-                    'url' => '#checkout',
-                ],
-            ],
+
+            // 1. HERO
+            ['name' => 'Hero', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 30]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => '🚀 Program Akselerasi Karir 2026',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#818cf8',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 8]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Kuasai Skill Level Pro dalam 30 Hari',
+                    'font_size'  => 'text-4xl',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#0f172a',
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Tanpa teori berbelit. Langsung praktek, langsung bisa, langsung kerja.',
+                    'font_size'  => 'text-sm',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 10]],
+
+                ['type' => 'video', 'content' => [
+                    'video_url' => 'https://www.youtube.com/embed/Q51l8zE1m4Q',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 10]],
+
+                ['type' => 'button', 'content' => [
+                    'text'       => 'Mulai Transformasi Sekarang →',
+                    'url'        => '#cta',
+                    'bg_color'   => '#4f46e5',
+                    'text_color' => '#ffffff',
+                    'radius'     => '10px',
+                    'padding_y'  => 14,
+                    'padding_x'  => 36,
+                    'alignment'  => 'center',
+                    'shadow'     => true,
+                ]],
+            ]],
+
+            // 2. FEATURES
+            ['name' => 'Features', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 30]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'KURIKULUM',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#94a3b8',
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Berbasis Real-World Project',
+                    'font_size'  => 'text-3xl',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#0f172a',
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Setiap materi langsung diimplementasikan ke project nyata yang bisa masuk portfolio.',
+                    'font_size'  => 'text-sm',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 10]],
+
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 30]],
+            ]],
+
+            // 3. BENEFITS col-3
+            ['name' => 'Benefits', 'layout' => 'col-3', 'components' => [
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://cdn-icons-png.flaticon.com/128/3135/3135768.png',
+                ]],
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://cdn-icons-png.flaticon.com/128/2697/2697664.png',
+                ]],
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://cdn-icons-png.flaticon.com/128/3004/3004613.png',
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Coding Intensif',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#1e293b',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => '1-on-1 Mentor',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#1e293b',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Job Connect',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#1e293b',
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Praktek setiap hari, tanpa jeda.',
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Senior dev berpengalaman 5+ tahun.',
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Network ke 200+ perusahaan.',
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+            ]],
+
+            // 4. TECH STACK
+            ['name' => 'TechStack', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 30]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'TECH STACK YANG KAMU KUASAI',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#94a3b8',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 10]],
+            ]],
+
+            ['name' => 'TechStackIcons', 'layout' => 'col-3', 'components' => [
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://cdn-icons-png.flaticon.com/128/919/919827.png',
+                ]],
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://cdn-icons-png.flaticon.com/128/5968/5968292.png',
+                ]],
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://cdn-icons-png.flaticon.com/128/919/919825.png',
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'HTML5',
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => 'JavaScript',
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Node.js',
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+            ]],
+
+            // 5. TESTIMONIALS
+            ['name' => 'Testimonials', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 30]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'ALUMNI BERBICARA',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#94a3b8',
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Sudah 1.200+ Alumni Membuktikan',
+                    'font_size'  => 'text-2xl',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#0f172a',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 10]],
+            ]],
+
+            ['name' => 'Testi 1', 'layout' => 'col-2', 'components' => [
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&fit=crop',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => "Arif Setiawan\nFrontend Dev · Batch 2025\n\n★★★★★\n\n\"Kurikulumnya daging semua, langsung praktek bikin project beneran. Sekarang udah kerja di startup unicorn.\"",
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-left',
+                    'text_color' => '#334155',
+                ]],
+            ]],
+
+            ['name' => 'Testi 2', 'layout' => 'col-2', 'components' => [
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&fit=crop',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => "Sari Puspita\nFullstack Dev · Batch 2025\n\n★★★★★\n\n\"Gak nyangka bisa paham backend secepat ini. Mentornya sabar dan solutif banget.\"",
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-left',
+                    'text_color' => '#334155',
+                ]],
+            ]],
+
+            ['name' => 'Testi 3', 'layout' => 'col-2', 'components' => [
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&fit=crop',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => "Budi Santoso\nFreelancer · Batch 2024\n\n★★★★★\n\n\"Skill saya meningkat drastis, udah dapet job freelance pertama senilai 15 juta.\"",
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-left',
+                    'text_color' => '#334155',
+                ]],
+            ]],
+
+            // 6. FINAL CTA
+            ['name' => 'CTA', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 30]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => '● Hanya 20 slot tersisa',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#ef4444',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 10]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Slot Terbatas Batch 2026',
+                    'font_size'  => 'text-3xl',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#0f172a',
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Daftar sekarang sebelum kuota penuh. Garansi uang kembali 30 hari jika tidak puas.',
+                    'font_size'  => 'text-sm',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#64748b',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 30]],
+
+                ['type' => 'button', 'content' => [
+                    'text'       => 'Daftar Sekarang — Gratis Konsultasi',
+                    'url'        => '#cta',
+                    'bg_color'   => '#10b981',
+                    'text_color' => '#ffffff',
+                    'radius'     => '10px',
+                    'padding_y'  => 14,
+                    'padding_x'  => 36,
+                    'alignment'  => 'center',
+                    'shadow'     => true,
+                ]],
+
+                ['type' => 'text', 'content' => [
+                    'text'       => '✓ Tanpa komitmen  ·  ✓ Garansi 30 hari  ·  ✓ Bayar setelah yakin',
+                    'font_size'  => 'text-xs',
+                    'alignment'  => 'text-center',
+                    'text_color' => '#94a3b8',
+                ]],
+
+                ['type' => 'spacer', 'content' => ['height' => 10]],
+            ]],
+
         ];
     }
 
-    protected static function converter(): array
+    protected static function program_overview(): array
     {
         return [
-            ['name' => 'Hero', 'type' => 'text', 'content' => ['text' => 'Diskon 50% Khusus Hari Ini Saja!', 'font_size' => 'text-5xl', 'is_bold' => true, 'alignment' => 'text-center', 'text_color' => '#dc2626']],
-            ['name' => 'Visual', 'type' => 'image', 'content' => ['image_url' => 'product.jpg', 'image_name' => 'Product Banner']],
-            ['name' => 'Benefit', 'type' => 'text', 'content' => ['text' => 'Kelebihan Produk Kami:\n- Bahan Premium\n- Garansi 1 Tahun\n- Gratis Ongkir', 'font_size' => 'text-lg']],
-            ['name' => 'Produk', 'type' => 'product', 'content' => ['name' => 'Limited Edition Kit', 'price' => 199000, 'description' => 'Stok terbatas.', 'button_text' => 'Beli Sekarang', 'image_url' => '...']],
-            ['name' => 'Testi', 'type' => 'script', 'content' => ['script' => '<!-- height:200 --> <div>User Rating: 4.9/5 ★★★★☆</div>']],
-            ['name' => 'FAQ', 'type' => 'text', 'content' => ['text' => 'Q: Bisa COD?\nA: Bisa, pilih opsi COD saat checkout.', 'font_size' => 'text-base']],
-            ['name' => 'CTA', 'type' => 'button_checkout', 'content' => ['title' => 'Ambil Diskon Anda', 'url' => '#checkout']]
+            // 1. HEADER PROGRAM
+            ['name' => 'Program Header', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 40]],
+                ['type' => 'text', 'content' => [
+                    'text'       => 'DETAIL PROGRAM',
+                    'font_size'  => 'text-xs',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#6366f1',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => 'Kurikulum Intensif Fullstack 2026',
+                    'font_size'  => 'text-4xl',
+                    'is_bold'    => true,
+                    'alignment'  => 'text-center',
+                    'text_color' => '#0f172a',
+                ]],
+            ]],
+
+            // 2. MENTOR PROFILE (Kredibilitas adalah kunci)
+            ['name' => 'Mentor', 'layout' => 'col-2', 'components' => [
+                ['type' => 'image', 'content' => [
+                    'image_url' => 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&fit=crop',
+                ]],
+                ['type' => 'text', 'content' => [
+                    'text'       => "DIBIMBING LANGSUNG OLEH EXPERT\n\nBudi Santoso, Senior Software Engineer\n\n\"Saya telah membimbing 500+ developer untuk berkarir di perusahaan teknologi top dunia. Di program ini, saya akan mendampingi kamu step-by-step.\"",
+                    'font_size'  => 'text-sm',
+                    'alignment'  => 'text-left',
+                    'text_color' => '#334155',
+                ]],
+            ]],
+
+            // 3. ROADMAP/SILABUS (Apa yang didapat)
+            ['name' => 'Roadmap', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 30]],
+                ['type' => 'text', 'content' => ['text' => 'Fase 1: Fundamental & Logic Building', 'font_size' => 'text-lg', 'is_bold' => true]],
+                ['type' => 'text', 'content' => ['text' => 'Fase 2: Building Modern Backend API', 'font_size' => 'text-lg', 'is_bold' => true]],
+                ['type' => 'text', 'content' => ['text' => 'Fase 3: Deployment & Production Ready', 'font_size' => 'text-lg', 'is_bold' => true]],
+            ]],
+
+            // 4. WHAT YOU GET (Poin kelebihan program)
+            ['name' => 'Features', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 20]],
+                ['type' => 'text', 'content' => ['text' => '✅ Akses Materi Selamanya', 'font_size' => 'text-base']],
+                ['type' => 'text', 'content' => ['text' => '✅ Sertifikat Kelulusan Resmi', 'font_size' => 'text-base']],
+                ['type' => 'text', 'content' => ['text' => '✅ Akses Komunitas Eksklusif', 'font_size' => 'text-base']],
+            ]],
+
+            // 5. CTA FOCUS PROGRAM
+            ['name' => 'CTA Program', 'layout' => 'col-1', 'components' => [
+                ['type' => 'spacer', 'content' => ['height' => 40]],
+                ['type' => 'button', 'content' => [
+                    'text'       => 'Lihat Silabus Lengkap',
+                    'url'        => '#silabus',
+                    'bg_color'   => '#0f172a',
+                    'text_color' => '#ffffff',
+                    'padding_y'  => 16,
+                    'padding_x'  => 40,
+                    'alignment'  => 'center',
+                ]],
+                ['type' => 'spacer', 'content' => ['height' => 40]],
+            ]],
         ];
     }
 
-    protected static function service(): array
-    {
-        return [
-            ['name' => 'Hero', 'type' => 'text', 'content' => ['text' => 'Tingkatkan Performa Bisnis Anda Bersama Kami', 'font_size' => 'text-5xl', 'is_bold' => true, 'alignment' => 'text-center']],
-            ['name' => 'Visual', 'type' => 'video', 'content' => ['title' => 'Company Profile', 'video_url' => 'https://youtube.com/abc']],
-            ['name' => 'Benefit', 'type' => 'text', 'content' => ['text' => 'Apa yang kami berikan?\n- Analisis data akurat\n- Strategi custom\n- Laporan mingguan', 'font_size' => 'text-lg']],
-            ['name' => 'Produk', 'type' => 'product', 'content' => ['name' => 'Consulting Session', 'price' => 1000000, 'description' => 'Sesi eksklusif 60 menit.', 'button_text' => 'Book Sesi', 'image_url' => '...']],
-            ['name' => 'Testi', 'type' => 'script', 'content' => ['script' => '<!-- height:200 --> <div>"Hasilnya nyata dalam 1 minggu!"</div>']],
-            ['name' => 'FAQ', 'type' => 'text', 'content' => ['text' => 'Q: Berapa lama durasi project?\nA: Tergantung kebutuhan.', 'font_size' => 'text-base']],
-            ['name' => 'CTA', 'type' => 'button_checkout', 'content' => ['title' => 'Konsultasi Gratis', 'url' => '#chat']]
-        ];
-    }
+    
 }

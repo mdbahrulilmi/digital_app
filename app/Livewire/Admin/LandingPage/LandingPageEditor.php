@@ -2,298 +2,261 @@
 
 namespace App\Livewire\Admin\LandingPage;
 
-use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
+
+use Illuminate\Support\Str;
+
 use App\Models\LandingPage;
 use App\Models\Media;
-use App\Models\Product;
-use App\Models\Program;
 use App\Models\LandingPageSection;
-use App\Livewire\Admin\LandingPage\Components\TextSection;
+use App\Models\LandingPageComponent;
+
+use App\Traits\MediaHandler;
+
 use App\Livewire\Admin\LandingPage\Components\ButtonSection;
-use App\Livewire\Admin\LandingPage\Components\ButtonCheckoutSection;
+use App\Livewire\Admin\LandingPage\Components\TextSection;
 use App\Livewire\Admin\LandingPage\Components\ImageSection;
-use App\Livewire\Admin\LandingPage\Components\VideoSection;
-use App\Livewire\Admin\LandingPage\Components\ScriptSection;
-use App\Livewire\Admin\LandingPage\Components\ProductSection;
-use App\Livewire\Admin\LandingPage\Components\ProgramSection;
+use App\Livewire\Admin\LandingPage\Components\SpacerSection;
 
 class LandingPageEditor extends Component
 {
     use WithFileUploads;
-    public $landingPageId; 
+    use MediaHandler;
+
+    public $landingPageId;
+
+    /* ================= MODAL STATE ================= */
+    public $openSectionModal = false;
     public $openComponentModal = false;
-    public $openEditModal = false;
-    public $editingSectionId = null;
-    public $editingSectionName = '';
+
+    public $openEditPanel = false;
+
+    /* ================= EDIT STATE ================= */
+    public $targetSectionId = null;
+
+    public $selectedComponentId = null;
+    public $editingType = null;
     public $editingContent = [];
 
+    /* ================= UI STATE (WAJIB ADA) ================= */
     public $mediaMethod = 'upload';
-    public $selectedMediaId;
-    public $newFile;
-    public $imageFile;
-    public $videoFile;
+    public $selectedMediaId = null;
+    public $newFile = null;
 
-    public $relationUrl = false;
-    public $url = '';
-    public $isProgram = false;
-
-    protected $listeners = ['updateSectionsOrder'];
+    public $mediaItems = [];
+    public $products = [];
+    public $programs = [];
 
     public function mount($id)
     {
         $this->landingPageId = $id;
-
-        $landingPage = LandingPage::findOrFail($id);
-
-        $this->isProgram = !empty($landingPage->program_id);
-
-        if (!empty($landingPage->program_page_id)) {
-            $relatedPage = LandingPage::find($landingPage->program_page_id);
-
-            if ($relatedPage) {
-                $this->relationUrl = true;
-                $this->url = $relatedPage->slug;
-            }
-        }
+        $this->mediaItems = Media::all();
     }
 
+    /* ================= LANDING PAGE ================= */
     public function getLandingPageProperty()
     {
-        return LandingPage::with(['sections' => function($query) {
-            $query->orderBy('sort_order', 'asc');
-        }])->find($this->landingPageId);
+        return LandingPage::with('sections.components')
+            ->findOrFail($this->landingPageId);
     }
 
-    public function editContent($sectionId)
+    #[On('section-sorted')]
+    public function sectionSorted($order)
     {
-        $this->editingSectionId = $sectionId;
-        $section = LandingPageSection::findOrFail($sectionId);
-        $this->editingSectionName = $section->name;
-        $this->editingContent = [];
+        foreach ($order as $item) {
 
-        $section['relation_url'] = $this->relationUrl;
-        $section['url'] = $this->url;
+            LandingPageSection::where('id', $item['id'])
+                ->update([
+                    'sort_order' => $item['sort']
+                ]);
 
-        switch ($section->type) {
-           case 'text':
-                $this->editingContent = TextSection::getForm($section);
-                break;
-
-            case 'image':
-                $this->editingContent = ImageSection::getForm($section);
-                break;
-
-            case 'video':
-                $this->editingContent = VideoSection::getForm($section);
-                break;
-
-            case 'button':
-                $this->editingContent = ButtonSection::getForm($section);
-            break;
-            
-            case 'button_checkout':
-                $this->editingContent = ButtonCheckoutSection::getForm($section);
-            break;
-            
-            case 'script':
-                $this->editingContent = ScriptSection::getForm($section);
-            break;
-            
-            case 'product':
-                $this->editingContent = ProductSection::getForm($section);
-            break;
-            
-            case 'product2':
-                $this->editingContent = ProductSection::get2Form($section);
-            break;
-            
-            case 'program':
-                $this->editingContent = ProgramSection::getForm($section);
-            break;
-            
-            case 'program2':
-                $this->editingContent = ProgramSection::get2Form($section);
-            break;
-            
-
-
-            default:
-                $this->editingContent = $section->content ?? [];
         }
 
-        $this->openEditModal = true;    
-        $this->mediaMethod = 'upload';
-        $this->selectedMediaId = null;
-        $this->newFile = null;
-        $this->dispatch('init-quill', id: $this->editingSectionId);
+        $this->landingPage->refresh()->load('sections.components');
     }
 
-    public function saveContent()
+    #[On('component-sorted')]
+    public function componentSorted($sectionId, $order)
     {
-        $section = $this->landingPage->sections()->findOrFail($this->editingSectionId);
-        $isImage = $section->type === 'image';
+        foreach ($order as $item) {
 
-        // ==================== JALUR 1: UPLOAD BARU ====================
-        if ($this->mediaMethod === 'upload' && $this->newFile) {
-            $rules = $isImage ? ['newFile' => 'image|max:2048'] : ['newFile' => 'mimetypes:video/mp4|max:20480'];
-            $this->validate($rules);
+            LandingPageComponent::where('id', $item['id'])
+                ->update([
+                    'sort_order' => $item['sort']
+                ]);
 
-            $folder = $isImage ? 'images' : 'videos';
-            $path = $this->newFile->store('media/' . $folder, 'public');
-
-            $storagePath = '/storage/' . $path;
-
-            $mediaPusat = Media::create([
-                'title' => $this->newFile->getClientOriginalName(),
-                'file' => $storagePath,
-                'type' => $this->newFile->getMimeType(),
-                'size' => round($this->newFile->getSize() / 1024),
-            ]);
-
-            $this->editingContent[$isImage ? 'image_url' : 'video_url'] = $storagePath;
         }
 
-        // ==================== JALUR 2: AMBIL DARI LIBRARY ====================
-        elseif ($this->mediaMethod === 'library' && $this->selectedMediaId) {
-            $media = Media::find($this->selectedMediaId);
-            if ($media) {
-                $this->editingContent[$isImage ? 'image_url' : 'video_url'] = $media->file;
-            }
-        }
-
-        if ($section->type === 'product') {
-            $this->editingContent = ProductSection::mutateBeforeSave($this->editingContent);
-        }
-        
-        if ($section->type === 'product2') {
-            $res = $this->editingContent = ProductSection::mutateBeforeSave2($this->editingContent);
-        }
-        
-        if ($section->type === 'program') {
-            $this->editingContent = ProgramSection::mutateBeforeSave($this->editingContent);
-        }
-        
-        if ($section->type === 'program2') {
-            $res = $this->editingContent = ProgramSection::mutateBeforeSave2($this->editingContent);
-        }
-
-        // ==================== PROSES UPDATE AKHIR ====================
-        $section->update([
-            'content' => $this->editingContent,
-             'name' => Str::limit(
-                strip_tags(
-                    $this->editingContent['title'] ?? ucfirst($section->type)
-                    ?? $this->editingContent['text']
-                    ?? $this->editingContent['name']
-                    ?? ucfirst($section->type)
-                ),
-                35,
-                '...'
-            ),
-            ]);
-
-        $this->openEditModal = false;
-        $this->landingPage->load('sections');
-        $this->newFile = null;
-        $this->selectedMediaId = null;
+        $this->landingPage->refresh();
     }
 
-    public function toggleVisibility($sectionId)
+    /* ================= SECTION ================= */
+    public function showSectionModal()
     {
-        $section = LandingPageSection::where('landing_page_id', $this->landingPageId)->find($sectionId);
-        if ($section) {
-            $section->update([
-                'is_visible' => !$section->is_visible
-            ]);
-        }
+        $this->openSectionModal = true;
     }
 
-    public function deleteSection($sectionId)
+    public function createSection($layout)
     {
-        $section = LandingPageSection::where('landing_page_id', $this->landingPageId)->find($sectionId);
-        if ($section) {
-            $section->delete();
-            $this->reorderSections();
-        }
-    }
-
-    public function addSection($type)
-    {
-        $names = [
-            'text' => 'Teks',
-            'image' => 'Gambar',
-            'video' => 'Video',
-            'button' => 'Tombol',
-            'product' => 'Produk',
-            'product2' => 'Produk Grid',
-            'program' => 'Program',
-            'program2' => 'Program Grid',
-            'button_checkout' => 'Tombol Checkout',
-            'script' => 'script',
-        ];
-
-        $nextOrder = LandingPageSection::where('landing_page_id', $this->landingPageId)->max('sort_order') + 1;
-        
-        $landingPage = LandingPage::findOrFail($this->landingPageId);
-        $relatedPage = $landingPage->program_page_id ? LandingPage::find($landingPage->program_page_id) : null;
-        
-        $relationUrl = !empty($relatedPage);
-        $url = $relatedPage ? $relatedPage->slug : '';
-
-        $defaultContent = match($type) {
-            'text' => ['text' => 'Ketik teks narasi Anda di sini.'],
-            'video' => ['title' => '', 'video_url' => ''],
-            'button' => ButtonSection::getDefault(
-                $this->relationUrl,
-                $this->url
-            ),
-            'product' => ProductSection::getDefault(),
-            'product2' => ProductSection::get2Default(),
-            'program' => ProgramSection::getDefault(),
-            'program2' => ProgramSection::get2Default(),
-            'button_checkout' => ButtonCheckoutSection::getDefault(),
-            'script' => ['script' => ''],
-            default => []
-        };
+        $nextOrder = LandingPageSection::where('landing_page_id', $this->landingPageId)
+            ->max('sort_order') + 1;
 
         LandingPageSection::create([
             'landing_page_id' => $this->landingPageId,
-            'name' => $names[$type] ?? 'Seksi Baru',
-            'type' => $type,
+            'name' => 'Section Baru',
+            'layout' => $layout,
             'sort_order' => $nextOrder,
             'is_visible' => true,
-            'content' => $defaultContent
+        ]);
+
+        $this->openSectionModal = false;
+    }
+
+    public function deleteSection($id)
+    {
+        LandingPageSection::findOrFail($id)->delete();
+    }
+
+    /* ================= COMPONENT ================= */
+    public function showComponentModal($sectionId)
+    {
+        $this->targetSectionId = $sectionId;
+        $this->openComponentModal = true;
+    }
+
+    public function createComponent($type)
+    {
+        $nextOrder = LandingPageComponent::where('section_id', $this->targetSectionId)
+            ->max('sort_order') + 1;
+
+        $default = match ($type) {
+            'text' => ['text' => 'Teks...'],
+            'image' => ['url' => ''],
+            'video' => ['url' => ''],
+            'button' => [
+                'text' => 'Klik',
+                'url' => '#',
+                'bg_color' => '#4f46e5',
+                'text_color' => '#ffffff',
+                'font_size' => '14px',
+                'radius' => '8px',
+                'padding_y' => 10,
+                'padding_x' => 20,
+                'alignment' => 'center',
+                ],
+            'spacer' => ['height' => 40],
+            default => []
+        };
+
+        LandingPageComponent::create([
+            'section_id' => $this->targetSectionId,
+            'type' => $type,
+            'content' => $default,
+            'sort_order' => $nextOrder,
+            'is_visible' => true,
         ]);
 
         $this->openComponentModal = false;
     }
 
-    public function updateSectionsOrder($orderedIds)
+    public function toggleComponent($id)
     {
-        foreach ($orderedIds as $index => $id) {
-            LandingPageSection::where('landing_page_id', $this->landingPageId)
-                ->where('id', $id)
-                ->update(['sort_order' => $index + 1]);
-        }
+        $c = LandingPageComponent::findOrFail($id);
+        $c->update(['is_visible' => !$c->is_visible]);
     }
 
-    private function reorderSections()
+    public function deleteComponent($id)
     {
-        $sections = LandingPageSection::where('landing_page_id', $this->landingPageId)->orderBy('sort_order', 'asc')->get();
-        foreach ($sections as $index => $section) {
-            $section->update(['sort_order' => $index + 1]);
-        }
+        LandingPageComponent::findOrFail($id)->delete();
     }
 
+    /* ================= EDIT COMPONENT ================= */
+    public function editComponent($id)
+    {
+        $c = LandingPageComponent::findOrFail($id);
+
+        $this->selectedComponentId = $id;
+        $this->editingType = $c->type;
+
+        $this->editingContent = match ($c->type) {
+            'button' => ButtonSection::getForm($c),
+            'text'   => TextSection::getForm($c),
+            'image'  => ImageSection::getForm($c),
+            'video'  => VideoSection::getForm($c),
+            'spacer' => SpacerSection::getForm($c),
+            default  => $c->content ?? [],
+        };
+
+        $this->mediaMethod = 'upload';
+        $this->selectedMediaId = null;
+        $this->newFile = null;
+
+        $this->openEditPanel = true;
+    }
+
+    public function saveComponent()
+    {
+        $c = LandingPageComponent::findOrFail($this->selectedComponentId);
+
+        if ($c->type === 'image') {
+
+            switch ($this->mediaMethod) {
+
+                case 'upload':
+
+                    if ($this->newFile) {
+
+                        $path = $this->uploadImageAsWebp($this->newFile);
+
+                        Media::create([
+                            'title' => Str::random(10),
+                            'file'  => $path,
+                            'type'  => 'image',
+                            'size'  => $this->newFile->getSize(),
+                        ]);
+
+                        $this->editingContent['image_url'] = $path;
+                    }
+
+                    break;
+
+                case 'library':
+
+                    if ($this->selectedMediaId) {
+
+                        $media = Media::find($this->selectedMediaId);
+
+                        if ($media) {
+                            $this->editingContent['image_url'] = $media->file;
+                        }
+                    }
+
+                    break;
+
+                case 'url':
+                    break;
+            }
+        }
+
+        $c->update([
+            'content' => $this->editingContent,
+        ]);
+
+        $this->openEditPanel = false;
+    }
+
+    /* ================= RENDER ================= */
     public function render()
     {
         return view('livewire.admin.landing-page.editor', [
             'landingPage' => $this->landingPage,
-            'mediaItems' => Media::latest()->get(),
-            'products' => Product::latest()->get(),
-            'programs' => Program::latest()->get()
-        ]);
+            'mediaItems' => $this->mediaItems,
+            'products' => $this->products,
+            'programs' => $this->programs,
+        ])->layout('layouts.app', [
+            'padding' => 'p-0',
+            ]);
     }
 }

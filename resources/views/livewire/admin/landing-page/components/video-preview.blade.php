@@ -1,12 +1,12 @@
 <div class="p-6 text-center bg-white space-y-2">
-    @if(!empty($section->content['title']))
-        <h4 class="text-xs font-bold text-slate-700 text-left">{{ $section->content['title'] }}</h4>
+    @if(!empty($component->content['title']))
+        <h4 class="text-xs font-bold text-slate-700 text-left">{{ $component->content['title'] }}</h4>
     @endif
 
-    @if(!empty($section->content['video_url']))
+    @if(!empty($component->content['video_url']))
         <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-900 shadow-sm">
             @php
-        $url = $section->content['video_url'];
+        $url = $component->content['video_url'];
         
         // Fungsi sederhana untuk mendeteksi provider
         $isYoutube = str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be');
