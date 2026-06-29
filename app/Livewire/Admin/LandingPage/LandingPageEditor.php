@@ -18,6 +18,7 @@ use App\Traits\MediaHandler;
 use App\Livewire\Admin\LandingPage\Components\ButtonSection;
 use App\Livewire\Admin\LandingPage\Components\TextSection;
 use App\Livewire\Admin\LandingPage\Components\ImageSection;
+use App\Livewire\Admin\LandingPage\Components\VideoSection;
 use App\Livewire\Admin\LandingPage\Components\SpacerSection;
 
 class LandingPageEditor extends Component
