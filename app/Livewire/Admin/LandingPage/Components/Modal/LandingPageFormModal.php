@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\LandingPage\Components\Modal;
 
 use Livewire\Component;
 use App\Models\LandingPage;
+use App\Models\LandingPageComponent;
 use App\Traits\SlugGenerator;
 use Livewire\WithFileUploads;
 use App\Traits\MediaHandler;
@@ -221,7 +222,7 @@ class LandingPageFormModal extends Component
         $validated['home'] = (bool) $this->home;
         $validated['cart'] = (bool) $this->cart;
         $validated['blog'] = (bool) $this->blog;
-        $validated['program_page_id'] = $this->program_page_id;
+        $validated['program_page_id'] = $this->program_page_id ?: null;
         $validated['program_id'] = $this->program_id;
         $validated['image_url'] = $imageValue;
         $validated['image_source'] = $this->image_source;
@@ -240,6 +241,8 @@ class LandingPageFormModal extends Component
             $page = LandingPage::findOrFail($this->pageId);
             $page->update($validated);
 
+            $this->syncButtonComponents($page);
+
             session()->flash('message', 'Halaman berhasil diperbarui.');
         } else {
 
@@ -249,6 +252,8 @@ class LandingPageFormModal extends Component
             if ($this->templateType !== 'blank') {
                 $this->generateTemplateSections($page, $this->templateType);
             }
+
+            $this->syncButtonComponents($page);
 
             session()->flash('message', 'Halaman berhasil dibuat.');
 
@@ -263,6 +268,35 @@ class LandingPageFormModal extends Component
         $this->openModal = false;
 
         $this->dispatch('refreshList');
+    }
+
+    protected function syncButtonComponents(LandingPage $page)
+    {
+        LandingPageComponent::whereHas('section', function ($q) use ($page) {
+            $q->where('landing_page_id', $page->id);
+        })
+        ->where('type', 'button')
+        ->get()
+        ->each(function ($button) use ($page) {
+
+            $content = $button->content ?? [];
+
+            if ($page->program_page_id) {
+                $relatedPage = LandingPage::find($page->program_page_id);
+
+                if ($relatedPage) {
+                    $content['url'] = '/' . $relatedPage->slug;
+                    $content['url_disabled'] = true;
+                }
+            } else {
+                $content['url_disabled'] = false;
+                $content['url'] = '';
+            }
+
+            $button->update([
+                'content' => $content,
+            ]);
+        });
     }
 
     protected function generateTemplateSections($page, $templateType)

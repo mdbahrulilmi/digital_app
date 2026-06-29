@@ -50,10 +50,24 @@ class LandingPageEditor extends Component
     public $products = [];
     public $programs = [];
 
+    public $relationUrl = false;
+    public $url = '';
+
     public function mount($id)
     {
         $this->landingPageId = $id;
         $this->mediaItems = Media::all();
+
+        $landingPage = LandingPage::findOrFail($id);
+
+        if (!empty($landingPage->program_page_id)) {
+            $relatedPage = LandingPage::find($landingPage->program_page_id);
+
+            if ($relatedPage) {
+                $this->relationUrl = true;
+                $this->url = $relatedPage->slug;
+            }
+        }
     }
 
     /* ================= LANDING PAGE ================= */
@@ -136,17 +150,10 @@ class LandingPageEditor extends Component
             'text' => ['text' => 'Teks...'],
             'image' => ['url' => ''],
             'video' => ['url' => ''],
-            'button' => [
-                'text' => 'Klik',
-                'url' => '#',
-                'bg_color' => '#4f46e5',
-                'text_color' => '#ffffff',
-                'font_size' => '14px',
-                'radius' => '8px',
-                'padding_y' => 10,
-                'padding_x' => 20,
-                'alignment' => 'center',
-                ],
+            'button' => ButtonSection::getDefault(
+                $this->relationUrl,
+                $this->url
+            ),
             'spacer' => ['height' => 40],
             default => []
         };
@@ -177,6 +184,8 @@ class LandingPageEditor extends Component
     public function editComponent($id)
     {
         $c = LandingPageComponent::findOrFail($id);
+        $c['relation_url'] = $this->relationUrl;
+        $c['url'] = $this->url;
 
         $this->selectedComponentId = $id;
         $this->editingType = $c->type;
