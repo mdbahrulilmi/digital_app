@@ -37,6 +37,7 @@ class LandingPageEditor extends Component
 
     /* ================= EDIT STATE ================= */
     public $targetSectionId = null;
+    public $editingSection;
 
     public $selectedComponentId = null;
     public $editingType = null;
@@ -130,6 +131,19 @@ class LandingPageEditor extends Component
         $this->openSectionModal = false;
     }
 
+    public function editSection($id)
+    {
+        $section = LandingPageSection::findOrFail($id);
+
+        $this->editingSection = [
+            'id' => $section->id,
+            'name' => $section->name,
+        ];
+
+        $this->editingType = 'section';
+        $this->openEditPanel = true;
+    }
+
     public function deleteSection($id)
     {
         LandingPageSection::findOrFail($id)->delete();
@@ -214,6 +228,19 @@ class LandingPageEditor extends Component
 
     public function saveComponent()
     {
+
+        if ($this->editingType === 'section') {
+
+            $section = LandingPageSection::findOrFail($this->editingSection['id']);
+
+            $section->update([
+                'name' => $this->editingSection['name'] ?? $section->name,
+            ]);
+
+            $this->openEditPanel = false;
+            return;
+        }
+        
         $c = LandingPageComponent::findOrFail($this->selectedComponentId);
 
         if ($c->type === 'image') {

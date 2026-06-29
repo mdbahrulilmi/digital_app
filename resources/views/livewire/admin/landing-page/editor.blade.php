@@ -36,10 +36,30 @@
                                 </span>
                             </div>
                         </div>
-                        <button wire:click="deleteSection({{ $section->id }})"
-                                class="p-1 rounded-lg text-gray-300 hover:text-red-500 hover:bg-red-50 transition flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
-                        </button>
+                        <div class="flex items-center gap-1">
+
+                            <button
+                                wire:click="editSection({{ $section->id }})"
+                                class="p-1 rounded-lg text-gray-300 hover:text-indigo-600 hover:bg-indigo-50 transition"
+                                title="Edit Section">
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-3 h-3"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+
+                            </button>
+
+                            <button wire:click="deleteSection({{ $section->id }})"
+                                    class="p-1 rounded-lg text-gray-300 hover:text-red-500 hover:bg-red-50 transition flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+                            </button>
+                        </div>
                     </div>
 
                     {{-- Component List --}}
@@ -179,6 +199,11 @@
             </div>
 
             <div class="flex-1 overflow-y-auto px-4 py-4">
+                @if($editingType === 'section')
+
+                    @include('livewire.admin.landing-page.section-form')
+
+                @else
                 @includeIf(
                     'livewire.admin.landing-page.components.' . $editingType . '-form',
                     [
@@ -188,6 +213,7 @@
                         'mediaMethod' => $mediaMethod ?? 'upload',
                     ]
                 )
+                @endif
             </div>
 
             <div class="px-4 py-3 border-t border-gray-100 bg-gray-50">
