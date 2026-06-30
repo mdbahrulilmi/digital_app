@@ -45,7 +45,6 @@
               content="{{ \Illuminate\Support\Str::startsWith($landingPage->image_url, ['http://','https://']) ? $landingPage->image_url : asset($landingPage->image_url) }}">
     @endif
 
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 

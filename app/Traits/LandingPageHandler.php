@@ -2,16 +2,16 @@
 
 namespace App\Traits;
 
-use App\Models\LandingPageSection;
+use App\Models\LandingPageComponent;
 
 trait LandingPageHandler
 {
-    protected function updateLandingPageSections($types, $mapping, $editingId, $newData)
+    protected function updateLandingPageComponents($types, $mapping, $editingId, $newData)
     {
-        $sections = LandingPageSection::whereIn('type', $types)->get();
+        $components = LandingPageComponent::whereIn('type', $types)->get();
 
-        foreach ($sections as $section) {
-            $content = $section->content;
+        foreach ($components as $component) {
+            $content = $component->content;
             $updated = false;
 
             foreach ($mapping as $map) {
@@ -34,7 +34,7 @@ trait LandingPageHandler
             }
 
             if ($updated) {
-                $section->update(['content' => $content]);
+                $component->update(['content' => $content]);
             }
         }
     }

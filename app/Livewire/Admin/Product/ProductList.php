@@ -199,7 +199,7 @@ class ProductList extends Component
                 'image' => $imageValue
             ];
 
-           $this->updateLandingPageSections(['product', 'product2'], [
+           $this->updateLandingPageComponents(['product', 'product2'], [
             [
                 'id_key'         => 'product_id', 
                 'title_key'      => 'title', 
@@ -265,7 +265,6 @@ class ProductList extends Component
 
     public function render()
     {
-        // Query untuk Produk (Main Pagination)
         $products = Product::query()
             ->when($this->search, fn ($q) => $q->where('title', 'like', '%' . $this->search . '%'))
             ->when($this->filterStatus, fn ($q) => $q->where('status', $this->filterStatus))

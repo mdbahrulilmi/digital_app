@@ -25,7 +25,7 @@ class ProgramList extends Component
     
     public $search = '';
     public $searchMedia = '';
-    public $filterHasProducts = '';
+    public $filterStatus = '';
 
     public $title;     
     public $slug;
@@ -201,7 +201,7 @@ class ProgramList extends Component
                 'end_date'    => $this->end_date,
             ];
 
-            $this->updateLandingPageSections(['program', 'program2'], [
+            $this->updateLandingPagecomponents(['program', 'program2'], [
             [
                 'id_key'         => 'program_id', 
                 'title_key'      => 'title', 
@@ -269,8 +269,9 @@ class ProgramList extends Component
     {
         $query = Program::query()
             ->when($this->search, fn($q) => $q->where('title', 'like', '%' . $this->search . '%'))
-            ->when($this->filterHasProducts === 'with_products', fn($q) => $q->has('products'))
-            ->when($this->filterHasProducts === 'no_products', fn($q) => $q->doesntHave('products'));
+            ->when($this->filterStatus, function ($q) {
+                        $q->where('status', $this->filterStatus);
+                    });
 
         $mediaItems = Media::query()
             ->when($this->searchMedia, fn ($q) => $q->where('name', 'like', '%' . $this->searchMedia . '%'))

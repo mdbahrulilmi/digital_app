@@ -19,7 +19,7 @@
             </button>
 
             {{-- SECTION LIST --}}
-            <div id="section-list" class="space-y-3">
+            <div id="section-list" class="space-y-3" wire:ignore>
 
                 @foreach($landingPage->sections as $section)
                 <div class="border border-gray-200/80 rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200" data-id="{{ $section->id }}">
@@ -70,6 +70,7 @@
                     <div
                         class="p-2 space-y-1 component-list min-h-[8px]"
                         data-section="{{ $section->id }}"
+                        wire:ignore
                     >
                         @foreach($section->components as $component)
                         <div class="flex items-center justify-between px-2.5 py-2 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-gray-50/80 transition-colors group" data-id="{{ $component->id }}">

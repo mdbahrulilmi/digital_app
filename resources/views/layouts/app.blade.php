@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 
 
     @livewireStyles
@@ -205,127 +204,52 @@ function icon($name)
 @stack('scripts')
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
-<!-- Include the Quill library -->
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
 <script>
 document.addEventListener('livewire:init', () => {
-
-    Livewire.on('init-quill', (data) => {
-        const id = data.id;
-
-        const editorEl = document.getElementById('editor-' + id);
-        const inputEl  = document.getElementById('content-' + id);
-
-        if (!editorEl || editorEl.__quill) return;
-
-        const quill = new Quill(editorEl, {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    // Font & Size
-                    [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
-                    
-                    // Formatting
-                    ['bold', 'italic', 'underline', 'strike'],
-                    
-                    // Color & Background
-                    [{ 'color': [] }, { 'background': [] }],
-                    
-                    // Alignment
-                    [{ 'align': [] }],
-                    
-                    // Lists & Indent
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],
-                    
-                    // Headers, Blockquote, Code
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    ['blockquote', 'code-block'],
-                    
-                    // Clean formatting
-                    ['clean']
-                ]
-            }
-        });
-
-        editorEl.__quill = quill;
-
-        // 🔥 INIT VALUE (kalau edit data lama)
-        if (inputEl.value) {
-            quill.root.innerHTML = inputEl.value;
-        }
-
-        // 🔥 SYNC tiap ada perubahan
-        quill.on('text-change', () => {
-            // Menggunakan quill.root.innerHTML untuk mendapatkan HTML
-            inputEl.value = quill.root.innerHTML;
-
-            // Trigger event agar Livewire menangkap perubahan
-            inputEl.dispatchEvent(new Event('input', { bubbles: true }));
-        });
-    });
-
-});
-
-document.addEventListener('livewire:init', () => {
-
-    new Sortable(document.getElementById('section-list'), {
-        animation:150,
-        handle:'.drag-handle',
-
-        onEnd(){
-
-            let order=[];
-
-            document.querySelectorAll('#section-list > div').forEach((el,index)=>{
-
-                order.push({
-                    id:el.dataset.id,
-                    sort:index+1
+    // 1. Ambil elemennya dulu
+    const sectionList = document.getElementById('section-list');
+    
+    // 2. Cek apakah elemen ada (tidak null) baru jalankan Sortable
+    if (sectionList) {
+        new Sortable(sectionList, {
+            animation: 150,
+            handle: '.drag-handle',
+            onEnd(evt) {
+                let order = [];
+                sectionList.querySelectorAll('div[data-id]').forEach((el, index) => {
+                    order.push({
+                        id: el.dataset.id,
+                        sort: index + 1
+                    });
                 });
 
-            });
-
-            Livewire.dispatch('section-sorted',{
-                order
-            });
-
-        }
-
-    });
-
+                Livewire.dispatch('section-sorted', { order });
+            }
+        });
+    }
 });
 
+// Sama halnya dengan .component-list, jangan paksa inisialisasi jika tidak ada elemen
 document.querySelectorAll('.component-list').forEach(list => {
-
     new Sortable(list, {
-
         animation: 150,
         handle: '.component-handle',
-
         onEnd() {
-
             let order = [];
-
             list.querySelectorAll('[data-id]').forEach((el, index) => {
-
                 order.push({
                     id: el.dataset.id,
                     sort: index + 1
                 });
-
             });
 
             Livewire.dispatch('component-sorted', [
                 list.dataset.section,
                 order
             ]);
-
         }
-
     });
-
 });
 </script>
 @livewireScripts
