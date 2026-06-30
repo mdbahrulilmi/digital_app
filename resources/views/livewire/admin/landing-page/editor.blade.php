@@ -1,6 +1,15 @@
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .custom-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+</style>
+
 <div class="flex h-screen bg-gray-50/50">
 
-    {{-- LEFT COLUMN: header + section list, scrolls independently --}}
     <div class="w-[420px] flex-shrink-0 h-screen overflow-y-auto p-6 space-y-5">
 
         {{-- HEADER --}}
@@ -140,7 +149,7 @@
             <div class="relative">
                 <div class="absolute top-1.5 left-1/2 -translate-x-1/2 w-24 h-5 bg-slate-900 rounded-full z-10"></div>
             </div>
-            <div class="flex-1 min-h-0 w-full bg-slate-100 rounded-[34px] overflow-y-auto">
+            <div class="flex-1 min-h-0 w-full bg-slate-100 rounded-[34px] overflow-y-auto custom-scrollbar">
                 <div class="p-2 w-full max-w-md min-h-full bg-white mx-auto relative flex flex-col" style="min-height:100%;">
 
                     {{-- CONTENT --}}
