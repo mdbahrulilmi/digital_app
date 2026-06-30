@@ -8,7 +8,6 @@
             @php
         $url = $component->content['video_url'];
         
-        // Fungsi sederhana untuk mendeteksi provider
         $isYoutube = str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be');
         $isVimeo = str_contains($url, 'vimeo.com');
     @endphp

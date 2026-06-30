@@ -29,44 +29,14 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-
-        /* WRAPPER */
-.quill-wrapper {
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    overflow: hidden;
-    background: white;
-}
-
-/* TOOLBAR */
-.ql-toolbar {
-    border: none !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-    background: #f8fafc;
-    padding: 8px !important;
-}
-
-/* EDITOR AREA */
-.ql-container {
-    border: none !important;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 14px;
-}
-
-/* CONTENT AREA */
-.ql-editor {
-    min-height: 180px;
-    padding: 12px;
-    color: #0f172a;
-    line-height: 1.6;
-}
-
-/* PLACEHOLDER */
-.ql-editor.ql-blank::before {
-    color: #94a3b8;
-    font-style: normal;
-}
-    </style>
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .custom-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        </style>
 </head>
 
 <body class="bg-slate-50 text-slate-800 antialiased">

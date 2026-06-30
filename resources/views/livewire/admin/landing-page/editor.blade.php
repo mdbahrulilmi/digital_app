@@ -1,18 +1,7 @@
-<style>
-    .custom-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    .custom-scrollbar {
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-</style>
-
 <div class="flex h-screen bg-gray-50/50">
 
     <div class="w-[420px] flex-shrink-0 h-screen overflow-y-auto p-6 space-y-5">
 
-        {{-- HEADER --}}
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-[11px] font-medium text-indigo-500 uppercase tracking-wider mb-0.5">Landing Page Builder</p>

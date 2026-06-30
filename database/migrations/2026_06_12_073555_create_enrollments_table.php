@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('member_id')->constrained();
             $table->foreignId('program_id')->constrained();
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

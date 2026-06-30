@@ -42,10 +42,6 @@ use App\Livewire\Public\PublicProductShow;
 // Payment
 use App\Livewire\Payment\Invoice;
 use App\Livewire\Payment\Success;
-use App\Http\Controllers\Payment\MidtransWebhookController;
-use App\Http\Controllers\Payment\DokuController;    
-
-Route::get('/test-doku', [DokuController::class, 'generateQr']);
 
 Route::middleware(['already_admin'])->group(function () {
     Route::get('/admin/login', AdminLogin::class)->name('admin.login');

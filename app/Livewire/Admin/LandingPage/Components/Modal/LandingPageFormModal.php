@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\LandingPage\Components\Modal;
 
 use Livewire\Component;
 use App\Models\LandingPage;
+use App\Models\LandingPageSection;
 use App\Models\LandingPageComponent;
 use App\Traits\SlugGenerator;
 use Livewire\WithFileUploads;
@@ -306,7 +307,7 @@ class LandingPageFormModal extends Component
         foreach ($template as $sectionIndex => $sectionData) {
 
             // buat section
-            $section = \App\Models\LandingPageSection::create([
+            $section = LandingPageSection::create([
                 'landing_page_id' => $page->id,
                 'name'            => $sectionData['name'],
                 'layout'          => $sectionData['layout'] ?? 'stack',
@@ -317,7 +318,7 @@ class LandingPageFormModal extends Component
             // buat component
             foreach ($sectionData['components'] as $componentIndex => $component) {
 
-                \App\Models\LandingPageComponent::create([
+                LandingPageComponent::create([
                     'section_id' => $section->id,
                     'type'       => $component['type'],
                     'content'    => $component['content'],
