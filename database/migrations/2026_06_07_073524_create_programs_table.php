@@ -22,6 +22,10 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->enum('status', ['active', 'inactive', 'draft'])->default('active');
+            $table->foreignId('parent_program_id')
+                ->nullable()
+                ->constrained('programs')
+                ->nullOnDelete();
             $table->timestamps();
         });
     }
