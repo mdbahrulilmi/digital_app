@@ -118,7 +118,7 @@
         </div>
     </section>
     @endif
-    @if($blogs->isNotEmpty())
+    {{-- @if($blogs->isNotEmpty())
     <section>
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-black text-slate-900 border-l-4 border-teal-500 pl-4">Artikel Blog</h3>
@@ -160,7 +160,8 @@
             @endforeach
         </div>
     </section>
-    @endif@if($showPasswordModal)
+    @endif --}}
+    @if($showPasswordModal)
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50 backdrop-blur-sm">
             <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">
                 <h2 class="text-xl font-bold mb-4 text-gray-800">Keamanan Akun</h2>

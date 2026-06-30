@@ -82,14 +82,14 @@ class MemberDashboard extends Component
             ->take(3)
             ->get();
 
-        $this->blogs = \App\Models\LandingPage::where('blog', 1)
-            ->where('status', 'published')
-            ->with(['sections' => function($query) {
-                $query->where('type', 'image')->orderBy('sort_order', 'asc');
-            }])
-            ->latest()
-            ->take(3)
-            ->get();
+        // $this->blogs = \App\Models\LandingPage::where('blog', 1)
+        //     ->where('status', 'published')
+        //     ->with(['sections' => function($query) {
+        //         $query->where('type', 'image')->orderBy('sort_order', 'asc');
+        //     }])
+        //     ->latest()
+        //     ->take(3)
+        //     ->get();
 
         
         $programQuery = OrderItem::query()
