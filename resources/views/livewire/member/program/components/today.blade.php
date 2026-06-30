@@ -70,16 +70,18 @@
                         @if($day->tasks->isNotEmpty())
                             <div class="space-y-3">
                                 @foreach($day->tasks as $task)
-                                    @php $sub = $submissions->get($task->id); @endphp
                                     <div class="p-3 rounded-2xl bg-white border border-amber-100">
                                         <span class="text-xs font-bold text-slate-700 block mb-1">{{ $task->task }}</span>
-                                        @if($sub)
-                                            <p class="text-[9px] text-emerald-600 font-bold uppercase tracking-wider mt-2 pt-2 border-t border-slate-50">
-                                                ✅ Selesai: {{ \Carbon\Carbon::parse($sub->created_at)->translatedFormat('d M, H:i') }}
-                                            </p>
-                                        @endif
                                     </div>
                                 @endforeach
+                                <div class="p-3 rounded-2xl bg-white border border-amber-100">
+                                    @php $sub = $submissions->get($day->schedules_id); @endphp
+                                    @if($sub)
+                                        <p class="text-[9px] text-emerald-600 font-bold uppercase tracking-wider mt-2 pt-2 border-t border-slate-50">
+                                            ✅ Selesai: {{ \Carbon\Carbon::parse($sub->created_at)->translatedFormat('d M, H:i') }}
+                                        </p>
+                                    @endif
+                                </div>
                             </div>
                             @if($day->upload_required == 1)
                                 <button wire:click="openUploadModal({{ $day->schedules_id }})" wire:loading.attr="disabled"
