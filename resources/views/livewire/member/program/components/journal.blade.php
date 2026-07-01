@@ -1,4 +1,18 @@
 <div class="p-6 space-y-4">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6">
+
+        <div>
+
+            <h1 class="text-3xl font-black text-slate-900">
+                Riwayat Journal
+            </h1>
+
+            <p class="mt-1 text-slate-500">
+                Jelajahi seluruh materi pembelajaran program.
+            </p>
+
+        </div>
+    </div>
     @forelse($journalsLog as $journal)
         <div class="w-full flex gap-3 group">
             <div class="flex-none flex flex-col items-center pt-2">

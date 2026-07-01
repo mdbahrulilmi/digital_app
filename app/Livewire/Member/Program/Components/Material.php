@@ -11,6 +11,8 @@ class Material extends Component
     public $slug;
     public $showModal = false;
     public $selectedProduct = null;
+    public $search = '';
+    public $filter = '';
 
     public function mount($slug)
     {
@@ -43,10 +45,33 @@ class Material extends Component
             ->firstOrFail();
 
         $products = $program->schedules
-            ->flatMap(fn($schedule) => $schedule->programProducts)
-            ->map(fn($pp) => $pp->product)
+            ->flatMap(fn ($schedule) => $schedule->programProducts)
+            ->map(fn ($pp) => $pp->product)
             ->filter()
-            ->unique('id');
+            ->unique('id')
+
+            // Search
+            ->filter(function ($product) {
+                if (!$this->search) {
+                    return true;
+                }
+
+                return str_contains(
+                    strtolower($product->title),
+                    strtolower($this->search)
+                );
+            })
+
+            // Filter Type
+            ->filter(function ($product) {
+                if (!$this->filter) {
+                    return true;
+                }
+
+                return $product->type === $this->filter;
+            })
+
+            ->values();
 
         return view('livewire.member.program.components.material', [
             'products' => $products

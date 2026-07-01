@@ -65,9 +65,9 @@ $menuGroups = [
         ['label' => 'Media Library', 'icon' => 'image', 'url' => url('/admin/media')],
     ],
 
-    'Akun' => [
-        ['label' => 'Pengaturan', 'icon' => 'settings', 'url' => url('/admin/settings')],
-    ],
+    // 'Akun' => [
+    //     ['label' => 'Pengaturan', 'icon' => 'settings', 'url' => url('/admin/settings')],
+    // ],
 ];
 
 function icon($name)

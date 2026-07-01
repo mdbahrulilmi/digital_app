@@ -6,130 +6,443 @@
         @endif
 
         {{-- HEADER --}}
-        <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <h1 class="text-2xl font-bold text-slate-900">Manajemen Produk</h1>
-                <p class="text-sm text-slate-500">Kelola produk dalam tampilan grid modern.</p>
+        {{-- ================= HEADER ================= --}}
+        <div class="mb-8">
+
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+
+                <div>
+                    
+                    <h1 class="mt-2 text-3xl font-black text-slate-900">
+                        Manajemen Produk
+                    </h1>
+
+                    <p class="mt-2 text-slate-500">
+                        Kelola seluruh produk digital, video, PDF, audio dan gambar.
+                    </p>
+
+                </div>
+
+                <button
+                    wire:click="create"
+                    class="cursor-pointer inline-flex items-center justify-center gap-2
+                    rounded-xl bg-indigo-600 px-6 py-3
+                    font-bold text-white
+                    hover:bg-indigo-700 transition">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 4v16m8-8H4"/>
+
+                    </svg>
+
+                    Tambah Produk
+
+                </button>
+
             </div>
 
-            <button
-                wire:click="create"
-                class="cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold shadow-md transition-all">
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                </svg>
-
-                Tambah Produk
-            </button>
         </div>
 
-        {{-- FILTER --}}
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 mb-6 flex flex-col sm:flex-row gap-4 justify-between">
+            {{-- ================= TOOLBAR ================= --}}
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm mb-6">
 
-            <input
-                wire:model.live="search"
-                type="text"
-                class="w-full sm:w-80 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-                placeholder="Cari produk..."
-            >
+                <div class="flex flex-col xl:flex-row gap-4">
 
-            <select wire:model.live="filterStatus"
-                class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                    {{-- Search --}}
+                    <div class="relative flex-1">
 
-                <option value="">Semua Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                        <svg
+                            class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24">
 
-            </select>
-        </div>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 105.5 5.5a7.5 7.5 0 0011.15 11.15z"/>
 
-        {{-- GRID --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        </svg>
 
-        @forelse($products as $product)
-            <div wire:key="product-{{ $product->id }}"
-                class="group bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all flex flex-col justify-between">
-                
-                <a href="{{ route('product.show', $product->id) }}" class="block flex-1 cursor-pointer">
-                    
-                    {{-- IMAGE --}}
-                    <div class="h-44 bg-slate-100 overflow-hidden relative">
-                        @if($product->image)
-                            <img src="{{ asset($product->image) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        @else
-                            <img src="https://ui-avatars.com/api/?title={{ urlencode($product->title) }}&background=f1f5f9&color=64748b" class="w-full h-full object-cover">
-                        @endif
+                        <input
+                            wire:model.live.debounce.400ms="search"
+                            type="text"
+                            placeholder="Cari nama produk..."
 
-                        @if($product->digital_assets)
-                            <span class="absolute bottom-2 left-2 px-2 py-0.5 text-[10px] font-bold bg-indigo-600 text-white rounded-md shadow-sm uppercase tracking-wider">
-                                Digital Asset
-                            </span>
-                        @endif
-                    </div>
-
-                    {{-- CONTENT --}}
-                    <div class="p-4 space-y-2">
-
-                        <div class="flex items-start justify-between gap-2">
-                            <h3 class="font-bold text-slate-800 line-clamp-2 group-hover:text-indigo-600 transition text-base leading-snug">
-                                {{ $product->title }}
-                            </h3>
-                        </div>      
-
-                        <div class="flex items-center justify-between pt-1">
-                            <div>
-                                <p class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Harga</p>
-                                <p class="font-extrabold text-slate-900 text-lg">
-                                    Rp {{ number_format($product->price, 0, ',', '.') }}
-                                </p>
-                            </div>
-
-                            @if($product->status === 'active')
-                                <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                    Active
-                                </span>
-                            @else
-                                <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-50 text-slate-500 border border-slate-200">
-                                    Inactive
-                                </span>
-                            @endif
-                        </div>
+                            class="w-full rounded-xl border border-slate-200
+                            bg-slate-50
+                            py-3 pl-11 pr-4
+                            focus:ring-2 focus:ring-indigo-500">
 
                     </div>
-                </a>
 
-                {{-- ACTION (Tombol aksi diletakkan di luar tag <a> agar action Livewire tidak bentrok) --}}
-                <div class="px-4 pb-4 pt-2 flex items-center justify-between gap-2 bg-slate-50/50 border-t border-slate-100">
+                    {{-- Status --}}
+                    <select
+                        wire:model.live="filterStatus"
+                        class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 lg:w-52">
 
-                    <button wire:click="edit({{ $product->id }})"
-                        class="flex-1 py-2 text-xs font-bold rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200/40 transition text-center">
-                        Edit
-                    </button>
-                    <a href="{{ route('product.show', $product->id) }}" 
-                        class="cursor-pointer text-center flex-1 py-2 text-xs font-bold rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200/40 transition">
-                            Detail
-                    </a>
-                    <button wire:click="delete({{ $product->id }})"
-                        onclick="confirm('Hapus produk ini?') || event.stopImmediatePropagation()"
-                        class="flex-1 py-2 text-xs font-bold rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200/40 transition text-center">
-                        Hapus
-                    </button>
+                        <option value="">Semua Status</option>
+                        <option value="active">Aktif</option>
+                        <option value="inactive">Inactive</option>
+
+                    </select>
+
+                    {{-- Tipe --}}
+                    <select
+                        wire:model.live="filterType"
+                        class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 lg:w-52">
+
+                        <option value="">Semua Tipe</option>
+
+                        <option value="video">🎥 Video</option>
+                        <option value="audio">🎵 Audio</option>
+                        <option value="image">🖼 Image</option>
+                        <option value="file">📄 PDF/File</option>
+                        <option value="link">🔗 Link</option>
+
+                    </select>
 
                 </div>
 
             </div>
-        @empty
-            <div class="col-span-full text-center py-12 text-slate-400 bg-white border border-dashed rounded-2xl">
-                Tidak ada produk ditemukan
-            </div>
-        @endforelse
 
-    </div>
+        {{-- GRID --}}
+        {{-- ================= PRODUCT TABLE ================= --}}
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+            {{-- Header Desktop --}}
+            <div
+                class="hidden lg:grid grid-cols-12 gap-4
+                px-6 py-4
+                bg-slate-50
+                border-b
+                border-slate-200">
+
+                <div class="col-span-5 text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Produk
+                </div>
+
+                <div class="col-span-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Harga
+                </div>
+
+                <div class="col-span-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Status
+                </div>
+
+                <div class="col-span-1 text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Asset
+                </div>
+
+                <div class="col-span-2 text-xs font-bold uppercase tracking-wider text-right text-slate-500">
+                    Aksi
+                </div>
+
+            </div>
+
+            @forelse($products as $product)
+
+                @php
+
+                    $asset = json_decode($product->digital_assets,true);
+
+                    $type = $asset['type'] ?? $product->type;
+
+                    switch($type){
+
+                        case 'video':
+                            $icon='🎥';
+                            $badge='bg-red-100 text-red-700';
+                            break;
+
+                        case 'audio':
+                            $icon='🎵';
+                            $badge='bg-purple-100 text-purple-700';
+                            break;
+
+                        case 'image':
+                            $icon='🖼';
+                            $badge='bg-green-100 text-green-700';
+                            break;
+
+                        case 'file':
+                            $icon='📄';
+                            $badge='bg-orange-100 text-orange-700';
+                            break;
+
+                        default:
+                            $icon='🔗';
+                            $badge='bg-blue-100 text-blue-700';
+
+                    }
+
+                @endphp
+
+                {{-- ================= DESKTOP ================= --}}
+                <div
+                    wire:key="product-{{ $product->id }}"
+                    class="hidden lg:grid grid-cols-12 gap-4 items-center
+                    px-6 py-4
+                    border-b border-slate-100
+                    hover:bg-indigo-50/50 transition">
+
+                    {{-- Produk --}}
+                    <div class="col-span-5 flex items-center gap-4 min-w-0">
+
+                        <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 shrink-0">
+
+                            @if($product->image)
+
+                                <img
+                                    src="{{ asset($product->image) }}"
+                                    class="w-full h-full object-cover">
+
+                            @else
+
+                                <img
+                                    src="https://ui-avatars.com/api/?name={{ urlencode($product->title) }}"
+                                    class="w-full h-full object-cover">
+
+                            @endif
+
+                        </div>
+
+                        <div class="min-w-0">
+
+                            <h3 class="font-bold truncate">
+
+                                {{ $product->title }}
+
+                            </h3>
+
+                            <p class="text-xs text-slate-500 truncate">
+
+                                {{ $product->slug }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {{-- Harga --}}
+                    <div class="col-span-2">
+
+                        <div class="font-bold text-slate-800">
+
+                            Rp {{ number_format($product->price,0,',','.') }}
+
+                        </div>
+
+                    </div>
+
+                    {{-- Status --}}
+                    <div class="col-span-2">
+
+                        @if($product->status=='active')
+
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">
+
+                                Active
+
+                            </span>
+
+                        @else
+
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600">
+
+                                Inactive
+
+                            </span>
+
+                        @endif
+
+                    </div>
+
+                    {{-- Asset --}}
+                    <div class="col-span-1">
+
+                        <span class="px-2 py-1 rounded-lg text-xs font-bold {{ $badge }}">
+
+                            {{ $icon }}
+
+                        </span>
+
+                    </div>
+
+                    {{-- Action --}}
+                    <div class="col-span-2">
+
+                        <div class="flex justify-end gap-2">
+
+                            <button
+                                wire:click="edit({{ $product->id }})"
+                                class="w-10 h-10 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700">
+
+                                ✏️
+
+                            </button>
+
+                            <a
+                                href="{{ route('product.show',$product->id) }}"
+                                class="w-10 h-10 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center">
+
+                                👁
+
+                            </a>
+
+                            <button
+                                wire:click="delete({{ $product->id }})"
+                                onclick="confirm('Hapus produk ini?') || event.stopImmediatePropagation()"
+                                class="w-10 h-10 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700">
+
+                                🗑
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- ================= MOBILE ================= --}}
+                <div
+                    class="lg:hidden p-4 border-b border-slate-100">
+
+                    <div class="flex gap-4">
+
+                        <div class="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0">
+
+                            @if($product->image)
+
+                                <img
+                                    src="{{ asset($product->image) }}"
+                                    class="w-full h-full object-cover">
+
+                            @endif
+
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+
+                            <h3 class="font-bold truncate">
+
+                                {{ $product->title }}
+
+                            </h3>
+
+                            <p class="text-xs text-slate-500 truncate">
+
+                                {{ $product->slug }}
+
+                            </p>
+
+                            <div class="flex items-center gap-2 mt-3">
+
+                                <span class="px-2 py-1 rounded-full text-[10px] {{ $badge }}">
+
+                                    {{ strtoupper($type) }}
+
+                                </span>
+
+                                <span class="text-xs text-slate-500">
+
+                                    Rp {{ number_format($product->price,0,',','.') }}
+
+                                </span>
+
+                            </div>
+
+                            <div class="flex gap-2 mt-4">
+
+                                <button
+                                    wire:click="edit({{ $product->id }})"
+                                    class="flex-1 py-2 rounded-lg bg-amber-50 text-amber-700 text-xs font-bold">
+
+                                    Edit
+
+                                </button>
+
+                                <a
+                                    href="{{ route('product.show',$product->id) }}"
+                                    class="flex-1 py-2 rounded-lg bg-blue-50 text-blue-700 text-xs font-bold text-center">
+
+                                    Detail
+
+                                </a>
+
+                                <button
+                                    wire:click="delete({{ $product->id }})"
+                                    onclick="confirm('Hapus produk ini?') || event.stopImmediatePropagation()"
+                                    class="flex-1 py-2 rounded-lg bg-rose-50 text-rose-700 text-xs font-bold">
+
+                                    Hapus
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            @empty
+
+                <div class="py-20 text-center text-slate-400">
+
+                    Tidak ada produk ditemukan.
+
+                </div>
+
+            @endforelse
+
+        </div>
 
         {{-- PAGINATION --}}
-        <div class="mt-6">
-            {{ $products->links() }}
+        {{-- ================= FOOTER ================= --}}
+        <div class="mt-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+
+            <div class="text-sm text-slate-500">
+
+                Menampilkan
+                <span class="font-bold text-slate-800">
+                    {{ $products->firstItem() ?? 0 }}
+                </span>
+                -
+                <span class="font-bold text-slate-800">
+                    {{ $products->lastItem() ?? 0 }}
+                </span>
+
+                dari
+
+                <span class="font-bold text-indigo-600">
+                    {{ $products->total() }}
+                </span>
+
+                produk
+
+            </div>
+
+            <div>
+
+                {{ $products->links() }}
+
+            </div>
+
         </div>
 
     <div>
