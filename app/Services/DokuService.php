@@ -14,11 +14,11 @@ class DokuService
         $serviceIds = 
         app()->environment('production')
         ? [
-            'bca'     => '   19008',
-            'bni'     => '98829172',
-            'bri'     => '   13925',
-            'bsi'     => '   60599',
-            'mandiri' => '   86188',
+            'va_bca'     => '   19008',
+            'va_bni'     => '98829172',
+            'va_bri'     => '   13925',
+            'va_bsi'     => '   60599',
+            'va_mandiri' => '   86188',
         ]
         : 
         [
