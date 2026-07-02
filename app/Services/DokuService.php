@@ -11,18 +11,40 @@ class DokuService
 
     public function createVA($order)
     {
-        $vaMapping = [
-        'va_mandiri' => ['serviceId' => '  861880', 'channel' => 'VIRTUAL_ACCOUNT_BANK_MANDIRI'],
-        'va_cimb'    => ['serviceId' => '   18990', 'channel' => 'VIRTUAL_ACCOUNT_BANK_CIMB'],
-        'va_bca'     => ['serviceId' => '  190089', 'channel' => 'VIRTUAL_ACCOUNT_BCA'],
-        'va_bni'     => ['serviceId' => '   84923', 'channel' => 'VIRTUAL_ACCOUNT_BNI'],
-        'va_bri'     => ['serviceId' => '  139256', 'channel' => 'VIRTUAL_ACCOUNT_BRI'],
-        'va_bsi'     => ['serviceId' => '  202020', 'channel' => 'VIRTUAL_ACCOUNT_BSI'],
+        $serviceIds = app()->environment('production')
+        ? [
+            'bca'     => '   19008',
+            'bni'     => '98829172',
+            'bri'     => '   13925',
+            'bsi'     => '   60599',
+            'mandiri' => '   86188',
+        ]
+        : [
+            'va_mandiri' => '  861880',
+            'va_bca'     => '  190089',
+            'va_bni'     => '   84923',
+            'va_bri'     => '  139256',
+            'va_bsi'     => '  202020',
+        ];
 
+        $channels = [
+            'va_mandiri' => 'VIRTUAL_ACCOUNT_BANK_MANDIRI',
+            'va_bca'     => 'VIRTUAL_ACCOUNT_BCA',
+            'va_bni'     => 'VIRTUAL_ACCOUNT_BNI',
+            'va_bri'     => 'VIRTUAL_ACCOUNT_BRI',
+            'va_bsi'     => 'VIRTUAL_ACCOUNT_BSI',
         ];
 
         $method = $order->payment_method;
-        $config = $vaMapping[$method] ?? null;
+
+        $config = [
+            'serviceId' => $serviceIds[$method] ?? null,
+            'channel'   => $channels[$method] ?? null,
+        ];
+
+        if (!$config['serviceId'] || !$config['channel']) {
+            throw new \Exception("Metode pembayaran VA tidak didukung.");
+        }
 
         if (!$config) {
             throw new \Exception("Metode pembayaran VA tidak didukung.");
@@ -99,7 +121,7 @@ class DokuService
             'pointOfInitiation'  => 'app',
             'urlParam' => [
                 [
-                'url'        => 'https://www.digital.sukawebsite.com',
+                'url'        => 'https://www.digital.sukawebsite.com/payment?order_id='. (string) $order->order_id . '&method' . $channel,
                 'type'       => 'PAY_RETURN',
                 'isDeepLink' => 'Y'
                 ]
