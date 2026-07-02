@@ -121,7 +121,7 @@ class DokuService
             'pointOfInitiation'  => 'app',
             'urlParam' => [
                 [
-                'url'        => 'https://www.digital.sukawebsite.com/payment?order_id='. (string) $order->order_id . '&method' . $channel,
+                'url'        => 'https://www.digital.sukawebsite.com/payment?order_id='. (string) $order->order_id . '&method=' . $channel,
                 'type'       => 'PAY_RETURN',
                 'isDeepLink' => 'Y'
                 ]
