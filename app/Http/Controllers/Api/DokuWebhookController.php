@@ -143,7 +143,7 @@ class DokuWebhookController extends Controller
         $clientSecret = config('doku.client_secret');
         $httpMethod   = $request->method();
         // URL E MASJID KARENA JOIN SAMA E MASJID
-        $endpointUrl  = 'emasjid.id/doku/webhook'; 
+        $endpointUrl  = '/doku/webhook'; 
         $timestamp    = $request->header('X-TIMESTAMP');
         $accessToken  = str_replace('Bearer ', '', $request->header('Authorization') ?? '');
         $rawPayload   = $request->getContent();
