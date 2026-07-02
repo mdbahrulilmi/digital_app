@@ -50,17 +50,49 @@ class DokuWebhookController extends Controller
 
     public function handle(Request $request)
     {
-        $rawPayload = $request->getContent();
-        $signature  = $request->header('X-Signature');
+        Log::info('========== DOKU WEBHOOK ==========');
 
-        if (!$this->isValidSignature($request, $signature)) {
-            Log::warning('DOKU_INVALID_SIGNATURE');
+        Log::info('HEADERS', $request->headers->all());
+
+        Log::info('RAW BODY', [
+            'body' => $request->getContent(),
+        ]);
+
+        Log::info('PARSED BODY', [
+            'data' => $request->all(),
+        ]);
+
+        Log::info('SIGNATURE', [
+            'authorization' => $request->header('Authorization'),
+            'x-partner-id'  => $request->header('X-PARTNER-ID'),
+            'x-external-id' => $request->header('X-EXTERNAL-ID'),
+            'x-timestamp'   => $request->header('X-TIMESTAMP'),
+            'x-signature'   => $request->header('X-SIGNATURE'),
+        ]);
+
+        $isValid = $this->isValidSignature(
+            $request,
+            $request->header('X-SIGNATURE')
+        );
+
+        Log::info('SIGNATURE RESULT', [
+            'valid' => $isValid,
+        ]);
+
+        if (!$isValid) {
+            Log::warning('INVALID SIGNATURE');
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $data = json_decode($rawPayload, true);
+        $data = $request->json()->all();
+
+        Log::info('PAYLOAD', $data);
 
         $orderId = $data['trxId'] ?? null;
+
+        Log::info('ORDER ID', [
+            'trxId' => $orderId
+        ]);
 
         return DB::transaction(function () use ($orderId) {
 
@@ -68,18 +100,37 @@ class DokuWebhookController extends Controller
                 ->lockForUpdate()
                 ->first();
 
+            Log::info('ORDER', [
+                'found' => (bool) $order,
+                'order' => $order,
+            ]);
+
             if (!$order) {
-                return response()->json(['message' => 'Order not found'], 404);
+                return response()->json([
+                    'message' => 'Order not found'
+                ], 404);
             }
 
             if ($order->status === 'paid') {
-                return response()->json(['message' => 'Already processed'], 200);
+                Log::info('ORDER ALREADY PAID');
+                return response()->json([
+                    'message' => 'Already processed'
+                ], 200);
             }
 
-            $order->update(['status' => 'paid']);
+            $order->update([
+                'status' => 'paid'
+            ]);
+
+            Log::info('ORDER UPDATED');
+
             $this->processSuccessPayment($order);
 
-            return response()->json(['message' => 'OK'], 200);
+            Log::info('SUCCESS PAYMENT PROCESSED');
+
+            return response()->json([
+                'message' => 'OK'
+            ], 200);
         });
     }
 

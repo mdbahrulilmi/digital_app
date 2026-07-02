@@ -11,15 +11,17 @@ class DokuService
 
     public function createVA($order)
     {
-        $serviceIds = app()->environment('production')
-        ? [
-            'bca'     => '   19008',
-            'bni'     => '98829172',
-            'bri'     => '   13925',
-            'bsi'     => '   60599',
-            'mandiri' => '   86188',
-        ]
-        : [
+        $serviceIds = 
+        // app()->environment('production')
+        // ? [
+        //     'bca'     => '   19008',
+        //     'bni'     => '98829172',
+        //     'bri'     => '   13925',
+        //     'bsi'     => '   60599',
+        //     'mandiri' => '   86188',
+        // ]
+        // : 
+        [
             'va_mandiri' => '  861880',
             'va_bca'     => '  190089',
             'va_bni'     => '   84923',
