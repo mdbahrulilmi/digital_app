@@ -12,15 +12,15 @@ class DokuService
     public function createVA($order)
     {
         $serviceIds = 
-        // app()->environment('production')
-        // ? [
-        //     'bca'     => '   19008',
-        //     'bni'     => '98829172',
-        //     'bri'     => '   13925',
-        //     'bsi'     => '   60599',
-        //     'mandiri' => '   86188',
-        // ]
-        // : 
+        app()->environment('production')
+        ? [
+            'bca'     => '   19008',
+            'bni'     => '98829172',
+            'bri'     => '   13925',
+            'bsi'     => '   60599',
+            'mandiri' => '   86188',
+        ]
+        : 
         [
             'va_mandiri' => '  861880',
             'va_bca'     => '  190089',
@@ -44,13 +44,22 @@ class DokuService
             'channel'   => $channels[$method] ?? null,
         ];
 
+        
         if (!$config['serviceId'] || !$config['channel']) {
             throw new \Exception("Metode pembayaran VA tidak didukung.");
-        }
-
+            }
+            
         if (!$config) {
             throw new \Exception("Metode pembayaran VA tidak didukung.");
-        }
+            }
+                
+        $settlement = [
+            [
+                'bank_account_settlement_id' => config('doku.bank_settlement_id') ?? '',
+                "value" => 100,
+                "type" => "PERCENTAGE"
+            ],
+        ];
 
         $partnerServiceId = $config['serviceId'];
         $customerNo = 5; 
@@ -71,6 +80,7 @@ class DokuService
                 ],
             'additionalInfo' => [
                 'channel' => $config['channel'],
+                'settlement' => $settlement
                 ],
             'freeText' => [
                 ['english' => 'Free text', 'indonesia' => 'Tulisan Bebas']

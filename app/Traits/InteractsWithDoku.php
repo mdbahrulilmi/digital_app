@@ -25,7 +25,7 @@ trait InteractsWithDoku
             'X-SIGNATURE'   => $signature,
             'CHANNEL-ID'    => 'H2H',
             'Content-Type'  => 'application/json',
-        ])->post('https://api-sandbox.doku.com' . $endpoint, $body);
+        ])->post(config('doku.base_url') . $endpoint, $body);
 
         if ($response->failed()) {
             Log::error('DOKU_API_ERROR', [
@@ -57,7 +57,7 @@ trait InteractsWithDoku
             'X-TIMESTAMP'  => $timestamp,
             'X-SIGNATURE'  => base64_encode($signature),
             'Content-Type' => 'application/json',
-        ])->post('https://api-sandbox.doku.com/authorization/v1/access-token/b2b', [
+        ])->post(config('doku.base_url') . '/authorization/v1/access-token/b2b', [
             'grantType' => 'client_credentials'
         ]);
 

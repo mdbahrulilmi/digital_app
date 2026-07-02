@@ -35,7 +35,7 @@ class DokuWebhookController extends Controller
             'X-TIMESTAMP'  => $timestamp,
             'X-SIGNATURE'  => base64_encode($signature),
             'Content-Type' => 'application/json',
-        ])->post('https://api-sandbox.doku.com/authorization/v1/access-token/b2b', [
+        ])->post(config('doku.base_url') . '/authorization/v1/access-token/b2b', [
             'grantType' => 'client_credentials'
         ]);
 
