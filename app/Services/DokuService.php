@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Traits\InteractsWithDoku;
+use Illuminate\Support\Facades\Log;
 
 class DokuService
 {
@@ -54,8 +55,6 @@ class DokuService
 
         $endpoint = '/virtual-accounts/bi-snap-va/v1.1/transfer-va/create-va';
 
-        $endpoint = '/virtual-accounts/bi-snap-va/v1.1/transfer-va/create-va';
-
         return $this->callDokuApi(
             $endpoint,
             $body,
@@ -66,12 +65,55 @@ class DokuService
 
     public function createQRIS($order)
     {
+        $amountValue = number_format((float)$order->amount, 2, '.', '');
+
         $body = [
-            'orderNumber' => (string) $order->order_id,
-            'amount' => (int) $order->amount,
-            'feeType' => '0',
+            'partnerReferenceNo' => (string) $order->order_id,
+            'amount' => [
+                'value' => $amountValue,
+                'currency' => 'IDR'
+            ],
+            'merchantId' => config('doku.merchant_id'),
+            'terminalId' => config('doku.terminal_id'),
+            'validityPeriod' => now()->addMinutes(30)->format('Y-m-d\TH:i:sP'),
+            'additionalInfo' => [
+                'postalCode' => '12190',
+                'feeType' => '1'
+            ]
         ];
 
-        return $this->callDokuApi('/b2b/v1.0/qr/qr-mpm-generate', $body);
+        return $this->callDokuApi('/snap-adapter/b2b/v1.0/qr/qr-mpm-generate', $body, (string) $order->order_id);
+    }
+
+    public function createEwallet($order, $channel)
+    {
+        $channels = [
+        'dana'      => 'EMONEY_DANA_SNAP',
+        'ovo'       => 'EMONEY_OVO_SNAP',
+        'shopeepay' => 'EMONEY_SHOPEE_PAY_SNAP'
+        ];
+
+        $body = [
+            'partnerReferenceNo' => (string) $order->order_id,
+            'validUpTo'          => now()->addMinutes(30)->format('Y-m-d\TH:i:sP'),
+            'pointOfInitiation'  => 'app',
+            'urlParam' => [
+                [
+                'url'        => 'https://www.digital.sukawebsite.com',
+                'type'       => 'PAY_RETURN',
+                'isDeepLink' => 'Y'
+                ]
+            ],
+            'amount' => [
+                'value'    => number_format((float)$order->amount, 2, '.', ''),
+                'currency' => 'IDR'
+            ],
+            'additionalInfo' => [
+                'channel'                    => $channels[$channel] ?? 'EMONEY_DANA_SNAP',
+                'orderTitle'                 => 'Order ' . $order->order_id,
+                'supportDeepLinkCheckoutUrl' => false
+            ]
+        ];
+        return $this->callDokuApi('/direct-debit/core/v1/debit/payment-host-to-host', $body, (string) $order->order_id);
     }
 }

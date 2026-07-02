@@ -34,6 +34,12 @@ class Invoice extends Component
             $this->processPayment($dokuService, $order);
         }
 
+        if ($this->method === 'qris' && !empty($this->paymentCode)) {
+            $this->qrUrl = 'data:image/svg+xml;base64,' . base64_encode(
+                QrCode::format('svg')->size(300)->errorCorrection('H')->generate($this->paymentCode)
+            );
+        }
+
         if ($order && $order->status === 'paid') {
             $member = Member::where('whatsapp', $order->customer_whatsapp)->first();
             if ($member && !Auth::guard('member')->check()) {
@@ -44,21 +50,39 @@ class Invoice extends Component
 
     public function processPayment(DokuService $dokuService, $order)
     {
-        $response = ($this->method === 'qris')
-        ? $dokuService->createQRIS($order)
-        : $dokuService->createVA($order);
+        $eWallets = ['dana', 'shopeepay'];
 
-        if ($response->successful()) {
-            $paymentCode = $response->json('virtualAccountData.virtualAccountNo');
-            
-            $this->paymentCode = trim($paymentCode);
-            
-            $order->update([
-                'payment_code' => $this->paymentCode,
-            ]);
-            
-            return true;
+        if (in_array($this->method, $eWallets)) {
+            $response = $dokuService->createEwallet($order, $this->method);
+
+            $data = $response->json();
+
+            $order->update(['payment_code' => $data['webRedirectUrl']]);
+
+            return redirect()->away($data['webRedirectUrl']);
+
+        } elseif ($this->method === 'qris') {
+            $response = $dokuService->createQRIS($order);
+        } else {
+            $response = $dokuService->createVA($order);
         }
+        if ($response && $response->successful()) {
+            $data = $response->json();
+            $code = null;
+
+            if ($this->method === 'qris') {
+                $code = $data['qrContent'] ?? null;
+            } else {    
+                $code = $data['virtualAccountData']['virtualAccountNo'] ?? null;
+            }
+
+            if ($code) {
+                $this->paymentCode = trim($code);
+                $order->update(['payment_code' => $this->paymentCode]);
+                return true;
+            }
+        }
+        
         return false;
     }
     

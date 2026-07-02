@@ -73,7 +73,7 @@
             @endif
 
             {{-- JIKA RITEL (ALFA/INDO) --}}
-            @if($paymentCode)
+            @if($paymentCode && !$qrUrl)
                 <div class="relative group cursor-pointer" onclick="navigator.clipboard.writeText('{{ $paymentCode }}'); alert('Kode disalin!');">
                     <span class="text-3xl font-black tracking-widest text-slate-800">{{ $paymentCode }}</span>
                     <span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[9px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">Klik untuk salin</span>

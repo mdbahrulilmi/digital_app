@@ -61,12 +61,12 @@ class Checkout extends Component
         }
 
         $this->paymentGroups = [
-            // 'E-Wallet & QRIS' => [
-            //     'qris'      => ['label' => 'QRIS', 'icon' => asset('assets_content/icon/payment/qris.svg')],
-            //     'ovo'       => ['label' => 'OVO', 'icon' => asset('assets_content/icon/payment/ovo.svg')],
-            //     'shopeepay' => ['label' => 'ShopeePay', 'icon' => asset('assets_content/icon/payment/shopee.svg')],
-            //     'dana'      => ['label' => 'DANA', 'icon' => asset('assets_content/icon/payment/dana.svg')],
-            // ],
+            'E-Wallet & QRIS' => [
+                'qris'      => ['label' => 'QRIS', 'icon' => asset('assets_content/icon/payment/qris.svg')],
+                // 'ovo'       => ['label' => 'OVO', 'icon' => asset('assets_content/icon/payment/ovo.svg')],
+                'shopeepay' => ['label' => 'ShopeePay', 'icon' => asset('assets_content/icon/payment/shopee.svg')],
+                'dana'      => ['label' => 'DANA', 'icon' => asset('assets_content/icon/payment/dana.svg')],
+            ],
             'Virtual Account (SNAP)' => [
                 'va_bca'    => ['label' => 'BCA', 'icon' => asset('assets_content/icon/payment/bca.svg')],
                 'va_mandiri'=> ['label' => 'Mandiri', 'icon' => asset('assets_content/icon/payment/mandiri.svg')],
@@ -125,7 +125,7 @@ class Checkout extends Component
             ];
         }
 
-        $orderId = 'INV-' . time();
+        $orderId = 'DSW-' . time();
         $orderData = [
             'order_id'          => $orderId,
             'customer_name'     => $this->name,

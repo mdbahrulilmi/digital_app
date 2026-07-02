@@ -22,7 +22,7 @@ return new class extends Migration
             
             $table->integer('amount');
             $table->string('payment_method');
-            $table->string('payment_code')->nullable();
+            $table->text('payment_code')->nullable();
             $table->text('cart_snapshot')->nullable();
             $table->string('status')->default('pending')->index();
             $table->timestamps();
