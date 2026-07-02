@@ -164,42 +164,57 @@ class DokuWebhookController extends Controller
         return hash_equals($expectedSignature, $signature);
     }
 
-    private function isValidQrisSignature(Request $request): bool
+   private function isValidQrisSignature(Request $request): bool
     {
         $clientSecret = config('doku.client_secret');
 
-        $clientId = $request->header('Client-Id');
-        $requestId = $request->header('Request-Id');
-        $timestamp = $request->header('Request-Timestamp');
+        $clientId   = $request->header('Client-Id');
+        $requestId  = $request->header('Request-Id');
+        $timestamp  = $request->header('Request-Timestamp');
 
-        $signature = $request->header('Signature');
+        $receivedSignature = str_replace(
+            'HMACSHA256=',
+            '',
+            trim($request->header('Signature'))
+        );
+
+        // Endpoint harus sama persis dengan yang didaftarkan di DOKU
+        $endpointUrl = '/doku/webhook';
 
         $body = $request->getContent();
 
-        $stringToSign =
-            $clientId .
-            $requestId .
-            $timestamp .
-            $body;
+        // SHA256 binary -> Base64
+        $digest = base64_encode(
+            hash('sha256', $body, true)
+        );
 
-        $expected =
-            'HMACSHA256=' .
-            base64_encode(
-                hash_hmac(
-                    'sha256',
-                    $stringToSign,
-                    $clientSecret,
-                    true
-                )
-            );
+        $stringToSign =
+            "Client-Id:{$clientId}\n" .
+            "Request-Id:{$requestId}\n" .
+            "Request-Timestamp:{$timestamp}\n" .
+            "Request-Target:{$endpointUrl}\n" .
+            "Digest:{$digest}";
+
+        $expectedSignature = base64_encode(
+            hash_hmac(
+                'sha256',
+                $stringToSign,
+                $clientSecret,
+                true
+            )
+        );
 
         Log::info('QRIS SIGNATURE', [
             'string_to_sign' => $stringToSign,
-            'expected' => $expected,
-            'received' => $signature,
+            'digest' => $digest,
+            'expected' => $expectedSignature,
+            'received' => $receivedSignature,
         ]);
 
-        return hash_equals($expected, $signature);
+        return hash_equals(
+            $expectedSignature,
+            $receivedSignature
+        );
     }
 
     private function processSuccessPayment(Order $order)
