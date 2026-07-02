@@ -64,23 +64,49 @@
                 <span class="text-xs font-bold text-amber-700 animate-pulse">Menunggu Pembayaran...</span>
             </div>
 
-            {{-- JIKA QRIS --}}
-            @if($qrUrl)
+            {{-- E-Wallet --}}
+            @if(in_array($method, ['dana', 'shopeepay']) && $eWalletUrl)
+                <div class="flex flex-col items-center gap-3 py-4">
+                    <a href="{{ $eWalletUrl }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition">
+                        Bayar Sekarang
+                    </a>
+
+                    <p class="text-xs text-slate-500 text-center">
+                        Klik tombol di atas untuk melanjutkan pembayaran melalui
+                        <span class="font-semibold uppercase">{{ $method }}</span>.
+                    </p>
+                </div>
+
+            {{-- QRIS --}}
+            @elseif($qrUrl)
                 <div class="flex flex-col items-center py-2">
                     <img src="{{ $qrUrl }}" alt="QRIS Code" class="w-56 h-56 border p-2 rounded-xl bg-white shadow-sm">
-                    <p class="text-[11px] text-slate-400 mt-2">Scan kode QR di atas menggunakan aplikasi e-wallet / m-banking Anda</p>
+                    <p class="text-[11px] text-slate-400 mt-2">
+                        Scan kode QR di atas menggunakan aplikasi e-wallet / m-banking Anda.
+                    </p>
                 </div>
-            @endif
 
-            {{-- JIKA RITEL (ALFA/INDO) --}}
-            @if($paymentCode && !$qrUrl)
-                <div class="relative group cursor-pointer" onclick="navigator.clipboard.writeText('{{ $paymentCode }}'); alert('Kode disalin!');">
-                    <span class="text-3xl font-black tracking-widest text-slate-800">{{ $paymentCode }}</span>
-                    <span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[9px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">Klik untuk salin</span>
+            {{-- VA --}}
+            @elseif($paymentCode)
+                <div class="relative group cursor-pointer"
+                    onclick="navigator.clipboard.writeText('{{ $paymentCode }}'); alert('Nomor VA berhasil disalin!');">
+
+                    <span class="text-3xl font-black tracking-widest text-slate-800">
+                        {{ $paymentCode }}
+                    </span>
+
+                    <span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[9px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Klik untuk salin
+                    </span>
                 </div>
-                <p class="text-[11px] text-slate-400">Tunjukkan kode ini ke kasir <span class="uppercase font-bold">{{ $method }}</span> saat melakukan pembayaran.</p>
+
+                <p class="text-[11px] text-slate-400">
+                    Gunakan nomor Virtual Account di atas untuk melakukan pembayaran.
+                </p>
             @endif
-        @endif
     </div>
 </div>
 </div>

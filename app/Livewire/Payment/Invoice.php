@@ -16,7 +16,9 @@ use App\Services\DokuService;
 class Invoice extends Component
 {
     public $orderId, $method, $amount, $paymentStatus;
-    public $qrUrl, $paymentCode;
+    public $qrUrl, $paymentCode, $eWalletUrl;
+
+    public $eWallets = ['dana', 'shopeepay'];
 
     public function mount(DokuService $dokuService)
     {
@@ -39,6 +41,10 @@ class Invoice extends Component
                 QrCode::format('svg')->size(300)->errorCorrection('H')->generate($this->paymentCode)
             );
         }
+        
+        if (in_array($this->method, $this->eWallets) && !empty($this->paymentCode)) {
+            $this->eWalletUrl = $this->paymentCode;
+        }
 
         if ($order && $order->status === 'paid') {
             $member = Member::where('whatsapp', $order->customer_whatsapp)->first();
@@ -50,17 +56,9 @@ class Invoice extends Component
 
     public function processPayment(DokuService $dokuService, $order)
     {
-        $eWallets = ['dana', 'shopeepay'];
 
-        if (in_array($this->method, $eWallets)) {
+        if (in_array($this->method, $this->eWallets)) {
             $response = $dokuService->createEwallet($order, $this->method);
-
-            $data = $response->json();
-
-            $order->update(['payment_code' => $data['webRedirectUrl']]);
-
-            return redirect()->away($data['webRedirectUrl']);
-
         } elseif ($this->method === 'qris') {
             $response = $dokuService->createQRIS($order);
         } else {
@@ -72,6 +70,9 @@ class Invoice extends Component
 
             if ($this->method === 'qris') {
                 $code = $data['qrContent'] ?? null;
+            }
+            else if (in_array($this->method, $this->eWallets)) {
+                $code = $data['webRedirectUrl'] ?? null;
             } else {    
                 $code = $data['virtualAccountData']['virtualAccountNo'] ?? null;
             }
