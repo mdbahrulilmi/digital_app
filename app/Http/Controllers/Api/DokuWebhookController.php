@@ -153,6 +153,19 @@ class DokuWebhookController extends Controller
         $stringToSign = "{$httpMethod}:{$endpointUrl}:{$accessToken}:{$sha256Body}:{$timestamp}";
     
         $expectedSignature = base64_encode(hash_hmac('sha512', $stringToSign, $clientSecret, true));
+
+        Log::info('SIGN DEBUG', [
+            'client_secret' => substr($clientSecret, 0, 8) . '...',
+            'method' => $httpMethod,
+            'endpoint' => $endpointUrl,
+            'timestamp' => $timestamp,
+            'access_token' => substr($accessToken, 0, 30),
+            'body' => $minifiedBody,
+            'sha256' => $sha256Body,
+            'string_to_sign' => $stringToSign,
+            'expected_signature' => $expectedSignature,
+            'received_signature' => $signature,
+        ]);
     
         return hash_equals($expectedSignature, $signature);
     }
