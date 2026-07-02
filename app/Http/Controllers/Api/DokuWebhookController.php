@@ -47,6 +47,7 @@ class DokuWebhookController extends Controller
             'expiresIn'   => $response['expiresIn']
         ];
     }
+    
 
     public function handle(Request $request)
     {
@@ -54,60 +55,56 @@ class DokuWebhookController extends Controller
 
         Log::info('HEADERS', $request->headers->all());
 
-        Log::info('RAW BODY', [
-            'body' => $request->getContent(),
-        ]);
+        if ($request->hasHeader('signature')) {
 
-        Log::info('PARSED BODY', [
-            'data' => $request->all(),
-        ]);
+            if (!$this->isValidQrisSignature($request)) {
+                return response()->json([
+                    'message' => 'Unauthorized'
+                ], 401);
+            }
 
-        Log::info('SIGNATURE', [
-            'authorization' => $request->header('Authorization'),
-            'x-partner-id'  => $request->header('X-PARTNER-ID'),
-            'x-external-id' => $request->header('X-EXTERNAL-ID'),
-            'x-timestamp'   => $request->header('X-TIMESTAMP'),
-            'x-signature'   => $request->header('X-SIGNATURE'),
-        ]);
+            $data = $request->json()->all();
 
-        $isValid = $this->isValidSignature(
-            $request,
-            $request->header('X-SIGNATURE')
-        );
+            if (($data['transaction']['status'] ?? '') !== 'SUCCESS') {
+                return response()->json([
+                    'message' => 'Ignored'
+                ], 200);
+            }
 
-        Log::info('SIGNATURE RESULT', [
-            'valid' => $isValid,
-        ]);
-
-        if (!$isValid) {
-            Log::warning('INVALID SIGNATURE');
-            return response()->json(['message' => 'Unauthorized'], 401);
+            $orderId = $data['order']['invoice_number'] ?? null;
         }
 
-        $data = $request->json()->all();
+        else {
 
-        Log::info('PAYLOAD', $data);
+            if (!$this->isValidSignature(
+                $request,
+                $request->header('X-SIGNATURE')
+            )) {
+                return response()->json([
+                    'message' => 'Unauthorized'
+                ], 401);
+            }
 
-        $orderId =
-            $data['trxId']
-            ?? $data['originalPartnerReferenceNo']
-            ?? $data['partnerReferenceNo']
-            ?? null;
+            $data = $request->json()->all();
 
-        Log::info('ORDER ID', [
-            'trxId' => $orderId
-        ]);
+            $orderId =
+                $data['trxId']
+                ?? $data['originalPartnerReferenceNo']
+                ?? $data['partnerReferenceNo']
+                ?? null;
+        }
+
+        if (!$orderId) {
+            return response()->json([
+                'message' => 'Order ID not found'
+            ], 400);
+        }
 
         return DB::transaction(function () use ($orderId) {
 
             $order = Order::where('order_id', $orderId)
                 ->lockForUpdate()
                 ->first();
-
-            Log::info('ORDER', [
-                'found' => (bool) $order,
-                'order' => $order,
-            ]);
 
             if (!$order) {
                 return response()->json([
@@ -116,7 +113,6 @@ class DokuWebhookController extends Controller
             }
 
             if ($order->status === 'paid') {
-                Log::info('ORDER ALREADY PAID');
                 return response()->json([
                     'message' => 'Already processed'
                 ], 200);
@@ -126,17 +122,14 @@ class DokuWebhookController extends Controller
                 'status' => 'paid'
             ]);
 
-            Log::info('ORDER UPDATED');
-
             $this->processSuccessPayment($order);
-
-            Log::info('SUCCESS PAYMENT PROCESSED');
 
             return response()->json([
                 'message' => 'OK'
             ], 200);
         });
     }
+    
 
     private function isValidSignature(Request $request, string $signature): bool
     {
@@ -169,6 +162,44 @@ class DokuWebhookController extends Controller
         ]);
     
         return hash_equals($expectedSignature, $signature);
+    }
+
+    private function isValidQrisSignature(Request $request): bool
+    {
+        $clientSecret = config('doku.client_secret');
+
+        $clientId = $request->header('Client-Id');
+        $requestId = $request->header('Request-Id');
+        $timestamp = $request->header('Request-Timestamp');
+
+        $signature = $request->header('Signature');
+
+        $body = $request->getContent();
+
+        $stringToSign =
+            $clientId .
+            $requestId .
+            $timestamp .
+            $body;
+
+        $expected =
+            'HMACSHA256=' .
+            base64_encode(
+                hash_hmac(
+                    'sha256',
+                    $stringToSign,
+                    $clientSecret,
+                    true
+                )
+            );
+
+        Log::info('QRIS SIGNATURE', [
+            'string_to_sign' => $stringToSign,
+            'expected' => $expected,
+            'received' => $signature,
+        ]);
+
+        return hash_equals($expected, $signature);
     }
 
     private function processSuccessPayment(Order $order)
