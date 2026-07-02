@@ -88,7 +88,11 @@ class DokuWebhookController extends Controller
 
         Log::info('PAYLOAD', $data);
 
-        $orderId = $data['trxId'] ?? null;
+        $orderId =
+            $data['trxId']
+            ?? $data['originalPartnerReferenceNo']
+            ?? $data['partnerReferenceNo']
+            ?? null;
 
         Log::info('ORDER ID', [
             'trxId' => $orderId
