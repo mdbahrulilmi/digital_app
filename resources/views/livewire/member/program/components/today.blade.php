@@ -123,7 +123,7 @@
                                     </div>
 
                                     <div class="w-full">
-                                        <h3 class="font-bold text-white">Refleksi Hari Ini</h3>
+                                        <h3 class="font-bold text-white">Jurnal Hari Ini</h3>
                                         <div class="flex items-center justify-between">
                                             <p class="text-xs text-slate-50">
                                                 Tidak ada materi & tugas — isi jurnal
@@ -154,7 +154,7 @@
                                         wire:click="saveJournal({{ $day->schedules_id }})"
                                         class="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-sm font-semibold">
                                         
-                                        {{ isset($journalContents[$day->schedules_id]) ? 'Update Catatan' : 'Simpan Catatan' }}
+                                        {{ isset($journalContents[$day->schedules_id]) ? 'Update Jurnal' : 'Simpan Jurnal' }}
                                     </button>
                                 </div>
 
@@ -446,7 +446,7 @@
                         <div class="w-full">
 
                             <h3 class="font-bold text-slate-800">
-                                Refleksi Hari Ini
+                                Jurnal Hari Ini
                             </h3>
                                 
                             
@@ -485,7 +485,7 @@
                                 wire:loading.attr="disabled"
                                 class="px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition disabled:opacity-50">
 
-                                {{ isset($journalContents[$day->schedules_id]) ? 'Update Catatan' : 'Simpan Catatan' }}
+                                {{ isset($journalContents[$day->schedules_id]) ? 'Update Jurnal' : 'Simpan Jurnal' }}
 
                             </button>
 
