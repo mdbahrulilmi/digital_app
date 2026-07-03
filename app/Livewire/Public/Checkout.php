@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Program;
 use App\Models\Enrollment;
+use App\Services\OrderService;
 
 class Checkout extends Component
 {
@@ -26,13 +27,21 @@ class Checkout extends Component
 
     
 
-    protected $rules = [
-        'name' => 'required|min:3',
-        'email' => 'required|email',
-        'whatsapp' => 'required|numeric|digits_between:10,15',
-        'address' => 'required|min:10',
-        'payment_method' => 'required',
-    ];
+    protected function rules()
+    {
+        $rules = [
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'whatsapp' => 'required|numeric|digits_between:10,15',
+            'address' => 'required|min:10',
+        ];
+
+        if ($this->totalPrice > 0) {
+            $rules['payment_method'] = 'required';
+        }
+
+        return $rules;
+    }
 
     protected $messages = [
         'name.required' => 'Nama lengkap wajib diisi.',
@@ -174,16 +183,27 @@ class Checkout extends Component
             'customer_whatsapp' => $this->whatsapp,
             'customer_address'  => $this->address,
             'amount'            => $serverTotalPrice,
-            'payment_method'    => $this->payment_method,
+            'payment_method'    => $serverTotalPrice == 0 ? 'free' : $this->payment_method,
             'cart_snapshot'     => json_encode($secureCart),
-            'status'            => 'pending',
+            'status'            => $serverTotalPrice == 0 ? 'paid' : 'pending',
         ];
 
         if (auth('member')->check()) {
             $orderData['member_id'] = auth('member')->id();
         }
 
-        Order::create($orderData);
+        $order = Order::create($orderData);
+
+        if ($serverTotalPrice == 0) {
+
+            app(OrderService::class)->processSuccessPayment($order);
+
+            session()->forget('cart');
+
+            return redirect()->route('payment.success', [
+                'order_id' => $order->order_id,
+            ]);
+        }
 
         session()->forget('cart');
 

@@ -63,6 +63,7 @@
             </div>
         </div>
         @endauth
+        @if($totalPrice > 0)
        <div class="space-y-6">
             @foreach($paymentGroups as $groupName => $methods)
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
@@ -97,28 +98,35 @@
                 </div>
             @endforeach
         </div>
-
+        @endif
         <div class="bg-white p-4 border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] space-y-3 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-20">
             <div class="flex items-center justify-between">
-                <span class="text-xs font-medium text-slate-500">Total Yang Harus Dibayar:</span>
+                <span class="text-xs font-medium text-slate-500">
+                    Total Yang Harus Dibayar:
+                </span>
+
                 <span class="text-base font-black text-indigo-600">
                     Rp {{ number_format($totalPrice, 0, ',', '.') }}
                 </span>
             </div>
-            
+
             <button
                 type="submit"
-                @disabled(empty($payment_method))
+                @disabled($totalPrice > 0 && empty($payment_method))
                 wire:loading.attr="disabled"
                 wire:target="processOrder"
-                class="w-full block text-center font-bold text-sm py-3 px-4 rounded-xl shadow transition duration-150
+                class="w-full font-bold text-sm py-3 px-4 rounded-xl shadow transition duration-150
                     disabled:bg-slate-300
                     disabled:text-slate-500
                     disabled:cursor-not-allowed
-                    bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95"
+                    bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95 cursor-pointer"
             >
                 <span wire:loading.remove wire:target="processOrder">
-                    {{ empty($payment_method) ? 'Pilih Metode Pembayaran' : 'Lanjut ke Pembayaran' }}
+                    @if($totalPrice == 0)
+                        Klaim
+                    @else
+                        {{ empty($payment_method) ? 'Pilih Metode Pembayaran' : 'Lanjut ke Pembayaran' }}
+                    @endif
                 </span>
 
                 <span wire:loading wire:target="processOrder">
@@ -127,11 +135,11 @@
                         <path class="opacity-75" fill="currentColor"
                             d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
                     </svg>
-                    Memproses Pesanan...
+
+                    {{ $totalPrice == 0 ? 'Mengklaim...' : 'Memproses Pesanan...' }}
                 </span>
             </button>
         </div>
-
     </form>
 
     @if($errors->has('checkout'))
