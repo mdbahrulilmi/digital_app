@@ -122,11 +122,25 @@
                                         </svg>
                                     </div>
 
-                                    <div>
+                                    <div class="w-full">
                                         <h3 class="font-bold text-white">Refleksi Hari Ini</h3>
-                                        <p class="text-xs text-slate-50">
-                                            Tidak ada materi & tugas — isi jurnal
-                                        </p>
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-xs text-slate-50">
+                                                Tidak ada materi & tugas — isi jurnal
+                                            </p>
+                                            @if(filled($journalContents[$day->schedules_id] ?? null))
+                                                <span class="inline-flex items-center gap-1 rounded-full bg-cyan-500 px-2.5 py-1 text-[11px] font-semibold text-white">
+                                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd"
+                                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                            clip-rule="evenodd"/>
+                                                    </svg>
+                                                    Sudah Diisi
+                                                </span>
+                                            @endif
+                                            
+                                        </div>
+
                                     </div>
                                 </div>
 
@@ -139,7 +153,8 @@
                                     <button
                                         wire:click="saveJournal({{ $day->schedules_id }})"
                                         class="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-sm font-semibold">
-                                        Simpan
+                                        
+                                        {{ isset($journalContents[$day->schedules_id]) ? 'Update Catatan' : 'Simpan Catatan' }}
                                     </button>
                                 </div>
 
@@ -428,15 +443,29 @@
 
                         </div>
 
-                        <div>
+                        <div class="w-full">
 
                             <h3 class="font-bold text-slate-800">
                                 Refleksi Hari Ini
                             </h3>
-
-                            <p class="text-xs text-slate-500">
-                                Tuliskan insight atau pembelajaranmu hari ini.
-                            </p>
+                                
+                            
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs text-slate-500">
+                                    Tuliskan insight atau pembelajaranmu hari ini.
+                                </p>
+                                @if(filled($journalContents[$day->schedules_id] ?? null))
+                                    <span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"/>
+                                        </svg>
+                                        Sudah Diisi
+                                    </span>
+                                @endif
+                                
+                            </div>
 
                         </div>
 
