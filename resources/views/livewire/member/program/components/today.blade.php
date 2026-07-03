@@ -152,7 +152,7 @@
                                 <div class="flex justify-end mt-3">
                                     <button
                                         wire:click="saveJournal({{ $day->schedules_id }})"
-                                        class="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-sm font-semibold">
+                                        class="cursor-pointer px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-sm font-semibold">
                                         
                                         {{ isset($journalContents[$day->schedules_id]) ? 'Update Jurnal' : 'Simpan Jurnal' }}
                                     </button>
@@ -415,7 +415,7 @@
                                 <button
                                     wire:click="openUploadModal({{ $day->schedules_id }})"
                                     wire:loading.attr="disabled"
-                                    class="mt-6 w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-3 text-sm font-semibold transition disabled:opacity-50">
+                                    class="cursor-pointer mt-6 w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white py-3 text-sm font-semibold transition disabled:opacity-50">
 
                                     {{ $submissions->has($day->schedules_id) ? 'Ubah Jawaban' : 'Kumpulkan Tugas' }}
 
@@ -483,7 +483,7 @@
                             <button
                                 wire:click="saveJournal({{ $day->schedules_id }})"
                                 wire:loading.attr="disabled"
-                                class="px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition disabled:opacity-50">
+                                class="cursor-pointer px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition disabled:opacity-50">
 
                                 {{ isset($journalContents[$day->schedules_id]) ? 'Update Jurnal' : 'Simpan Jurnal' }}
 
