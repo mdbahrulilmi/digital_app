@@ -56,9 +56,9 @@
     .bar-fill { height: 100%; background: #4F46E5; border-radius: 99px; }
 
     /* Notifikasi */
-    .alert-row { display: flex; align-items: flex-start; gap: 9px; padding: 8px 0; border-bottom: 1px solid #F1F5F9; font-size: 12px; color: #475569; }
+    /* .alert-row { display: flex; align-items: flex-start; gap: 9px; padding: 8px 0; border-bottom: 1px solid #F1F5F9; font-size: 12px; color: #475569; }
     .alert-row:last-child { border-bottom: none; }
-    .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; } */
 
     /* Legend */
     .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
@@ -85,7 +85,7 @@
   <div class="stats">
     <div class="sc">
         <p class="sc-label">Pendapatan bulan ini</p>
-        <p class="sc-val">Rp {{ number_format($revenue / 1000000, 1) }} jt</p>
+        <p class="sc-val">Rp {{ number_format($revenue, 0, ',', '.') }}</p>
     </div>
     <div class="sc">
         <p class="sc-label">Lisensi terjual</p>
@@ -137,29 +137,33 @@
     </div>
 
   <!-- Row 3: Produk + Devices + Notifikasi -->
-  <div class="row3">
+  <div class="row2">
       <div class="card">
         <p class="card-title">Produk terlaris</p>
         
         @forelse($bestSellingProducts as $item)
-        @php
-            $barWidth = ($item->total_sold / $maxSold) * 100;
-        @endphp
-        <div class="prod-row">
-            <div class="prod-icon"><i class="ti ti-box"></i></div>
-            <div style="flex:1;min-width:0">
-                <p class="prod-name">{{ $item->product_name }}</p>
-                <p class="prod-meta">{{ $item->total_sold }} lisensi</p>
-            </div>
-            <div class="bar-bg">
-                <div class="bar-fill" style="width: {{ $barWidth }}%"></div>
-            </div>
-        </div>
+          @php
+              $barWidth = ($maxSold > 0) ? ($item->total_sold / $maxSold) * 100 : 0;
+              $svgIcon = ($item->type === 'program') 
+            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h10"/><path d="M12 9v2"/><path d="M15 9v2"/><path d="M9 9v2"/></svg>'
+            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>';
+          @endphp
+
+          <div class="prod-row">
+              <div class="prod-icon" style="color: #4F46E5;">{!! $svgIcon !!}</div>
+              <div style="flex:1;min-width:0; padding-right: 10px;">
+                  <p class="prod-name">{{ $item->name }}</p>
+                  <p class="prod-meta">{{ $item->total_sold }} lisensi • {{ ucfirst($item->type) }}</p>
+              </div>
+              <div style="  ">
+                  <span style="font-size: 10px; color: #64748B;">{{ round($barWidth) }}%</span>
+              </div>
+          </div>
         @empty
-        <div class="text-center" style="padding: 20px 0; color: #94A3B8; font-size: 12px;">
-            <i class="ti ti-box-off" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
-            Belum ada produk terjual
-        </div>
+            <div class="text-center" style="padding: 20px 0; color: #94A3B8; font-size: 12px;">
+                <i class="ti ti-box-off" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
+                Belum ada produk/program terjual
+            </div>
         @endforelse
       </div>
 
@@ -182,7 +186,7 @@
         </div>
     </div>
 
-    <div class="card">
+    {{-- <div class="card">
       <p class="card-title">Notifikasi</p>
       <div class="alert-row">
         <div class="dot" style="background:#F59E0B"></div>
@@ -200,7 +204,7 @@
         <div class="dot" style="background:#EF4444"></div>
         <span>Refund request dari <strong>Mobile Kit</strong> — perlu ditinjau</span>
       </div>
-    </div>
+    </div> --}}
   </div>
 
 </div>
@@ -232,7 +236,11 @@
       responsive: true, maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: v => 'Rp ' + v.raw + ' jt' } }
+        tooltip: { callbacks: {
+          label: function(context) {
+            return 'Rp ' + context.raw.toLocaleString('id-ID');
+          }
+        }}
       },
       scales: {
         x: { grid: { color: gridC }, ticks: { color: textC, font: { size: 11 } }, border: { display: false } },

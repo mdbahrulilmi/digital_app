@@ -12,35 +12,37 @@ class Dashboard extends Component
 {
     public function render()
     {
-        $revenue = Order::whereMonth('created_at', date('m'))
-                        ->where('status', 'success')
+        $revenue = Order::whereYear('created_at', date('Y'))
+                        ->where('status', 'paid')
                         ->sum('amount');
 
         $totalSold = DB::table('order_items')
                        ->join('orders', 'order_items.order_id', '=', 'orders.order_id')
-                       ->where('orders.status', 'success')
+                       ->where('orders.status', 'paid')
                        ->sum('qty');
 
         $chartData = Order::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(amount) as total'))
                           ->where('created_at', '>=', now()->subDays(7))
+                          ->where('orders.status', 'paid')
                           ->groupBy('date')
                           ->pluck('total', 'date');
 
-        $bestSellingProducts = OrderItem::select('name', \DB::raw('SUM(qty) as total_sold'))
+        $bestSellingProducts = OrderItem::select('name', 'type', \DB::raw('SUM(qty) as total_sold'))
         ->whereHas('order', function($query) {
-            $query->where('status', 'success');
+            $query->where('status', 'paid');
         })
         ->groupBy('name')
+        ->groupBy('type')
         ->orderBy('total_sold', 'desc')
         ->limit(5)
         ->get();
-
+        
         $maxSold = $bestSellingProducts->max('total_sold') ?: 1;
 
         $activeVisitors = Visitor::where('last_visit', '>=', now()->subMinutes(10))
         ->count();
 
-        $totalSuccessOrders = Order::where('status', 'success')->count();
+        $totalSuccessOrders = Order::where('status', 'paid')->count();
         
         $visitors = Visitor::all();
         $totalVisitors = $visitors->count();
