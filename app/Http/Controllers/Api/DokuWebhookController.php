@@ -178,12 +178,10 @@ class DokuWebhookController extends Controller
             trim($request->header('Signature'))
         );
 
-        // Endpoint harus sama persis dengan yang didaftarkan di DOKU
         $endpointUrl = '/doku/webhook';
 
         $body = $request->getContent();
 
-        // SHA256 binary -> Base64
         $digest = base64_encode(
             hash('sha256', $body, true)
         );

@@ -106,11 +106,82 @@
                 </span>
             </div>
             
-            <button type="submit" wire:loading.attr="disabled" class="w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3 px-4 rounded-xl shadow transition duration-150 transform active:scale-95 cursor-pointer">
-                <span wire:loading.remove>Lanjut ke Pembayaran</span>
-                <span wire:loading>Memproses Pesanan...</span>
+            <button
+                type="submit"
+                @disabled(empty($payment_method))
+                wire:loading.attr="disabled"
+                wire:target="processOrder"
+                class="w-full block text-center font-bold text-sm py-3 px-4 rounded-xl shadow transition duration-150
+                    disabled:bg-slate-300
+                    disabled:text-slate-500
+                    disabled:cursor-not-allowed
+                    bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95"
+            >
+                <span wire:loading.remove wire:target="processOrder">
+                    {{ empty($payment_method) ? 'Pilih Metode Pembayaran' : 'Lanjut ke Pembayaran' }}
+                </span>
+
+                <span wire:loading wire:target="processOrder">
+                    <svg class="inline w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                    </svg>
+                    Memproses Pesanan...
+                </span>
             </button>
         </div>
 
     </form>
+
+    @if($errors->has('checkout'))
+        <div
+            x-data="{ show: true }"
+            x-init="
+                setTimeout(() => {
+                    window.location.href = '{{ url('/cart') }}';
+                }, 2500)
+            "
+            x-show="show"
+            x-transition.opacity
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-6"
+        >
+            <div
+                x-transition.scale
+                class="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden"
+            >
+                <div class="p-8 text-center">
+
+                    <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-100">
+                        <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01M10.29 3.86l-8 14A1 1 0 003.16 19h17.68a1 1 0 00.87-1.5l-8-14a1 1 0 00-1.74 0z"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="mt-6 text-2xl font-bold text-slate-800">
+                        Pembelian Ditolak
+                    </h2>
+
+                    <p class="mt-3 text-slate-500 leading-relaxed">
+                        {{ $errors->first('checkout') }}
+                    </p>
+
+                    <p class="mt-6 text-xs text-slate-400">
+                        Anda akan diarahkan kembali ke keranjang...
+                    </p>
+                </div>
+
+                <div class="h-1 bg-slate-100">
+                    <div
+                        class="h-full bg-red-500"
+                        x-init="$el.animate(
+                            [{ width: '100%' }, { width: '0%' }],
+                            { duration: 2500, fill: 'forwards' }
+                        )"
+                    ></div>
+                </div>
+            </div>
+        </div>
+        @endif
 </div>

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Program;
+use App\Models\Enrollment;
 
 class Checkout extends Component
 {
@@ -106,7 +107,47 @@ class Checkout extends Component
             if ($item['type'] === 'product') {
                 $data = Product::find($item['id']);
             } else {
-                $data = Program::find($item['id']);
+                 $data = Program::find($item['id']);
+
+                if (auth('member')->check()) {
+
+                    $alreadyEnrolled = Enrollment::where('member_id', auth('member')->id())
+                        ->where('program_id', $item['id'])
+                        ->exists();
+
+                } else {
+
+                    $alreadyEnrolled = false;
+
+                    $orders = Order::where('customer_whatsapp', $this->whatsapp)
+                        ->whereIn('status', ['paid', 'success']) // sesuaikan status suksesmu
+                        ->get();
+
+                    foreach ($orders as $order) {
+
+                        $cart = json_decode($order->cart_snapshot, true);
+
+                        foreach ($cart as $cartItem) {
+
+                            if (
+                                $cartItem['type'] === 'program' &&
+                                $cartItem['id'] == $item['id']
+                            ) {
+                                $alreadyEnrolled = true;
+                                break 2;
+                            }
+                        }
+                    }
+                }
+
+                if ($alreadyEnrolled) {
+                    $this->addError(
+                        'checkout',
+                        'Program "' . $item['name'] . '" sudah pernah Anda beli.'
+                    );
+
+                    return;
+                }
             }
 
             if (!$data) {
