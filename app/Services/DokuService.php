@@ -32,17 +32,17 @@ class DokuService
         $custIds = 
         app()->environment('production') 
         ? [
-        'cust_bca'     => '9',
-        'cust_bni'     => '3',
-        'cust_bri'     => '0',
-        'cust_bsi'     => '9',
-        'cust_mandiri' => '0',
+        'va_bca'     => '9',
+        'va_bni'     => '3',
+        'va_bri'     => '0',
+        'va_bsi'     => '9',
+        'va_mandiri' => '0',
         ] : [
-        'cust_bca'     => '9',
-        'cust_bni'     => '3',
-        'cust_bri'     => '6',
-        'cust_bsi'     => '20',
-        'cust_mandiri' => '0',
+        'va_bca'     => '9',
+        'va_bni'     => '3',
+        'va_bri'     => '6',
+        'va_bsi'     => '20',
+        'va_mandiri' => '0',
         ];
 
 
@@ -104,6 +104,7 @@ class DokuService
                 ['english' => 'Free text', 'indonesia' => 'Tulisan Bebas']
             ]
         ];
+        dd($body);
 
         $endpoint = '/virtual-accounts/bi-snap-va/v1.1/transfer-va/create-va';
 
