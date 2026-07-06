@@ -17,7 +17,7 @@ class DokuService
             'va_bca'     => '  190089',
             'va_bni'     => '988291723',
             'va_bri'     => '  139250',
-            'va_bsi'     => '  605999',
+            'va_bsi'     => '   60599',
             'va_mandiri' => '  861880',
         ]
         : 

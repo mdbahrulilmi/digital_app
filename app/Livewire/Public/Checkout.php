@@ -78,11 +78,10 @@ class Checkout extends Component
                 'dana'      => ['label' => 'DANA', 'icon' => asset('assets_content/icon/payment/dana.svg')],
             ],
             'Virtual Account (SNAP)' => [
-                'va_bca'    => ['label' => 'BCA', 'icon' => asset('assets_content/icon/payment/bca.svg')],
+                // 'va_bca'    => ['label' => 'BCA', 'icon' => asset('assets_content/icon/payment/bca.svg')],
                 'va_mandiri'=> ['label' => 'Mandiri', 'icon' => asset('assets_content/icon/payment/mandiri.svg')],
                 'va_bni'    => ['label' => 'BNI', 'icon' => asset('assets_content/icon/payment/bni.svg')],
                 'va_bri'    => ['label' => 'BRI', 'icon' => asset('assets_content/icon/payment/bri.svg')],
-                'va_cimb'   => ['label' => 'CIMB Niaga', 'icon' => asset('assets_content/icon/payment/cimb.svg')],
                 'va_bsi'    => ['label' => 'BSI', 'icon' => asset('assets_content/icon/payment/bsi.svg')],
             ],
             // 'Retail & Paylater' => [

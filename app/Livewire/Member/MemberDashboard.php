@@ -10,6 +10,7 @@ use App\Models\LandingPage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use App\Models\ProgramProduct;
 
 class MemberDashboard extends Component
 {
@@ -69,6 +70,14 @@ class MemberDashboard extends Component
 
         $programDibeliIds = $itemDibeli->whereNotNull('program_id')->pluck('program_id');
         $produkDibeliIds = $itemDibeli->whereNotNull('product_id')->pluck('product_id');
+        $produkDariProgram = ProgramProduct::whereHas('schedule', function ($q) use ($programDibeliIds) {
+            $q->whereIn('program_id', $programDibeliIds);
+        })
+        ->pluck('product_id');
+
+        $excludeProductIds = $produkDibeliIds
+        ->merge($produkDariProgram)
+        ->unique();
         
         $this->programs = Program::where('status', 'active')
             ->whereNotIn('id', $programDibeliIds)
@@ -77,20 +86,10 @@ class MemberDashboard extends Component
             ->get();
 
         $this->products = Product::where('status', 'active')
-            ->whereNotIn('id', $produkDibeliIds)
+            ->whereNotIn('id', $excludeProductIds)
             ->latest()
             ->take(3)
             ->get();
-
-        // $this->blogs = \App\Models\LandingPage::where('blog', 1)
-        //     ->where('status', 'published')
-        //     ->with(['sections' => function($query) {
-        //         $query->where('type', 'image')->orderBy('sort_order', 'asc');
-        //     }])
-        //     ->latest()
-        //     ->take(3)
-        //     ->get();
-
         
         $programQuery = OrderItem::query()
             ->whereHas('order', function ($q) use ($member) {
