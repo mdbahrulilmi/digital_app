@@ -14,20 +14,37 @@ class DokuService
         $serviceIds = 
         app()->environment('production')
         ? [
-            'va_bca'     => '  190089',
-            'va_bni'     => '988291723',
-            'va_bri'     => '  139250',
+            'va_bca'     => '   19008',
+            'va_bni'     => '98829172',
+            'va_bri'     => '   13925',
             'va_bsi'     => '   60599',
-            'va_mandiri' => '  861880',
+            'va_mandiri' => '   86188',
         ]
         : 
         [
-            'va_mandiri' => '  861880',
-            'va_bca'     => '  190089',
-            'va_bni'     => '   84923',
-            'va_bri'     => '  139256',
-            'va_bsi'     => '  202020',
+            'va_mandiri' => '   86188',
+            'va_bca'     => '   19008',
+            'va_bni'     => '    8492',
+            'va_bri'     => '   13925',
+            'va_bsi'     => '    2020',
         ];
+
+        $custIds = 
+        app()->environment('production') 
+        ? [
+        'cust_bca'     => '9',
+        'cust_bni'     => '3',
+        'cust_bri'     => '0',
+        'cust_bsi'     => '9',
+        'cust_mandiri' => '0',
+        ] : [
+        'cust_bca'     => '9',
+        'cust_bni'     => '3',
+        'cust_bri'     => '6',
+        'cust_bsi'     => '20',
+        'cust_mandiri' => '0',
+        ];
+
 
         $channels = [
             'va_mandiri' => 'VIRTUAL_ACCOUNT_BANK_MANDIRI',
@@ -41,6 +58,7 @@ class DokuService
 
         $config = [
             'serviceId' => $serviceIds[$method] ?? null,
+            'custId' => $custIds[$method] ?? null,
             'channel'   => $channels[$method] ?? null,
         ];
 
@@ -62,7 +80,7 @@ class DokuService
         ];
 
         $partnerServiceId = $config['serviceId'];
-        $customerNo = 5; 
+        $customerNo = app()->environment('production') ? $config['custId'] : 5; 
         $virtualAccountNo = $partnerServiceId . $customerNo;
         $body = [
             'partnerServiceId' => $partnerServiceId,
