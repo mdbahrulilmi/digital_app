@@ -104,7 +104,6 @@ class DokuService
                 ['english' => 'Free text', 'indonesia' => 'Tulisan Bebas']
             ]
         ];
-        dd($body);
 
         $endpoint = '/virtual-accounts/bi-snap-va/v1.1/transfer-va/create-va';
 
