@@ -152,13 +152,14 @@
                                 {{ $section->padding_bottom ?? 0 }}px
                                 {{ $section->padding_left ?? 0 }}px;
                         ">
-                            <div style="
-                                display:grid;
-                                gap:{{ $section->gap ?? 8 }}px;
-                                {{ $section->layout == 'col-1' ? 'grid-template-columns:repeat(1,minmax(0,1fr));' : '' }}
-                                {{ $section->layout == 'col-2' ? 'grid-template-columns:repeat(2,minmax(0,1fr));' : '' }}
-                                {{ $section->layout == 'col-3' ? 'grid-template-columns:repeat(3,minmax(0,1fr));' : '' }}
-                            ">
+                            <div 
+                                class="grid gap-2"
+                                style="
+                                    {{ $section->layout == 'col-1' ? 'grid-template-columns:repeat(1,minmax(0,1fr));' : '' }}
+                                    {{ $section->layout == 'col-2' ? 'grid-template-columns:repeat(2,minmax(0,1fr));' : '' }}
+                                    {{ $section->layout == 'col-3' ? 'grid-template-columns:repeat(3,minmax(0,1fr));' : '' }}
+                                "
+                            >
                                 @foreach($section->components as $component)
                                     @if($component->is_visible)
                                         @includeIf(
@@ -190,7 +191,8 @@
     @if($openEditPanel)
         <div class="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-40" wire:click="$set('openEditPanel', false)"></div>
 
-        <div class="fixed right-0 top-0 h-full w-[380px] bg-white border-l border-gray-100 shadow-2xl z-50 flex flex-col">
+        <div class="fixed right-0 top-0 h-full bg-white border-l border-gray-100 shadow-2xl z-50 flex flex-col
+        {{ $editingType === 'product' ? 'w-[720px]' : 'w-[380px]' }}">
 
             <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
                 <div>

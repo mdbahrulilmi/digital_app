@@ -9,8 +9,8 @@
                 ['key' => 'spacer', 'label' => 'Spacer', 'icon' => '<path d="M12 4v16"/><path d="M6 8h12"/><path d="M6 16h12"/>'],
             ],
             'Advanced' => [
-                ['key' => 'product', 'label' => 'Produk 1', 'icon' => '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>'],
-                ['key' => 'program', 'label' => 'Program 1', 'icon' => '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="9" x="14" y="3" rx="1"/><rect width="7" height="9" x="3" y="14" rx="1"/><rect width="7" height="9" x="14" y="14" rx="1"/>'],
+                ['key' => 'product', 'label' => 'Produk', 'icon' => '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>'],
+                // ['key' => 'program', 'label' => 'Program', 'icon' => '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="9" x="14" y="3" rx="1"/><rect width="7" height="9" x="3" y="14" rx="1"/><rect width="7" height="9" x="14" y="14" rx="1"/>'],
                 ['key' => 'script', 'label' => 'Script', 'icon' => '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>'],
             ]
         ];

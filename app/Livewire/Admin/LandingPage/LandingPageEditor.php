@@ -22,6 +22,7 @@ use App\Livewire\Admin\LandingPage\Components\TextSection;
 use App\Livewire\Admin\LandingPage\Components\ImageSection;
 use App\Livewire\Admin\LandingPage\Components\VideoSection;
 use App\Livewire\Admin\LandingPage\Components\SpacerSection;
+use App\Livewire\Admin\LandingPage\Components\ProductSection;
 
 class LandingPageEditor extends Component
 {
@@ -217,6 +218,7 @@ class LandingPageEditor extends Component
             'image'  => ImageSection::getForm($c),
             'video'  => VideoSection::getForm($c),
             'spacer' => SpacerSection::getForm($c),
+            'product' => ProductSection::getForm($c),
             default  => $c->content ?? [],
         };
 
@@ -243,6 +245,10 @@ class LandingPageEditor extends Component
         }
         
         $c = LandingPageComponent::findOrFail($this->selectedComponentId);
+
+        if ($c->type === 'product') {
+            $this->editingContent = ProductSection::mutateBeforeSave($this->editingContent);
+        }
 
         if ($c->type === 'image') {
 
