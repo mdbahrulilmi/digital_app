@@ -1,4 +1,4 @@
-<div class="mx-auto max-w-7xl p-6 lg:p-8 space-y-8">
+<div class="p-2 space-y-8">
 
     {{-- ================= HERO ================= --}}
     <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-700 via-indigo-800 to-slate-900 p-8 lg:p-10 text-white shadow-2xl">
@@ -36,94 +36,6 @@
                     @endif
 
                 </p>
-
-                @if($programUtama)
-
-                <div class="mt-8 max-w-lg">
-
-                    <div class="flex justify-between mb-2 text-sm">
-
-                        <span class="font-semibold">
-                            Progress Belajar
-                        </span>
-
-                        <span class="font-bold">
-                            {{ round($progresPersen) }}%
-                        </span>
-
-                    </div>
-
-                    <div class="w-full h-3 rounded-full bg-white/20 overflow-hidden">
-
-                        <div
-                            class="h-full rounded-full bg-emerald-400 transition-all duration-700"
-                            style="width: {{ $progresPersen }}%">
-                        </div>
-
-                    </div>
-
-                    <p class="text-sm text-indigo-200 mt-3">
-                        Tetap semangat, sedikit lagi program ini selesai 🚀
-                    </p>
-
-                </div>
-
-                @endif
-
-            </div>
-
-            <div class="lg:w-80">
-
-                <div class="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 p-6">
-
-                    <div class="text-sm uppercase tracking-widest text-indigo-200">
-
-                        Program Aktif
-
-                    </div>
-
-                    @if($programUtama)
-
-                        <h3 class="text-2xl font-bold mt-2">
-
-                            {{ $programUtama->title }}
-
-                        </h3>
-
-                        <p class="mt-2 text-indigo-100 text-sm">
-
-                            Lanjutkan sesi belajarmu agar progres tetap meningkat.
-
-                        </p>
-
-                        <a
-                            href="{{ url('member/program/'.$programUtama->slug) }}"
-                            class="mt-6 inline-flex items-center justify-center w-full rounded-2xl bg-white text-indigo-700 py-3 font-bold hover:scale-[1.02] transition">
-
-                            ▶ Lanjutkan Belajar
-
-                        </a>
-
-                    @else
-
-                        <div class="mt-5 text-indigo-100">
-
-                            Belum ada program aktif.
-
-                        </div>
-
-                        <button
-                            disabled
-                            class="mt-6 w-full rounded-2xl bg-white/20 py-3">
-
-                            Belum Ada Program
-
-                        </button>
-
-                    @endif
-
-                </div>
-
             </div>
 
         </div>
@@ -136,219 +48,109 @@
 
     {{-- ================= QUICK STATS ================= --}}
 
-    <section class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
-        <div class="rounded-3xl bg-white p-6 shadow-sm hover:shadow-xl transition">
+    <div class="rounded-2xl bg-white p-4 shadow-sm hover:shadow-lg transition">
 
-            <div class="text-4xl">
-                🔥
-            </div>
+        <div class="text-3xl">🔥</div>
 
-            <p class="mt-5 text-xs uppercase tracking-widest text-slate-500">
-                Streak
-            </p>
+        <p class="mt-3 text-[11px] uppercase tracking-wider text-slate-500">
+            Streak
+        </p>
 
-            <h3 class="text-3xl font-black mt-1">
-                {{ $stats['streak'] }}
-            </h3>
+        <h3 class="mt-1 text-2xl font-black">
+            {{ $stats['streak'] }}
+        </h3>
 
-            <p class="text-slate-500 text-sm">
-                Hari Berturut
-            </p>
-
-        </div>
-
-        <div class="rounded-3xl bg-white p-6 shadow-sm hover:shadow-xl transition">
-
-            <div class="text-4xl">
-                📚
-            </div>
-
-            <p class="mt-5 text-xs uppercase tracking-widest text-slate-500">
-
-                Total Program
-
-            </p>
-
-            <h3 class="text-3xl font-black mt-1">
-
-                {{ $stats['total_program'] }}
-
-            </h3>
-
-            <p class="text-slate-500 text-sm">
-
-                Program Dimiliki
-
-            </p>
-
-        </div>
-
-        <div class="rounded-3xl bg-white p-6 shadow-sm hover:shadow-xl transition">
-
-            <div class="text-4xl">
-                🎓
-            </div>
-
-            <p class="mt-5 text-xs uppercase tracking-widest text-slate-500">
-
-                Program Selesai
-
-            </p>
-
-            <h3 class="text-3xl font-black mt-1">
-
-                {{ $stats['program_selesai'] }}
-
-            </h3>
-
-            <p class="text-slate-500 text-sm">
-
-                Sertifikat Didapat
-
-            </p>
-
-        </div>
-
-        <div class="rounded-3xl bg-white p-6 shadow-sm hover:shadow-xl transition">
-
-            <div class="text-4xl">
-                🛒
-            </div>
-
-            <p class="mt-5 text-xs uppercase tracking-widest text-slate-500">
-
-                Produk
-
-            </p>
-
-            <h3 class="text-3xl font-black mt-1">
-
-                {{ $stats['total_produk'] }}
-
-            </h3>
-
-            <p class="text-slate-500 text-sm">
-
-                Produk Dimiliki
-
-            </p>
-
-        </div>
-
-    </section>
-
-{{-- ================= PROGRAM REKOMENDASI ================= --}}
-@if($programs->isNotEmpty())
-
-<section class="space-y-6">
-
-    <div class="flex items-center justify-between">
-
-        <div>
-
-            <h2 class="text-2xl font-black text-slate-900">
-                ⭐ Program Rekomendasi
-            </h2>
-
-            <p class="text-slate-500 mt-1">
-                Dipilih khusus berdasarkan aktivitas belajarmu.
-            </p>
-
-        </div>
+        <p class="text-xs text-slate-500">
+            Hari Berturut
+        </p>
 
     </div>
 
-    @php
-        $rekomendasi = $programs->first();
-    @endphp
+    <div class="rounded-2xl bg-white p-4 shadow-sm hover:shadow-lg transition">
 
-    @if($rekomendasi)
+        <div class="text-3xl">📚</div>
 
-    <div class="overflow-hidden rounded-3xl bg-white border border-slate-200 shadow-lg hover:shadow-2xl transition-all duration-300">
+        <p class="mt-3 text-[11px] uppercase tracking-wider text-slate-500">
+            Total Program
+        </p>
 
-        <div class="grid lg:grid-cols-2">
+        <h3 class="mt-1 text-2xl font-black">
+            {{ $stats['total_program'] }}
+        </h3>
 
-            {{-- IMAGE --}}
-            <div class="relative">
+        <p class="text-xs text-slate-500">
+            Program Dimiliki
+        </p>
 
-                <img
-                    src="{{ $rekomendasi->image }}"
-                    class="h-full min-h-[420px] w-full object-cover">
+    </div>
 
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+    <div class="rounded-2xl bg-white p-4 shadow-sm hover:shadow-lg transition">
 
-                <span
-                    class="absolute top-6 left-6 bg-amber-400 text-slate-900 px-4 py-2 rounded-full text-xs font-bold">
+        <div class="text-3xl">🎓</div>
 
-                    ⭐ Program Rekomendasi
+        <p class="mt-3 text-[11px] uppercase tracking-wider text-slate-500">
+            Program Selesai
+        </p>
 
-                </span>
+        <h3 class="mt-1 text-2xl font-black">
+            {{ $stats['program_selesai'] }}
+        </h3>
+
+        <p class="text-xs text-slate-500">
+            Sertifikat Didapat
+        </p>
+
+    </div>
+
+    <div class="rounded-2xl bg-white p-4 shadow-sm hover:shadow-lg transition">
+
+        <div class="text-3xl">🛒</div>
+
+        <p class="mt-3 text-[11px] uppercase tracking-wider text-slate-500">
+            Produk
+        </p>
+
+        <h3 class="mt-1 text-2xl font-black">
+            {{ $stats['total_produk'] }}
+        </h3>
+
+        <p class="text-xs text-slate-500">
+            Produk Dimiliki
+        </p>
+
+    </div>
+
+</section>
+    <section class="space-y-6">
+
+        <div class="flex items-end justify-between">
+
+            <div>
+
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+                    📚 Program Saya
+                </h2>
+
+                <p class="mt-2 text-slate-500">
+                    Lanjutkan program yang sedang kamu ikuti.
+                </p>
 
             </div>
 
-            {{-- CONTENT --}}
-            <div class="flex flex-col justify-center p-10 lg:p-12">
-
-                <p class="text-indigo-600 font-bold uppercase tracking-[3px] text-xs">
-                    Jangan Sampai Ketinggalan
-                </p>
-
-                <h2 class="mt-3 text-4xl font-black text-slate-900 leading-tight">
-                    {{ $rekomendasi->title }}
-                </h2>
-
-                <p class="mt-6 text-slate-600 leading-8">
-                    {{ $rekomendasi->description }}
-                </p>
-
-                {{-- INFO --}}
-                <div class="mt-8 border-t border-slate-200 pt-6">
-
-                    <dl class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-
-                        <div>
-                            <dt class="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                                Tanggal Mulai
-                            </dt>
-                            <dd class="mt-2 text-base font-bold text-slate-900">
-                                {{ \Carbon\Carbon::parse($rekomendasi->start_date)->translatedFormat('d F Y') }}
-                            </dd>
-                        </div>
-
-                        <div>
-                            <dt class="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                                Tanggal Berakhir
-                            </dt>
-                            <dd class="mt-2 text-base font-bold text-slate-900">
-                                {{ \Carbon\Carbon::parse($rekomendasi->end_date)->translatedFormat('d F Y') }}
-                            </dd>
-                        </div>
-
-                        <div>
-                            <dt class="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                                Metode Belajar
-                            </dt>
-                            <dd class="mt-2 text-base font-bold text-slate-900">
-                                Online
-                            </dd>
-                        </div>
-
-                    </dl>
-
-                </div>
+            @if($totalMemberPrograms > 3)
 
                 <a
-                    href="{{ url($rekomendasi->slug) }}"
-                    class="mt-10 inline-flex w-fit items-center gap-3 rounded-2xl bg-indigo-600 px-8 py-4 text-white font-bold hover:bg-indigo-700 hover:scale-[1.02] transition">
+                    href="{{ route('member.program.index') }}"
+                    class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 transition hover:border-indigo-500 hover:text-indigo-600">
 
-                    Daftar Sekarang
+                    Lihat Semua Program
 
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5"
+                    <svg class="w-4 h-4"
                         fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
+                        stroke="currentColor"
+                        viewBox="0 0 24 24">
 
                         <path stroke-linecap="round"
                             stroke-linejoin="round"
@@ -359,109 +161,89 @@
 
                 </a>
 
-            </div>
+            @endif
 
         </div>
 
-    </div>
+        <div class="space-y-6">
 
-    @endif
+            @forelse($memberPrograms as $program)
 
-</section>
+                <div class="relative overflow-hidden rounded-[2rem] p-8 shadow-2xl transition-all duration-500 hover:scale-[1.02] group">
 
-@endif
+                    {{-- Background --}}
+                    <img
+                        src="{{ $program->image }}"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
 
-{{-- ================= PRODUK PREMIUM ================= --}}
-@if($products->isNotEmpty())
+                    {{-- Overlay --}}
+                    <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-indigo-900/80 to-transparent"></div>
 
-<section class="space-y-8">
+                    <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-8">
 
-    <div class="flex items-center justify-between">
+                        {{-- Left --}}
+                        <div>
 
-        <div>
+                            <div class="flex items-center gap-3 mb-4">
 
-            <h2 class="text-2xl font-black text-slate-900">
-                🛒 Produk Rekomendasi
-            </h2>
+                                <span class="px-3 py-1 text-[10px] font-bold tracking-widest uppercase bg-indigo-500 text-white rounded-full">
+                                    Active Member
+                                </span>
 
-            <p class="text-slate-500 mt-1">
-                Pilihan terbaik untuk menunjang proses belajarmu.
-            </p>
+                            </div>
 
-        </div>
+                            <h3 class="text-3xl font-black text-white tracking-tight">
+                                {{ $program->title }}
+                            </h3>
 
-    </div>
+                            <p class="mt-2 text-blue-100 text-sm max-w-lg leading-relaxed">
+                                Teruskan perjalanan belajarmu dan capai target penyelesaian program.
+                            </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
+                        </div>
 
-        @foreach($products as $prod)
+                        {{-- Right --}}
+                        <div class="flex-shrink-0">
 
-        <div
-            class="group bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-orange-300 hover:shadow-2xl transition-all duration-300">
+                            <a
+                                href="{{ route('member.program.hari-ini', $program->slug) }}"
+                                class="inline-flex items-center gap-2 px-8 py-4 bg-white text-indigo-900 rounded-2xl font-bold hover:bg-slate-100 transition-all duration-300 shadow-xl active:scale-95">
 
-            {{-- IMAGE --}}
-            <div class="relative overflow-hidden">
+                                <span>Lanjutkan Belajar</span>
 
-                <img
-                    src="{{ $prod->image }}"
-                    class="h-60 w-full object-cover duration-500 group-hover:scale-110">
+                                <svg class="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24">
 
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent"></div>
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3"/>
 
-            </div>
+                                </svg>
 
-            {{-- CONTENT --}}
-            <div class="p-6">
+                            </a>
 
-                <h3 class="font-black text-xl text-slate-900 line-clamp-2">
-
-                    {{ $prod->title }}
-
-                </h3>
-
-                <p class="mt-3 text-sm text-slate-500 line-clamp-3">
-
-                    {{ $prod->description }}
-
-                </p>
-
-                <div class="mt-8 flex justify-between items-center">
-
-                    <div>
-
-                        <p class="text-xs uppercase text-slate-400">
-
-                            Digital Product
-
-                        </p>
-
-                        <p class="font-bold text-orange-600">
-
-                            {{ ucfirst($prod->type) }}
-
-                        </p>
+                        </div>
 
                     </div>
 
-                    <a
-                        href="{{ route('public.product.show',$prod->slug) }}"
-                        wire:navigate
-                        class="rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 transition">
+                </div>
 
-                        Lihat Produk
+            @empty
 
-                    </a>
+                <div class="text-center py-20 border-2 border-dashed border-slate-200 rounded-[2rem]">
+
+                    <p class="text-slate-400 font-medium">
+                        Belum ada program yang sedang kamu ikuti.
+                    </p>
 
                 </div>
 
-            </div>
+            @endforelse
 
         </div>
 
-        @endforeach
-
-    </div>
-
-</section>
-
-@endif
+    </section>
+</div>

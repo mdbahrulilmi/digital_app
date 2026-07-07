@@ -3,7 +3,7 @@
     <div class="space-y-6">
         @forelse($orderItems as $item)
             <div class="relative overflow-hidden rounded-[2rem] p-8 shadow-2xl transition-all duration-500 hover:scale-[1.02] group">
-            <img src="{{ $item->program->image }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Program Background">
+            <img src="{{ $item->program->image }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-blue-900/80 to-transparent"></div>
             <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
@@ -14,7 +14,7 @@
                     </div>
                     
                     <h3 class="text-2xl font-black text-white mb-2 tracking-tight">{{ $item->name }}</h3>
-                    <p class="text-blue-100 text-sm max-w-sm leading-relaxed font-medium">Akses eksklusif materi pembelajaran dengan kurikulum terstruktur.</p>
+                    <p class="text-blue-100 text-sm max-w-sm leading-relaxed font-medium">{{ $item->program->description }}</p>
                 </div>
                 
                 <div class="flex-shrink-0">

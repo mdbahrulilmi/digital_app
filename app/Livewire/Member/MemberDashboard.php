@@ -29,6 +29,9 @@ class MemberDashboard extends Component
     public $showPasswordModal = false;
     public $newPassword;
 
+    public $memberPrograms = [];
+    public $totalMemberPrograms = 0;
+
     public function mount()
     {
         $member = Auth::guard('member')->user();
@@ -112,6 +115,30 @@ class MemberDashboard extends Component
         $totalProgram = (clone $programQuery)->count();
         $totalProduct = (clone $productQuery)->count();
 
+        $this->memberPrograms = $member->programs()
+            ->where('status', 'active')
+            ->withCount('schedules')
+            ->get()
+            ->map(function ($program) use ($member) {
+
+                $journalCount = \App\Models\Journal::where('member_id', $member->id)
+                    ->whereIn('program_schedule_id', $program->schedules->pluck('id'))
+                    ->count();
+
+                $program->progress = $program->schedules_count > 0
+                    ? round(($journalCount / $program->schedules_count) * 100)
+                    : 0;
+
+                return $program;
+
+            })
+            ->sortByDesc('progress')
+            ->take(3);
+        
+        $this->totalMemberPrograms = $member->programs()
+            ->where('status', 'active')
+            ->count();
+
         $this->stats = [
             'streak'          => $this->streak,
             'program_selesai' => $programSelesai,
@@ -164,7 +191,9 @@ class MemberDashboard extends Component
     public function render()
     {
         return view('livewire.member.dashboard', [
-            'stats' => $this->stats
+            'stats' => $this->stats,
+            'memberPrograms' => $this->memberPrograms,
+            'totalMemberPrograms' => $this->totalMemberPrograms
         ])->layout('layouts.member');
     }
 }
