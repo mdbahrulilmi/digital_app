@@ -12,6 +12,10 @@ class MemberList extends Component
 
     public $search = '';
 
+    public $showProgramModal = false;
+    public $selectedMember = null;
+    public $memberPrograms = [];
+
     // Reset pagination ketika melakukan pencarian
     public function updatingSearch()
     {
@@ -27,11 +31,50 @@ class MemberList extends Component
         }
     }
 
+    public function showPrograms($memberId)
+    {
+        $member = Member::with([
+            'programs.schedules'
+        ])->findOrFail($memberId);
+
+        $this->selectedMember = $member;
+
+        $this->memberPrograms = $member->programs
+            ->map(function ($program) use ($member) {
+
+                $journal = \App\Models\Journal::where('member_id', $member->id)
+                    ->whereIn('program_schedule_id', $program->schedules->pluck('id'))
+                    ->count();
+
+                $totalSchedule = $program->schedules->count();
+
+                $program->progress = $totalSchedule
+                    ? round(($journal / $totalSchedule) * 100)
+                    : 0;
+
+                return $program;
+
+            });
+
+        $this->showProgramModal = true;
+    }
+
+    public function closeProgramModal()
+    {
+        $this->reset([
+            'showProgramModal',
+            'selectedMember',
+            'memberPrograms'
+        ]);
+    }
+
     public function render()
     {
-        // Mengambil data member dengan filter pencarian dan pagination
-        $members = Member::where('name', 'like', '%' . $this->search . '%')
-            ->orWhere('whatsapp', 'like', '%' . $this->search . '%')
+        $members = Member::withCount('programs')
+            ->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('whatsapp', 'like', '%' . $this->search . '%');
+            })
             ->latest()
             ->paginate(10);
 
