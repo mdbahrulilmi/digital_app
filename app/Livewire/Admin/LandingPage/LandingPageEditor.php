@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 
 use App\Models\LandingPage;
 use App\Models\Media;
+use App\Models\Product;
 use App\Models\LandingPageSection;
 use App\Models\LandingPageComponent;
 
@@ -59,7 +60,7 @@ class LandingPageEditor extends Component
     {
         $this->landingPageId = $id;
         $this->mediaItems = Media::all();
-
+        $this->products = Product::all();
         $landingPage = LandingPage::findOrFail($id);
 
         if (!empty($landingPage->program_page_id)) {

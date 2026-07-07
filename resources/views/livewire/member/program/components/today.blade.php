@@ -24,16 +24,30 @@
             $hasMaterials = $day->materials->isNotEmpty();
             $hasTasks = $day->tasks->isNotEmpty();
             $showHighlightJournal = !$hasMaterials && !$hasTasks;
+
+            $journalFilled = filled($journalContents[$day->schedules_id] ?? null);
+            $taskSubmitted = $submissions->has($day->schedules_id);
+
+            if ($showHighlightJournal) {
+                $heroCompleted = $journalFilled;
+            } else {
+                $heroCompleted = $journalFilled && (!$day->upload_required || $taskSubmitted);
+            }
         @endphp
 
         <div>
             <div class="p-2 md:p-4 space-y-6">
                 {{-- HERO + MATERI --}}
-                <div
-                    class="relative overflow-hidden rounded-2xl
-                    bg-gradient-to-br from-slate-900 via-[#111827] to-[#1E3A8A]
-                    border border-slate-700/80
-                    shadow-[0_20px_60px_rgba(37,99,235,.18)]">
+                <div class="relative overflow-hidden rounded-2xl border border-slate-700/80">
+
+                    {{-- Background biru --}}
+                    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-[#111827] to-[#1E3A8A]"></div>
+
+                    {{-- Background hijau --}}
+                    <div
+                        class="absolute inset-y-0 left-0 bg-gradient-to-br from-emerald-950 via-emerald-900 to-green-800 transition-all duration-700 ease-in-out"
+                        style="width: {{ $heroCompleted ? '100%' : '0%' }};">
+                    </div>
 
                     <!-- Blur -->
                     <div class="absolute -top-16 -right-16 sm:-top-24 sm:-right-20 w-44 h-44 sm:w-72 sm:h-72 bg-blue-500/20 rounded-full blur-3xl"></div>
@@ -129,8 +143,8 @@
                                                 Tidak ada materi & tugas — isi jurnal
                                             </p>
                                             @if(filled($journalContents[$day->schedules_id] ?? null))
-                                                <span class="inline-flex items-center gap-1 rounded-full bg-cyan-500 px-2.5 py-1 text-[11px] font-semibold text-white">
-                                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                <span class="inline-flex items-center gap-1 rounded-full bg-green-500 px-2.5 py-1 text-[12px] font-semibold text-white">
+                                                    <svg class="w-3 h-3 text-[12px]" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                                             clip-rule="evenodd"/>

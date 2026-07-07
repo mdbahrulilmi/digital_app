@@ -80,7 +80,7 @@ class DokuService
         ];
 
         $partnerServiceId = $config['serviceId'];
-        $customerNo = app()->environment('production') ? $config['custId'] : 5; 
+        $customerNo = $config['custId']; 
         $virtualAccountNo = $partnerServiceId . $customerNo;
         $body = [
             'partnerServiceId' => $partnerServiceId,
@@ -104,7 +104,7 @@ class DokuService
                 ['english' => 'Free text', 'indonesia' => 'Tulisan Bebas']
             ]
         ];
-
+    
         $endpoint = '/virtual-accounts/bi-snap-va/v1.1/transfer-va/create-va';
 
         return $this->callDokuApi(
@@ -119,6 +119,14 @@ class DokuService
     {
         $amountValue = number_format((float)$order->amount, 2, '.', '');
 
+        $settlement = [
+            [
+                'bank_account_settlement_id' => config('doku.bank_settlement_id') ?? '',
+                "value" => 100,
+                "type" => "PERCENTAGE"
+            ],
+        ];
+
         $body = [
             'partnerReferenceNo' => (string) $order->order_id,
             'amount' => [
@@ -130,9 +138,11 @@ class DokuService
             'validityPeriod' => now()->addMinutes(30)->format('Y-m-d\TH:i:sP'),
             'additionalInfo' => [
                 'postalCode' => '12190',
-                'feeType' => '1'
+                'feeType' => '1',
+                'settlement' => $settlement
             ]
         ];
+        
 
         return $this->callDokuApi('/snap-adapter/b2b/v1.0/qr/qr-mpm-generate', $body, (string) $order->order_id);
     }
