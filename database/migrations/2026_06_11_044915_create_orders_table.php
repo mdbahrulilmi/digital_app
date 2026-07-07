@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('customer_name');
             $table->string('customer_email');
             $table->string('customer_whatsapp')->index();
-            $table->text('customer_address');
+            $table->text('customer_address')->nullable();
             
             $table->integer('amount');
             $table->string('payment_method');

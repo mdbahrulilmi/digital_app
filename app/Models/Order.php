@@ -11,7 +11,6 @@ class Order extends Model
         'customer_name',
         'customer_email',
         'customer_whatsapp',
-        'customer_address',
         'amount',
         'payment_method',
         'payment_code',

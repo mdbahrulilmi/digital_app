@@ -123,7 +123,7 @@ class Checkout extends Component
                     $alreadyEnrolled = false;
 
                     $orders = Order::where('customer_whatsapp', $this->whatsapp)
-                        ->whereIn('status', ['paid', 'success'])
+                        ->whereIn('status', ['paid', 'success']) // sesuaikan status suksesmu
                         ->get();
 
                     foreach ($orders as $order) {
