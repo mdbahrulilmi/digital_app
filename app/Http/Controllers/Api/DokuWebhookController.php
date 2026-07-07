@@ -224,7 +224,6 @@ class DokuWebhookController extends Controller
             [
                 'name'     => $order->customer_name,
                 'email'    => $order->customer_email ?? null,
-                'address'    => $order->customer_address ?? null,
                 'password' => Hash::make($order->customer_whatsapp),
             ]
         );

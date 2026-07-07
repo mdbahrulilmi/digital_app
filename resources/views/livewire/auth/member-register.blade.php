@@ -43,11 +43,11 @@
             </div>
 
             {{-- Input Alamat --}}
-            <div>
+            {{-- <div>
                 <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">Alamat</label>
                 <textarea wire:model="address" rows="3" class="w-full bg-slate-50 border {{ $errors->has('address') ? 'border-rose-500' : 'border-slate-200' }} rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all resize-none"></textarea>
                 @error('address') <span class="text-rose-500 text-[11px] mt-1 ml-1 block">{{ $message }}</span> @enderror
-            </div>
+            </div> --}}
 
             <button type="submit" class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-semibold text-sm py-3.5 rounded-2xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-indigo-500/20">
                 Daftar Sekarang

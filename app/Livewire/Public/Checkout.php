@@ -17,7 +17,6 @@ class Checkout extends Component
     public $name;
     public $email;
     public $whatsapp;
-    public $address;
     public $payment_method;
 
     public $password;
@@ -33,7 +32,6 @@ class Checkout extends Component
             'name' => 'required|min:3',
             'email' => 'required|email',
             'whatsapp' => 'required|numeric|digits_between:10,15',
-            'address' => 'required|min:10',
         ];
 
         if ($this->totalPrice > 0) {
@@ -51,8 +49,6 @@ class Checkout extends Component
         'whatsapp.required' => 'Nomor WhatsApp wajib diisi.',
         'whatsapp.numeric' => 'Nomor WhatsApp harus berupa angka.',
         'whatsapp.digits_between' => 'Nomor WhatsApp harus di antara 10 sampai 15 digit.',
-        'address.required' => 'Alamat pengiriman lengkap wajib diisi.',
-        'address.min' => 'Alamat pengiriman minimal 10 karakter.',
         'payment_method.required' => 'Silakan pilih metode pembayaran.',
         'payment_method.in' => 'Metode pembayaran tidak valid.',
     ];
@@ -67,7 +63,6 @@ class Checkout extends Component
             $this->name = $member->name;
             $this->email = $member->email;
             $this->whatsapp = $member->whatsapp;
-            $this->address = $member->address;
         }
 
         $this->paymentGroups = [
@@ -128,7 +123,7 @@ class Checkout extends Component
                     $alreadyEnrolled = false;
 
                     $orders = Order::where('customer_whatsapp', $this->whatsapp)
-                        ->whereIn('status', ['paid', 'success']) // sesuaikan status suksesmu
+                        ->whereIn('status', ['paid', 'success'])
                         ->get();
 
                     foreach ($orders as $order) {
@@ -180,7 +175,6 @@ class Checkout extends Component
             'customer_name'     => $this->name,
             'customer_email'    => $this->email,
             'customer_whatsapp' => $this->whatsapp,
-            'customer_address'  => $this->address,
             'amount'            => $serverTotalPrice,
             'payment_method'    => $serverTotalPrice == 0 ? 'free' : $this->payment_method,
             'cart_snapshot'     => json_encode($secureCart),

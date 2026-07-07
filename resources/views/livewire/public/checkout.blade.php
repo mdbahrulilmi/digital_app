@@ -55,11 +55,11 @@
                     <input type="text" wire:model.defer="whatsapp" class="w-full text-sm px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 @error('whatsapp') border-rose-500 @enderror" placeholder="Contoh: 081234567890">
                     @error('whatsapp') <span class="text-[11px] text-rose-500 font-medium mt-0.5">{{ $message }}</span> @enderror
                 </div>
-                <div>
+                {{-- <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Lengkap</label>
                     <textarea wire:model.defer="address" rows="3" class="w-full text-sm px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 @error('address') border-rose-500 @enderror" placeholder="Nama Jalan, No. Rumah, RT/RW, Kecamatan, Kota/Kabupaten, Provinsi"></textarea>
                     @error('address') <span class="text-[11px] text-rose-500 font-medium mt-0.5">{{ $message }}</span> @enderror
-                </div>
+                </div> --}}
             </div>
         </div>
         @endauth
