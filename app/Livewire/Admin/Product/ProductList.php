@@ -97,11 +97,21 @@ class ProductList extends Component
 
         $this->editingId = $product->id;
         $this->title = $product->title;
+        $this->asset_source = $product->asset_source ?? 'upload';
         $this->asset_type = $product->type;
         $this->slug = $product->slug;
         $this->description = $product->description;
         $this->price = $product->price;
         $this->digital_assets = $product->digital_assets;
+
+        $asset = is_array($product->digital_assets)
+            ? $product->digital_assets
+            : json_decode($product->digital_assets, true);
+
+        if ($this->asset_source === 'link') {
+            $this->digital_asset_url = $asset['url'] ?? '';
+        }
+        
         $this->status = $product->status;
 
         $this->image_source = $product->image_source ?? 'upload';
@@ -184,6 +194,7 @@ class ProductList extends Component
                 'description' => $this->description,
                 'price' => $this->price,
                 'image_source' => $this->image_source,
+                'asset_source' => $this->asset_source,
                 'image' => $imageValue,
                 'digital_assets' => $digitalAssetValue,
                 'status' => $this->status,

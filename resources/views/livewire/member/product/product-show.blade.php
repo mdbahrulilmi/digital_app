@@ -23,6 +23,16 @@
                         <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
                             <iframe src="{{ $fullUrl }}" class="w-full h-full" frameborder="0"></iframe>
                         </div>
+
+                    @elseif(in_array($extension, ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']))
+                        <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                            @dump($fullUrl)
+                            <iframe
+                                 src="https://docs.google.com/gview?embedded=true&url={{ urlencode($fullUrl) }}"
+                                class="w-full h-full"
+                                frameborder="0">
+                            </iframe>
+                        </div>
                     
                     @elseif(in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
                         <div class="rounded-2xl overflow-hidden shadow-lg">
