@@ -1,10 +1,10 @@
-<div class="p-4 ">
-    <h1 class="text-3xl font-bold text-slate-900 mb-6">{{ $product->title }}</h1>
+<div class="p-4">
 
-    @php
-        $asset = $product->decoded_asset ?? null;
-    @endphp
+    <h1 class="text-3xl font-bold text-slate-900 mb-6">
+        {{ $product->title }}
+    </h1>
 
+<<<<<<< HEAD
     @if($asset)
         <div class="mt-4 w-full">
             @if(($asset['type'] ?? '') === 'link')
@@ -59,9 +59,23 @@
             Asset atau media tidak tersedia untuk produk ini.
         </div>
     @endif
+=======
+    <livewire:member.components.asset-viewer
+        :product="$product"
+        :key="$product->id"
+    />
+>>>>>>> fc8dce9 (fix little bug and add asset viewer)
 
     <div class="mt-8 prose prose-slate max-w-none">
-        <h3 class="text-xl font-semibold">Deskripsi</h3>
-        <p class="text-slate-600">{{ $product->description }}</p>
+
+        <h3 class="text-xl font-semibold">
+            Deskripsi
+        </h3>
+
+        <p class="text-slate-600">
+            {{ $product->description }}
+        </p>
+
     </div>
+
 </div>
