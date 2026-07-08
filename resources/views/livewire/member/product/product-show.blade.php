@@ -20,13 +20,12 @@
 
                 <div class="w-full">
                     @if($extension === 'pdf')
-                        <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                            <iframe src="{{ $fullUrl }}" class="w-full h-full" frameborder="0"></iframe>
-                        </div>
+                            <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                                <iframe src="{{ $fullUrl }}" class="w-full h-full" frameborder="0"></iframe>
+                            </div>
 
                     @elseif(in_array($extension, ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']))
-                        <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                            @dump($fullUrl)
+                        <div class="w-full h-[85vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
                             <iframe
                                  src="https://docs.google.com/gview?embedded=true&url={{ urlencode($fullUrl) }}"
                                 class="w-full h-full"
