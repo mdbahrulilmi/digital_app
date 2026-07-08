@@ -13,6 +13,13 @@ class Journal extends Model
         return $this->belongsTo(ProgramSchedule::class);
     }
 
+    public function scopeProgram($query, $slug)
+    {
+        return $query->whereHas('programSchedule.program', function ($q) use ($slug) {
+            $q->where('slug', $slug);
+        });
+    }
+
    public function getSubmissionAttribute()
     {
         return TaskSubmission::where(

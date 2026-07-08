@@ -11,6 +11,13 @@ class Journal extends Component
     public $selectedSubmission = null;
     public $showTaskModal = false;
 
+    public $slug;
+
+    public function mount($slug)
+    {
+        $this->slug = $slug;
+    }
+
     public function openTaskDetail($submissionId)
     {
         $this->selectedSubmission = \App\Models\TaskSubmission::find($submissionId);
@@ -27,12 +34,11 @@ class Journal extends Component
     {
         $memberId = auth('member')->id();
 
-        $journalsLog = JournalModel::where(
-            'member_id',
-            $memberId
-        )
-        ->latest()
-        ->get();
+         $journalsLog = JournalModel::with('programSchedule.program')
+            ->where('member_id', $memberId)
+            ->program($this->slug)
+            ->latest()
+            ->get();
 
         return view('livewire.member.program.components.journal', [
             'journalsLog' => $journalsLog
