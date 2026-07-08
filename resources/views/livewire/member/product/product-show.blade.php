@@ -4,67 +4,10 @@
         {{ $product->title }}
     </h1>
 
-<<<<<<< HEAD
-    @if($asset)
-        <div class="mt-4 w-full">
-            @if(($asset['type'] ?? '') === 'link')
-                <div class="rounded-2xl overflow-hidden shadow-2xl">
-                    <img src="{{ $asset['url'] }}" class="w-full h-auto" alt="Product Image">
-                </div>
-            @else
-                @php
-                    $filePath = $asset['path'] ?? '';
-                    $extension = strtolower($asset['type'] ?? pathinfo($filePath, PATHINFO_EXTENSION));
-                    $fullUrl = asset('storage/' . $filePath);
-                @endphp
-
-                <div class="w-full">
-                    @if($extension === 'pdf')
-                            <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                                <iframe src="{{ $fullUrl }}" class="w-full h-full" frameborder="0"></iframe>
-                            </div>
-
-                    @elseif(in_array($extension, ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']))
-                            <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden relative">
-                                <iframe
-                                    src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fullUrl) }}"
-                                    class="w-full h-full relative z-0"
-                                    frameborder="0">
-                                </iframe>
-                            </div>
-                    
-                    @elseif(in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
-                        <div class="rounded-2xl overflow-hidden shadow-lg">
-                            <img src="{{ $fullUrl }}" class="w-full h-auto" alt="Image">
-                        </div>
-                    @elseif(in_array($extension, ['mp4', 'mov', 'webm']))
-                        <div class="rounded-2xl overflow-hidden shadow-2xl bg-black">
-                            <video controls class="w-full aspect-video">
-                                <source src="{{ $fullUrl }}" type="video/{{ $extension }}">
-                                Browser Anda tidak mendukung pemutar video.
-                            </video>
-                        </div>
-                    @elseif(in_array($extension, ['mp3', 'wav', 'ogg']))
-                        <div class="p-8 bg-slate-900 rounded-2xl flex items-center justify-center shadow-lg">
-                            <audio controls class="w-full max-w-md">
-                                <source src="{{ $fullUrl }}" type="audio/{{ $extension }}">
-                            </audio>
-                        </div>
-                    @endif
-                </div>
-            @endif
-        </div>
-    @else
-        <div class="p-8 bg-slate-100 rounded-2xl text-center text-slate-500">
-            Asset atau media tidak tersedia untuk produk ini.
-        </div>
-    @endif
-=======
     <livewire:member.components.asset-viewer
         :product="$product"
         :key="$product->id"
     />
->>>>>>> fc8dce9 (fix little bug and add asset viewer)
 
     <div class="mt-8 prose prose-slate max-w-none">
 
