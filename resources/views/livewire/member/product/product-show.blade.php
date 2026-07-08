@@ -25,13 +25,13 @@
                             </div>
 
                     @elseif(in_array($extension, ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']))
-                        <div class="w-full h-[85vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                            <iframe
-                                 src="https://docs.google.com/gview?embedded=true&url={{ urlencode($fullUrl) }}"
-                                class="w-full h-full"
-                                frameborder="0">
-                            </iframe>
-                        </div>
+                            <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden relative">
+                                <iframe
+                                    src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fullUrl) }}"
+                                    class="w-full h-full relative z-0"
+                                    frameborder="0">
+                                </iframe>
+                            </div>
                     
                     @elseif(in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
                         <div class="rounded-2xl overflow-hidden shadow-lg">
