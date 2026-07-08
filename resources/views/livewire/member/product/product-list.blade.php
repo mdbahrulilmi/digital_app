@@ -75,7 +75,7 @@
 
                     <img
                         src="{{ asset($item->product->image) }}"
-                        alt="{{ $item->title }}"
+                        alt="{{ $item->product->title }}"
                         class="w-full h-full object-cover">
 
                 </div>
@@ -89,7 +89,7 @@
 
                 {{-- Title --}}
                 <h3 class="font-bold text-slate-900 text-lg line-clamp-1">
-                    {{ $item->title }}
+                    {{ $item->product->title }}
                 </h3>
 
                 {{-- Description --}}
