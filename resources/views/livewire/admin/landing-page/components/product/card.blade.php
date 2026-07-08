@@ -1,5 +1,5 @@
 @php
-    $productId = $content['id'] ?? null;
+    $productId = $content['product_id'] ?? null;
     $productSlug = $content['slug'] ?? '/';
 
     $productTitle = $content['title'] ?? 'Nama Produk';
@@ -11,7 +11,6 @@
     $imageUrl = $content['image_url'] ?? null;
     $badge = $content['badge'] ?? null;
 @endphp
-
 
 <div class="w-full h-full bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm flex flex-col">
 
