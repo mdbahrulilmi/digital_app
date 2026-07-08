@@ -65,14 +65,16 @@ class MemberDashboard extends Component
 
         $this->streak = $this->hitungStreak($member->id);
 
-        $itemDibeli = \App\Models\OrderItem::whereHas('order', function($q) use ($member) {
-            $q->where('customer_whatsapp', $member->whatsapp)
-              ->where('status', 'paid');
-        })
-        ->get();
+       $programDibeliIds = $member->programs()
+            ->pluck('programs.id');
 
-        $programDibeliIds = $itemDibeli->whereNotNull('program_id')->pluck('program_id');
-        $produkDibeliIds = $itemDibeli->whereNotNull('product_id')->pluck('product_id');
+        $produkDibeliIds = OrderItem::whereHas('order', function ($q) use ($member) {
+            $q->where('customer_whatsapp', $member->whatsapp)
+                ->where('status', 'paid');
+        })
+        ->where('type', 'product')
+        ->pluck('product_id');
+
         $produkDariProgram = ProgramProduct::whereHas('schedule', function ($q) use ($programDibeliIds) {
             $q->whereIn('program_id', $programDibeliIds);
         })
@@ -94,24 +96,18 @@ class MemberDashboard extends Component
             ->take(3)
             ->get();
         
-        $programQuery = OrderItem::query()
-            ->whereHas('order', function ($q) use ($member) {
-                $q->where('customer_whatsapp', $member->whatsapp)
-                ->where('status', 'paid')
-                ->where('type', 'program');
-            });
+        $programQuery = $member->programs();
 
-        $productQuery = OrderItem::query()
-            ->whereHas('order', function ($q) use ($member) {
-                $q->where('customer_whatsapp', $member->whatsapp)
-                ->where('status', 'paid')
-                ->where('type', 'product');
-            });
+        $productQuery = OrderItem::whereHas('order', function ($q) use ($member) {
+            $q->where('customer_whatsapp', $member->whatsapp)
+                ->where('status', 'paid');
+        })
+        ->where('type', 'product');
 
         $programSelesai = (clone $programQuery)
-            ->whereHas('program', function ($q) use ($today) {
-                $q->whereDate('end_date', '<', $today);
-            })->count();
+            ->whereDate('end_date', '<', $today)
+            ->count();
+            
         $totalProgram = (clone $programQuery)->count();
         $totalProduct = (clone $productQuery)->count();
 

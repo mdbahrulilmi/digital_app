@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Member\Program;
 
-use App\Models\OrderItem;
-use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -12,16 +10,11 @@ class ProgramList extends Component
     public function render()
     {
         $member = Auth::guard('member')->user();
-        $orderItems = OrderItem::whereHas('order', function ($query) use ($member) {
-                $query->where('customer_whatsapp', $member->whatsapp)
-                ->where('status', 'paid');;
-            })
-            ->where('type', 'program')
-            ->with('program')
-            ->get();
+
+        $programs = $member->programs()->latest()->get();
 
         return view('livewire.member.program.program-list', [
-            'orderItems' => $orderItems
+            'programs' => $programs
         ])->layout('layouts.member');
     }
 }
