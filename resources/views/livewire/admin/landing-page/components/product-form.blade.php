@@ -160,47 +160,6 @@
             </div>
 
         </div>
-        
-        <div class="bg-white border border-slate-200 rounded-xl p-5">
-
-            <h3 class="font-semibold text-slate-800 mb-4">
-                Promo
-            </h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                <div>
-
-                    <label class="block text-xs font-medium text-slate-600 mb-2">
-                        Harga Coret
-                    </label>
-
-                    <input
-                        type="number"
-                        wire:model.live="editingContent.old_price"
-                        placeholder="150000"
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
-
-                </div>
-
-
-                <div>
-
-                    <label class="block text-xs font-medium text-slate-600 mb-2">
-                        Badge
-                    </label>
-
-                    <input
-                        type="text"
-                        wire:model.live="editingContent.badge"
-                        placeholder="Promo"
-                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
-
-                </div>
-
-            </div>
-
-        </div>
 
     </div>
 
