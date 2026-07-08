@@ -1,4 +1,4 @@
-<div class="p-6">
+<div class="p-2">
     <h2 class="text-3xl font-extrabold text-slate-900 mb-8 tracking-tight">Program Eksklusif Anda</h2>
     <div class="space-y-6">
         @forelse($programs as $program)
