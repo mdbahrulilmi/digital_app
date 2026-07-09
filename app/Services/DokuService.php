@@ -96,12 +96,12 @@ class DokuService
                 'value' => number_format($order->amount, 2, '.', ''),
                 'currency' => 'IDR'
                 ],
-                'virtualAccountConfig' => [
-                'reuseableStatus' => true,
-            ],
             'additionalInfo' => [
                 'channel' => $config['channel'],
-                'settlement' => $settlement
+                'settlement' => $settlement,
+                'virtualAccountConfig' => [
+                    'reuseableStatus' => true,
+                ],
                 ],
             'freeText' => [
                 ['english' => 'Free text', 'indonesia' => 'Tulisan Bebas']
