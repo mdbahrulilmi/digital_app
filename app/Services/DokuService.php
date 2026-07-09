@@ -102,9 +102,6 @@ class DokuService
                     'reuseableStatus' => false,
                     ],
                 ],
-            'freeText' => [
-                ['english' => 'Free text', 'indonesia' => 'Tulisan Bebas']
-            ]
         ];
     
         $endpoint = '/virtual-accounts/bi-snap-va/v1.1/transfer-va/create-va';
