@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Traits\InteractsWithDoku;
-use Illuminate\Support\Facades\Log;
 
 class DokuService
 {
@@ -100,8 +99,8 @@ class DokuService
                 'channel' => $config['channel'],
                 'settlement' => $settlement,
                 'virtualAccountConfig' => [
-                    'reuseableStatus' => true,
-                ],
+                    'reuseableStatus' => false,
+                    ],
                 ],
             'freeText' => [
                 ['english' => 'Free text', 'indonesia' => 'Tulisan Bebas']
@@ -109,8 +108,6 @@ class DokuService
         ];
     
         $endpoint = '/virtual-accounts/bi-snap-va/v1.1/transfer-va/create-va';
-        
-        Log::info('BNI BODY', $body);
 
         return $this->callDokuApi(
             $endpoint,
