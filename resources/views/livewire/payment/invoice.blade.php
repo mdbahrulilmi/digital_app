@@ -26,7 +26,6 @@
 
         <hr class="border-slate-100">
 
-        {{-- KONDISI 1: JIKA SUDAH SUKSES --}}
         @if($paymentStatus === 'success' || $paymentStatus === 'settlement')
             <div class="flex flex-col items-center py-6 space-y-3">
                 <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center border border-emerald-100 shadow-sm">

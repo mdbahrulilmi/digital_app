@@ -13,10 +13,17 @@ return new class extends Migration
     {
         Schema::create('enrollments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('member_id')->constrained();
-            $table->foreignId('program_id')->constrained();
+
+            $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('program_id')->constrained()->cascadeOnDelete();
+
+            $table->string('order_id');
+
             $table->string('status_enroll')->default('active');
+
             $table->timestamps();
+
+            $table->unique(['member_id', 'program_id']);
         });
     }
 

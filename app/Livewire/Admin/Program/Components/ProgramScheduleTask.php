@@ -251,12 +251,6 @@ class ProgramScheduleTask extends Component
 
     public function render()
     {
-        logger([
-            'tasks_dates' => count($this->tasks),
-            'schedule_dates' => count($this->schedules),
-            'products' => count($this->allProducts),
-        ]);
-
         return view(
             'livewire.admin.program.components.material'
         );

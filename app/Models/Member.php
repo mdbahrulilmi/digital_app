@@ -37,4 +37,17 @@ class Member extends Authenticatable
             'program_id'
         );
     }
+
+    public function memberProducts()
+    {
+        return $this->hasMany(MemberProduct::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'member_products'
+        )->withTimestamps();
+    }
 }

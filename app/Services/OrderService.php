@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Order;
 use App\Models\Member;
+use App\Models\MemberProduct;
 use App\Models\Enrollment;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +19,6 @@ class OrderService
             [
                 'name' => $order->customer_name,
                 'email' => $order->customer_email,
-                'address' => $order->customer_address,
                 'password' => Hash::make($order->customer_whatsapp),
             ]
         );
@@ -39,13 +39,24 @@ class OrderService
             ]);
 
             if ($item['type'] === 'program') {
-                Enrollment::updateOrCreate(
+                Enrollment::firstOrCreate(
                     [
                         'member_id' => $member->id,
                         'program_id' => $item['id'],
                     ],
                     [
-                        'created_at' => now(),
+                        'order_id' => $order->order_id,
+                        'status_enroll' => 'active',
+                    ]
+                );
+            } else{
+                MemberProduct::firstOrCreate(
+                    [
+                        'member_id' => $member->id,
+                        'product_id' => $item['id'],
+                    ],
+                    [
+                        'order_id' => $order->order_id,
                     ]
                 );
             }

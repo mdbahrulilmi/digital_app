@@ -74,8 +74,8 @@ class DokuService
         $settlement = [
             [
                 'bank_account_settlement_id' => config('doku.bank_settlement_id') ?? '',
-                "value" => 100,
-                "type" => "PERCENTAGE"
+                'value' => 100,
+                'type' => 'PERCENTAGE'
             ],
         ];
 
@@ -91,11 +91,14 @@ class DokuService
             'virtualAccountPhone' => $order->customer_whatsapp,
             'trxId' => (string) $order->order_id,
             'virtualAccountTrxType' => 'C',
-            'expiredDate' => now()->addHours(24)->format('Y-m-d\TH:i:sP'),
+            'expiredDate' => now('Asia/Jakarta')->addMinutes(15)->format('Y-m-d\TH:i:sP'),
             'totalAmount' => [
                 'value' => number_format($order->amount, 2, '.', ''),
                 'currency' => 'IDR'
                 ],
+                'virtualAccountConfig' => [
+                'reuseableStatus' => true,
+            ],
             'additionalInfo' => [
                 'channel' => $config['channel'],
                 'settlement' => $settlement
@@ -122,8 +125,8 @@ class DokuService
         $settlement = [
             [
                 'bank_account_settlement_id' => config('doku.bank_settlement_id') ?? '',
-                "value" => 100,
-                "type" => "PERCENTAGE"
+                'value' => 100,
+                'type' => 'PERCENTAGE'
             ],
         ];
 

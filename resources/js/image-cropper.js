@@ -4,7 +4,6 @@ window.imageCropper = function (wireModel, ratio = 1) {
         show: false,
 
         openCropper(event) {
-            console.log('OPEN CROPPER');
             const file = event.target.files[0];
 
             if (!file) return;

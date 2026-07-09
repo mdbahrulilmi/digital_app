@@ -1,6 +1,5 @@
 <div class="p-2">
 
-    {{-- Header --}}
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6">
 
         <div>
@@ -15,12 +14,10 @@
 
     </div>
 
-    {{-- Toolbar --}}
     <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm mb-6">
 
         <div class="flex flex-col lg:flex-row gap-3">
 
-            {{-- Search --}}
             <div class="relative flex-1">
 
                 <svg
@@ -45,7 +42,6 @@
 
             </div>
 
-            {{-- Filter --}}
             <select
                 wire:model.live="filter"
                 class="rounded-xl border border-slate-200 px-4 py-3 lg:w-60">
@@ -63,14 +59,12 @@
 
     </div>
 
-    {{-- Product Grid --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
         @forelse($orderItems as $item)
 
             <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm hover:shadow-xl transition duration-300">
 
-                {{-- Image --}}
                 <div class="w-full aspect-video rounded-2xl overflow-hidden bg-slate-100 mb-5">
 
                     <img
@@ -80,24 +74,20 @@
 
                 </div>
 
-                {{-- Category Badge --}}
                 @if($item->product->category)
                     <span class="inline-flex mb-3 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700">
                         {{ $item->product->category->name }}
                     </span>
                 @endif
 
-                {{-- Title --}}
                 <h3 class="font-bold text-slate-900 text-lg line-clamp-1">
                     {{ $item->product->title }}
                 </h3>
 
-                {{-- Description --}}
                 <p class="mt-2 text-sm text-slate-500 line-clamp-2">
                     {{ $item->product->description ?? 'Deskripsi belum tersedia.' }}
                 </p>
 
-                {{-- Button --}}
                 <a
                     href="{{ route('member.product.show',$item->product->slug) }}"
                     class="mt-6 block w-full rounded-xl bg-slate-900 py-3 text-center text-sm font-semibold text-white hover:bg-indigo-600 transition">
@@ -144,7 +134,6 @@
 
     </div>
 
-    {{-- Footer --}}
     <div class="mt-6 flex items-center justify-between">
 
         <p class="text-sm text-slate-500">
