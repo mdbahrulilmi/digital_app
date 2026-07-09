@@ -1,5 +1,5 @@
 @php
-    $productId = $content['product_wid'] ?? null;
+    $productId = $content['product_id'] ?? null;
     $productSlug = $content['slug'] ?? '/';
 
     $productTitle = $content['title'] ?? 'Nama Produk';
