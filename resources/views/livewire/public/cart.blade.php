@@ -1,6 +1,5 @@
 <div class="w-full max-w-md min-h-screen bg-slate-50 shadow-xl flex flex-col justify-between relative border-x border-slate-200/50 mx-auto font-sans">
     
-    {{-- Header Keranjang --}}
     <div class="bg-white px-4 py-4 border-b border-slate-100 flex items-center sticky top-0 z-10 shadow-sm">
         
         <a href="javascript:void(0)" onclick="history.back()" class="text-slate-600 hover:text-slate-900 mr-3 cursor-pointer">
@@ -12,7 +11,6 @@
         <h2 class="text-lg font-bold text-slate-800">Keranjang Belanja</h2>
     </div>
 
-    {{-- Isi Konten Keranjang --}}
     <div class="flex-1 p-4 space-y-4 overflow-y-auto">
         @if(session()->has('success'))
             <div class="bg-emerald-50 text-emerald-600 text-xs p-3 rounded-xl border border-emerald-100 font-medium">
@@ -21,11 +19,9 @@
         @endif
 
         @if(count($cart) > 0)
-            {{-- Loop Item Keranjang --}}
             @foreach($cart as $id => $item)
                 <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between gap-3">
                     
-                    {{-- Detail Nama & Harga --}}
                     <div class="flex-1 min-w-0">
                         <h4 class="font-bold text-slate-800 text-sm truncate">{{ $item['name'] }}</h4>
                         <p class="text-xs text-rose-500 font-black mt-1">
@@ -33,25 +29,27 @@
                         </p>
                     </div>
 
-                    {{-- Pengatur Qty & Tombol Hapus --}}
                     <div class="flex items-center gap-3">
-                        {{-- Tombol Minus & Plus --}}
-                        <div class="flex items-center border border-slate-200 rounded-lg bg-slate-50 overflow-hidden">
-                            <button type="button" wire:click="decrementQty('{{ $id }}')" class="px-2 py-1 text-slate-600 hover:bg-slate-200 font-bold text-sm transition">-</button>
-                            <span class="px-3 text-xs font-bold text-slate-800 bg-white min-w-[2rem] text-center">{{ $item['qty'] }}</span>
-                            <button type="button" wire:click="incrementQty('{{ $id }}')" class="px-2 py-1 text-slate-600 hover:bg-slate-200 font-bold text-sm transition">+</button>
-                        </div>
 
-                        {{-- Tombol Trash / Hapus --}}
-                        <button type="button" wire:click="removeItem('{{ $id }}')" class="text-slate-400 hover:text-rose-600 transition" title="Hapus item">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        <button
+                            type="button"
+                            wire:click="removeItem('{{ $id }}')"
+                            class="text-slate-400 hover:text-rose-600 transition cursor-pointer"
+                            title="Hapus item">
+
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+
                         </button>
+
                     </div>
 
                 </div>
             @endforeach
         @else
-            {{-- Keadaan Keranjang Kosong --}}
             <div class="flex flex-col items-center justify-center py-20 text-center space-y-3">
                 <div class="p-4 bg-slate-100 rounded-full text-slate-400">
                     <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
@@ -67,7 +65,6 @@
         @endif
     </div>
 
-    {{-- Ringkasan Total & Tombol Checkout --}}
     @if(count($cart) > 0)
         <div class="bg-white p-4 border-t border-slate-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] space-y-3 sticky bottom-0">
             <div class="flex items-center justify-between">
@@ -77,7 +74,6 @@
                 </span>
             </div>
             
-            {{-- Tombol Menuju Halaman Checkout / Form Order --}}
             <a href="{{ url('/checkout') }}" class="w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3 px-4 rounded-xl shadow transition duration-150 transform active:scale-95">
                 Lanjut ke Pembayaran
             </a>

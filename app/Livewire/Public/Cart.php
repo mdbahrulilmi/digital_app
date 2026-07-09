@@ -17,33 +17,11 @@ class Cart extends Component
     public function loadCart()
     {
         $this->cart = session()->get('cart', []);
-        
+
         $this->totalPrice = 0;
+
         foreach ($this->cart as $item) {
-            $this->totalPrice += $item['price'] * $item['qty'];
-        }
-    }
-
-    public function incrementQty($sectionId)
-    {
-        if (isset($this->cart[$sectionId])) {
-            $this->cart[$sectionId]['qty']++;
-            session()->put('cart', $this->cart);
-            $this->loadCart();
-            $this->dispatch('cartUpdated'); 
-        }
-    }
-
-    public function decrementQty($sectionId)
-    {
-        if (isset($this->cart[$sectionId]) && $this->cart[$sectionId]['qty'] > 1) {
-            $this->cart[$sectionId]['qty']--;
-            session()->put('cart', $this->cart);
-            $this->loadCart();
-
-            $this->dispatch('cartUpdated'); 
-        } elseif (isset($this->cart[$sectionId]) && $this->cart[$sectionId]['qty'] == 1) {
-            $this->removeItem($sectionId);
+            $this->totalPrice += $item['price'];
         }
     }
 
@@ -51,10 +29,12 @@ class Cart extends Component
     {
         if (isset($this->cart[$sectionId])) {
             unset($this->cart[$sectionId]);
+
             session()->put('cart', $this->cart);
+
             $this->loadCart();
 
-            $this->dispatch('cartUpdated'); 
+            $this->dispatch('cartUpdated');
 
             session()->flash('success', 'Produk berhasil dihapus dari keranjang.');
         }
@@ -63,7 +43,7 @@ class Cart extends Component
     public function render()
     {
         return view('livewire.public.cart')
-            ->layout('layouts.public',[
+            ->layout('layouts.public', [
                 'title' => 'Halaman Keranjang'
             ]);
     }

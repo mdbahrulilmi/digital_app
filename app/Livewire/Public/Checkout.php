@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Program;
 use App\Models\Enrollment;
+use App\Models\MemberProduct;
 use App\Services\OrderService;
 
 class Checkout extends Component
@@ -107,10 +108,54 @@ class Checkout extends Component
         $secureCart = [];
 
         foreach ($this->cart as $item) {
+
             if ($item['type'] === 'product') {
+
                 $data = Product::find($item['id']);
+
+                if (auth('member')->check()) {
+
+                    $alreadyBought = MemberProduct::where('member_id', auth('member')->id())
+                        ->where('product_id', $item['id'])
+                        ->exists();
+
+                } else {
+
+                    $alreadyBought = false;
+
+                    $orders = Order::where('customer_whatsapp', $this->whatsapp)
+                        ->whereIn('status', ['paid', 'success'])
+                        ->get();
+
+                    foreach ($orders as $order) {
+
+                        $cart = json_decode($order->cart_snapshot, true);
+
+                        foreach ($cart as $cartItem) {
+
+                            if (
+                                $cartItem['type'] === 'product' &&
+                                $cartItem['id'] == $item['id']
+                            ) {
+                                $alreadyBought = true;
+                                break 2;
+                            }
+                        }
+                    }
+                }
+
+                if ($alreadyBought) {
+                    $this->addError(
+                        'checkout',
+                        'Produk "' . $item['name'] . '" sudah pernah Anda beli.'
+                    );
+
+                    return;
+                }
+
             } else {
-                 $data = Program::find($item['id']);
+
+                $data = Program::find($item['id']);
 
                 if (auth('member')->check()) {
 
@@ -123,7 +168,7 @@ class Checkout extends Component
                     $alreadyEnrolled = false;
 
                     $orders = Order::where('customer_whatsapp', $this->whatsapp)
-                        ->whereIn('status', ['paid', 'success']) // sesuaikan status suksesmu
+                        ->whereIn('status', ['paid', 'success'])
                         ->get();
 
                     foreach ($orders as $order) {

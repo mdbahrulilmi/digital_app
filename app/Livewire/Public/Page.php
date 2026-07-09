@@ -67,9 +67,7 @@ class Page extends Component
         $cart = session()->get('cart', []);
         $cartKey = $type . '_' . $id; 
 
-        if (isset($cart[$cartKey])) {
-            $cart[$cartKey]['qty']++;
-        } else {
+        if (!isset($cart[$cartKey])) {
             $cart[$cartKey] = [
                 'id'    => $id,
                 'name'  => $name,
