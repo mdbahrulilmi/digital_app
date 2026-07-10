@@ -15,6 +15,9 @@
     <meta name="description"
           content="{{ $landingPage?->meta_description ?? $landingPage?->description ?? '' }}">
 
+    <meta name="keywords"
+      content="{{ $landingPage?->meta_keywords ?? '' }}">
+
     <meta name="robots"
           content="{{ $landingPage?->robots ?? 'index,follow' }}">
 

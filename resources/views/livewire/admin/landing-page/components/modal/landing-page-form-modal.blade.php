@@ -276,9 +276,15 @@
 
                                     <div class="space-y-6">
                                         <div>
+                                            <label class="block text-xs font-black text-slate-400 uppercase mb-2">Meta Keywords</label>
+                                            <textarea wire:model.live="meta_keywords" rows="4" 
+                                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all resize-none" 
+                                                placeholder="Masukkan kata kunci"></textarea>
+                                        </div>
+                                        <div>
                                             <label class="block text-xs font-black text-slate-400 uppercase mb-2">Meta Description</label>
                                             <textarea wire:model.live="meta_description" rows="4" 
-                                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
+                                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all resize-none"
                                                 placeholder="Deskripsi singkat untuk mesin pencari..."></textarea>
                                         </div>
                                     </div>
@@ -298,7 +304,7 @@
 
                             <button
                                 type="submit"
-                                class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl">
+                                class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl cursor-pointer">
                                 Simpan
                             </button>
                         </div>

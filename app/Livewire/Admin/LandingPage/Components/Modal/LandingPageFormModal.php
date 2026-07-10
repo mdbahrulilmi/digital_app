@@ -53,6 +53,7 @@ class LandingPageFormModal extends Component
 
     public $meta_title;
     public $meta_description;
+    public $meta_keywords;
     public $canonical_url;
     public $robots = 'index,follow';
 
@@ -93,6 +94,7 @@ class LandingPageFormModal extends Component
 
             $this->meta_title = $page->meta_title;
             $this->meta_description = $page->meta_description;
+            $this->meta_keywords = $page->meta_keywords;
             $this->canonical_url = $page->canonical_url;
             $this->robots = $page->robots;
         }
@@ -172,6 +174,7 @@ class LandingPageFormModal extends Component
 
         $this->meta_title = null;
         $this->meta_description = null;
+        $this->meta_keywords = null;
         $this->canonical_url = null;
         $this->robots = 'index,follow';
 
@@ -187,6 +190,7 @@ class LandingPageFormModal extends Component
             'status' => 'required|in:published,draft',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
             'canonical_url' => 'nullable|url',
         ]);
 
@@ -229,6 +233,7 @@ class LandingPageFormModal extends Component
         $validated['image_source'] = $this->image_source;
         $validated['meta_title'] = $this->meta_title;
         $validated['meta_description'] = $this->meta_description;
+        $validated['meta_keywords'] = $this->meta_keywords;
         $validated['canonical_url'] = $this->canonical_url;
         $validated['robots'] = $this->robots;
 
