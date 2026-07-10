@@ -15,13 +15,25 @@ use App\Services\DokuService;
 
 class Invoice extends Component
 {
-    public $orderId, $method, $amount, $paymentStatus;
-    public $qrUrl, $paymentCode, $eWalletUrl;
+    public $orderId;
+    public $method; 
+    public $amount; 
+    public $paymentStatus;
+    public $qrUrl; 
+    public $paymentCode; 
+    public $eWalletUrl;
+    public $showExpiredModal = false;
+    public $expiredAt;
+
+    protected $listeners = [
+        'payment-expired' => 'expireOrder',
+    ];
 
     public $eWallets = ['dana', 'shopeepay'];
 
     public function mount(DokuService $dokuService)
     {
+        
         $this->orderId = request()->query('order_id');
         $this->method = request()->query('method');
         
@@ -30,7 +42,14 @@ class Invoice extends Component
         $this->amount = $order->amount;
         $this->paymentStatus = $order->status;
         
-        $this->paymentCode = $order->payment_code; 
+        $this->paymentCode = $order->payment_code;
+        
+        $this->checkPaymentStatus();
+
+        $this->expiredAt = $order->created_at
+            ->copy()
+            ->addMinutes(15)
+            ->timestamp;
         
         if (empty($order->payment_code) && $this->paymentStatus === 'pending') {
             $this->processPayment($dokuService, $order);
@@ -99,7 +118,38 @@ class Invoice extends Component
                 'order_id' => $this->orderId
                 ]);
             }
+            if ($this->paymentStatus === 'failed') {
+                $this->showExpiredModal = true;
+            }
         }
+    }
+
+    public function expireOrder()
+    {
+        logger('expireOrder dipanggil untuk: '.$this->orderId);
+
+        $order = Order::where('order_id', $this->orderId)->first();
+
+        if (!$order) {
+            return;
+        }
+
+        if ($order->status !== 'pending') {
+            return;
+        }
+
+        if (now()->lt($order->created_at->copy()->addMinutes(3))) {
+            return;
+        }
+
+        $order->update([
+            'status' => 'failed',
+        ]);
+
+        $this->paymentStatus = 'failed';
+        $this->showExpiredModal = true;
+
+        $this->dispatch('$refresh');
     }
 
     public function render()
