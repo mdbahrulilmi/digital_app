@@ -14,7 +14,7 @@
 
     </div>
 
-    <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm mb-6">
+    <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm mb-6">
 
         <div class="flex flex-col lg:flex-row gap-3">
 
@@ -59,50 +59,69 @@
 
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
 
         @forelse($orderItems as $item)
 
-            <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm hover:shadow-xl transition duration-300">
+        <div class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:shadow-xl">
 
-                <div class="w-full aspect-video rounded-2xl overflow-hidden bg-slate-100 mb-5">
+            <div class="flex-1">
+
+                <div class="relative mb-5 aspect-video w-full overflow-hidden rounded-xl bg-slate-100">
 
                     <img
                         src="{{ asset($item->product->image) }}"
                         alt="{{ $item->product->title }}"
-                        class="w-full h-full object-cover">
+                        class="h-full w-full object-cover">
+
+                    @if($item->product->type)
+                        @php
+                            $type = strtolower($item->product->type);
+
+                            $badge = match ($type) {
+                                'video' => 'bg-red-100 text-red-700',
+                                'audio' => 'bg-purple-100 text-purple-700',
+                                'image' => 'bg-green-100 text-green-700',
+                                'file'  => 'bg-orange-100 text-orange-700',
+                                'link'  => 'bg-blue-100 text-blue-700',
+                                default => 'bg-slate-100 text-slate-700',
+                            };
+                        @endphp
+
+                        <span class="absolute top-3 right-3 rounded-full px-3 py-1 text-xs font-semibold {{ $badge }}">
+                            {{ ucfirst($type) }}
+                        </span>
+                    @endif
 
                 </div>
 
-                @if($item->product->category)
-                    <span class="inline-flex mb-3 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700">
-                        {{ $item->product->category->name }}
-                    </span>
-                @endif
-
-                <h3 class="font-bold text-slate-900 text-lg line-clamp-1">
+                <h3
+                    class="line-clamp-2 min-h-[40px] font-bold text-slate-900
+                    {{ strlen($item->product->title) > 30 ? 'text-base' : 'text-lg' }}">
                     {{ $item->product->title }}
                 </h3>
 
-                <p class="mt-2 text-sm text-slate-500 line-clamp-2">
+                <p class="line-clamp-2 min-h-[40px] text-sm text-slate-500">
                     {{ $item->product->description ?? 'Deskripsi belum tersedia.' }}
                 </p>
 
-                <a
-                    href="{{ route('member.product.show',$item->product->slug) }}"
-                    class="mt-6 block w-full rounded-xl bg-slate-900 py-3 text-center text-sm font-semibold text-white hover:bg-indigo-600 transition">
-
-                    Lihat Detail
-
-                </a>
-
             </div>
 
-        @empty
+            <a
+                href="{{ route('member.product.show', $item->product->slug) }}"
+                class="mt-6 block w-full rounded-xl bg-slate-900 py-3 text-center text-sm font-semibold text-white transition hover:bg-indigo-600">
+
+                Lihat
+
+            </a>
+
+        </div>
+
+    @empty
 
             <div class="col-span-full py-24 flex flex-col items-center justify-center">
 
-                <div class="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center">
+                <div class="w-20 h-20 rounded-xl bg-slate-100 flex items-center justify-center">
 
                     <svg
                         class="w-10 h-10 text-slate-400"
