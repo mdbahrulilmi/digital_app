@@ -51,8 +51,8 @@ class ProductList extends Component
         'slug'               => ['required', 'string', 'unique:products,slug,' . ($this->editingId ?? 'NULL')],
         'price'              => ['required', 'numeric', 'min:0'],
         'status'             => ['required'],
-        'image'              => ['nullable', 'image', 'max:2048'],
-        'image_url'          => ['nullable', 'url'],
+        'image'              => ['nullable', 'image', 'max:2048', 'required_without:image_url'],
+        'image_url'          => ['nullable', 'url', 'required_without:image'],
         'asset_type'         => [
             'required_if:asset_source,upload', 
             'required_if:asset_source,link', 
