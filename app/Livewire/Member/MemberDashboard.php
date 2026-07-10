@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\OrderItem;
 use App\Models\Program;
 use App\Models\Product;
+use App\Models\Journal;
 use App\Models\LandingPage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +48,7 @@ class MemberDashboard extends Component
             ->withCount('schedules')
             ->get()
             ->map(function ($p) use ($member) {
-                $p->jurnal_count = \App\Models\Journal::where('member_id', $member->id)
+                $p->jurnal_count = Journal::where('member_id', $member->id)
                     ->whereIn('program_schedule_id', $p->schedules->pluck('id'))
                     ->count();
                 return $p;
@@ -117,7 +118,7 @@ class MemberDashboard extends Component
             ->get()
             ->map(function ($program) use ($member) {
 
-                $journalCount = \App\Models\Journal::where('member_id', $member->id)
+                $journalCount = Journal::where('member_id', $member->id)
                     ->whereIn('program_schedule_id', $program->schedules->pluck('id'))
                     ->count();
 
@@ -145,7 +146,7 @@ class MemberDashboard extends Component
 
     private function hitungStreak($memberId)
     {
-        $dates = \App\Models\Journal::where('member_id', $memberId)
+        $dates = Journal::where('member_id', $memberId)
             ->selectRaw('DATE(created_at) as date')
             ->distinct()
             ->orderBy('date', 'desc')

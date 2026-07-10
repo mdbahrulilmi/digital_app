@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Program;
 
 use Livewire\Component;
 use App\Models\Program;
+use App\Models\ProgramProduct;
 use App\Models\Product;
 
 class ProgramShow extends Component
@@ -27,7 +28,7 @@ class ProgramShow extends Component
         
         $this->totalMembers = $this->program->members()->count();
     
-        $this->uniqueProducts = \App\Models\ProgramProduct::whereHas('schedule', function($query) {
+        $this->uniqueProducts = ProgramProduct::whereHas('schedule', function($query) {
             $query->where('program_id', $this->program->id);
         })->distinct('product_id')->count('product_id');
 

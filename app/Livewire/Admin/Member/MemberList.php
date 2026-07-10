@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Member;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Member;
+use App\Models\Journal;
 
 class MemberList extends Component
 {
@@ -41,7 +42,7 @@ class MemberList extends Component
         $this->memberPrograms = $member->programs
             ->map(function ($program) use ($member) {
 
-                $journal = \App\Models\Journal::where('member_id', $member->id)
+                $journal = Journal::where('member_id', $member->id)
                     ->whereIn('program_schedule_id', $program->schedules->pluck('id'))
                     ->count();
 

@@ -116,7 +116,7 @@ class Today extends Component
 
         $memberId = auth('member')->id();
         
-        $oldSubmission = \App\Models\TaskSubmission::where('member_id', $memberId)
+        $oldSubmission = TaskSubmission::where('member_id', $memberId)
             ->where('program_schedule_id', $this->selectedScheduleId)
             ->first();
 
@@ -126,7 +126,7 @@ class Today extends Component
 
         $path = $this->taskFile->store('submissions', 'public');
 
-        \App\Models\TaskSubmission::updateOrCreate(
+        TaskSubmission::updateOrCreate(
             ['member_id' => $memberId, 'program_schedule_id' => $this->selectedScheduleId],
             ['file_path' => $path]
         );

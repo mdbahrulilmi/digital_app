@@ -32,6 +32,6 @@ class ProgramSchedule extends Model
     
     public function tasks()
     {
-        return $this->hasMany(\App\Models\Task::class, 'program_schedule_id');
+        return $this->hasMany(Task::class, 'program_schedule_id');
     }
 }

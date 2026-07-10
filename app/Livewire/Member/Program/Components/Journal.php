@@ -3,6 +3,7 @@
 namespace App\Livewire\Member\Program\Components;
 
 use App\Models\Journal as JournalModel;
+use App\Models\TaskSubmission;
 use Livewire\Component;
 
 class Journal extends Component
@@ -20,7 +21,7 @@ class Journal extends Component
 
     public function openTaskDetail($submissionId)
     {
-        $this->selectedSubmission = \App\Models\TaskSubmission::find($submissionId);
+        $this->selectedSubmission = TaskSubmission::find($submissionId);
         $this->showTaskModal = true;
     }
 
