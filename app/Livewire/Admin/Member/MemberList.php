@@ -16,7 +16,6 @@ class MemberList extends Component
     public $selectedMember = null;
     public $memberPrograms = [];
 
-    // Reset pagination ketika melakukan pencarian
     public function updatingSearch()
     {
         $this->resetPage();
