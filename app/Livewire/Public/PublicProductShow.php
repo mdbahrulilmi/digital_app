@@ -34,6 +34,8 @@ class PublicProductShow extends Component
     public function render()
     {
         return view('livewire.public.product-show')
-            ->layout('layouts.public');
+            ->layout('layouts.public',[
+                'title' => $this->product->title,
+            ]);
     }
 }

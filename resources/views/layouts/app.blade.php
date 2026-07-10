@@ -207,10 +207,8 @@ function icon($name)
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
 <script>
 document.addEventListener('livewire:init', () => {
-    // 1. Ambil elemennya dulu
     const sectionList = document.getElementById('section-list');
     
-    // 2. Cek apakah elemen ada (tidak null) baru jalankan Sortable
     if (sectionList) {
         new Sortable(sectionList, {
             animation: 150,
@@ -230,7 +228,6 @@ document.addEventListener('livewire:init', () => {
     }
 });
 
-// Sama halnya dengan .component-list, jangan paksa inisialisasi jika tidak ada elemen
 document.querySelectorAll('.component-list').forEach(list => {
     new Sortable(list, {
         animation: 150,
