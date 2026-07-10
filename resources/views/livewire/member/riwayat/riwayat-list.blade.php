@@ -11,10 +11,8 @@
 
             @php
                 if ($order->items->isNotEmpty()) {
-                    // Jika order berhasil, ambil dari tabel order_items
                     $items = $order->items;
                 } else {
-                    // Jika belum ada order_items, ambil dari cart_snapshot
                     $items = collect(json_decode($order->cart_snapshot, true) ?? []);
                 }
             @endphp

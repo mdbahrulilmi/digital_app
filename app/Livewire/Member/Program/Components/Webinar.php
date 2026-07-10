@@ -38,26 +38,21 @@ class Webinar extends Component
             $start = \Carbon\Carbon::parse($session->date . ' ' . $session->start_time);
             $end   = \Carbon\Carbon::parse($session->date . ' ' . $session->end_time);
 
-            // 1. LIVE (sedang berlangsung)
             if ($now->between($start, $end)) {
                 $sessions['live'][] = $session;
                 continue;
             }
 
-            // 2. PAST (sudah selesai)
             if ($now->gt($end)) {
                 $sessions['past'][] = $session;
                 continue;
             }
 
-            // 3. BEFORE START (belum mulai)
             $diffInHours = $now->diffInHours($start, false);
 
             if ($diffInHours <= 24) {
-                // H-1 → segera datang
                 $sessions['soon'][] = $session;
             } else {
-                // H-2 dst → upcoming
                 $sessions['upcoming'][] = $session;
             }
         }

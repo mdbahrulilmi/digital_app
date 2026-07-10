@@ -50,7 +50,6 @@ class Material extends Component
             ->filter()
             ->unique('id')
 
-            // Search
             ->filter(function ($product) {
                 if (!$this->search) {
                     return true;
@@ -61,8 +60,7 @@ class Material extends Component
                     strtolower($this->search)
                 );
             })
-
-            // Filter Type
+            
             ->filter(function ($product) {
                 if (!$this->filter) {
                     return true;

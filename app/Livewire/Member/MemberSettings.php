@@ -21,7 +21,7 @@ class MemberSettings extends Component
     {
         $this->validate();
 
-        $member = Auth::guard('member')->user(); // Sesuaikan guard Anda
+        $member = Auth::guard('member')->user();
 
         if (!Hash::check($this->current_password, $member->password)) {
             $this->addError('current_password', 'Kata sandi saat ini salah.');

@@ -19,18 +19,11 @@ return new class extends Migration
                 ->constrained('landing_page_sections')
                 ->cascadeOnDelete();
 
-            // kalau layout 2 kolom
             $table->unsignedTinyInteger('column')->default(1);
-
-            // text image button dll
             $table->string('type');
-
             $table->json('content')->nullable();
-
             $table->integer('sort_order')->default(0);
-
             $table->boolean('is_visible')->default(true);
-
             $table->timestamps();
         });
     }

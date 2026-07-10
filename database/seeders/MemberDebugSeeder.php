@@ -12,7 +12,6 @@ class MemberDebugSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Data Member Debug
         $member = Member::updateOrCreate(
             ['email' => 'debug@example.com'],
             [
@@ -23,7 +22,6 @@ class MemberDebugSeeder extends Seeder
             ]
         );
 
-        // 2. Data Program Debug
         $program = Program::updateOrCreate(
             ['slug' => 'program-debug'],
             [
@@ -33,7 +31,6 @@ class MemberDebugSeeder extends Seeder
             ]
         );
 
-        // 3. Data Order Debug
         $order = Order::updateOrCreate(
             ['order_id' => 'DEBUG-001'],
             [
@@ -47,7 +44,6 @@ class MemberDebugSeeder extends Seeder
             ]
         );
 
-        // 4. Data Order Item Debug
         OrderItem::updateOrCreate(
             ['order_id' => 'DEBUG-001'],
             [

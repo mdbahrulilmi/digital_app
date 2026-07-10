@@ -219,10 +219,10 @@
   new Chart(document.getElementById('revChart'), {
     type: 'line',
     data: {
-      labels: chartLabels, // Data dinamis
+      labels: chartLabels,
       datasets: [{
         label: 'Pendapatan',
-        data: chartValues, // Data dinamis
+        data: chartValues,
         borderColor: '#4F46E5',
         backgroundColor: 'rgba(79,70,229,.08)',
         fill: true,
@@ -249,13 +249,11 @@
     }
   });
 
-  // Di bagian script
 new Chart(document.getElementById('devChart'), {
     type: 'doughnut',
     data: {
         labels: ['Desktop', 'Mobile', 'Tablet'],
         datasets: [{
-            // Ambil data dari PHP
             data: [
                 {{ isset($deviceData['Desktop']) ? $deviceData['Desktop']->count() : 0 }},
                 {{ isset($deviceData['Mobile']) ? $deviceData['Mobile']->count() : 0 }},

@@ -306,7 +306,6 @@ class LandingPageFormModal extends Component
 
         foreach ($template as $sectionIndex => $sectionData) {
 
-            // buat section
             $section = LandingPageSection::create([
                 'landing_page_id' => $page->id,
                 'name'            => $sectionData['name'],
@@ -315,7 +314,6 @@ class LandingPageFormModal extends Component
                 'is_visible'      => true,
             ]);
 
-            // buat component
             foreach ($sectionData['components'] as $componentIndex => $component) {
 
                 LandingPageComponent::create([

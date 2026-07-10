@@ -17,7 +17,6 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::guard('web')->check()) {
-            // Kasih notifikasi error saat ditendang
             session()->flash('error', 'Akses ditolak! Anda harus login sebagai Admin.');
             
             return redirect()->route('admin.login');

@@ -19,7 +19,6 @@ class TrackVisitor
     {
         $referer = $request->header('referer');
         
-        // Simpan data pengunjung dengan referrer
         Visitor::updateOrCreate(
             ['ip_address' => $request->ip()],
             [

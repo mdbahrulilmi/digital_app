@@ -12,7 +12,6 @@ class ProductShow extends Component
 
     public function mount($id)
     {
-        // Mengambil data produk berdasarkan ID yang dikirim
         $this->product = Product::findOrFail($id);
     }
 

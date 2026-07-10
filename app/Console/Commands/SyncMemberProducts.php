@@ -50,7 +50,6 @@ class SyncMemberProducts extends Command
                 ]
             );
 
-            // Update member_id pada order jika masih kosong
             if (!$item->order->member_id) {
                 $item->order->update([
                     'member_id' => $member->id,
