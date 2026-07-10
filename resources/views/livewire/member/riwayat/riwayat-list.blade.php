@@ -42,7 +42,9 @@
                         <span class="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1
                             {{ $order->status === 'paid'
                                 ? 'bg-emerald-50 text-emerald-600'
-                                : 'bg-amber-50 text-amber-600' }}">
+                                : ($order->status === 'failed'
+                                ? 'bg-red-50 text-red-600'
+                                : 'bg-amber-50 text-amber-600') }}">
                             {{ ucfirst($order->status) }}
                         </span>
                     </div>
