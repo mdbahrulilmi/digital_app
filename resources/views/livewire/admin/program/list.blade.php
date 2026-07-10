@@ -263,7 +263,7 @@
 
                     <div class="col-span-full border-t pt-4 flex justify-end gap-3">
                         <button type="button" wire:click="$set('openModal', false)" class="px-5 py-2.5 rounded-xl bg-slate-100 font-semibold text-sm">Batal</button>
-                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-sm">Simpan Program</button>
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-sm cursor-pointer">Simpan Program</button>
                     </div>
                 </form>
             </div>
