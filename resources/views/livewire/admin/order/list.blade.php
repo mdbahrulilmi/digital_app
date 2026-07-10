@@ -67,6 +67,10 @@
                             Tanggal
                         </th>
 
+                        <th class="px-6 py-4 text-left whitespace-nowrap">
+                            Pukul
+                        </th>
+
                         <th class="px-6 py-4 text-right">
                             Status
                         </th>
@@ -165,21 +169,19 @@
                             </span>
 
                         </td>
-
                         
                         <td class="px-6 py-5 whitespace-nowrap">
-
-                            <div class="font-medium text-slate-800">
+                            <span class="font-medium text-slate-800">
                                 {{ $order->created_at->format('d M Y') }}
-                            </div>
-
-                            <div class="text-xs text-slate-500">
-                                {{ $order->created_at->format('H:i') }}
-                            </div>
-
+                            </span>
                         </td>
 
-                        
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            <span class="font-medium text-slate-600">
+                                {{ $order->created_at->format('H:i') }}
+                            </span>
+                        </td>
+
                         <td class="px-6 py-5 text-right">
 
                             @switch($order->status)
