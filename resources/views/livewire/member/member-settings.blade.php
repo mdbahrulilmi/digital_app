@@ -9,7 +9,7 @@
         @endif
 
         <form wire:submit.prevent="updatePassword" class="space-y-6">
-            {{-- Current Password --}}
+            
             <div>
                 <label class="block text-sm font-bold text-slate-700 mb-2">Kata Sandi Saat Ini</label>
                 <input wire:model="current_password" type="password" class="w-full p-4 rounded-xl border {{ $errors->has('current_password') ? 'border-red-500' : 'border-slate-200' }} focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="••••••••">
@@ -17,14 +17,14 @@
             </div>
 
             <div class="border-t border-slate-100 pt-6 space-y-6">
-                {{-- New Password --}}
+                
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2">Kata Sandi Baru</label>
                     <input wire:model="new_password" type="password" class="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="Minimal 8 karakter">
                     @error('new_password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
 
-                {{-- Confirm Password --}}
+                
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2">Konfirmasi Kata Sandi Baru</label>
                     <input wire:model="new_password_confirmation" type="password" class="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="Ulangi kata sandi baru">

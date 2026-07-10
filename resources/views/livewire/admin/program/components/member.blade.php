@@ -1,5 +1,5 @@
     <div>
-        {{-- Main Container Card --}}
+        
         <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-sm font-semibold text-slate-800">
@@ -42,10 +42,10 @@
 
         @if($showJournalModal && $selectedMember)
             <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-                {{-- Container Fixed --}}
+                
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md h-[550px] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
                     
-                    {{-- Header --}}
+                    
                     <div class="flex-none flex justify-between items-center px-6 py-4 border-b border-slate-100">
                         <div>
                             <h3 class="font-bold text-slate-800 text-sm">Jurnal Refleksi</h3>
@@ -56,14 +56,14 @@
                         </button>
                     </div>
                     
-                    {{-- Body --}}
+                    
                     <div class="flex-1 overflow-y-auto p-4 space-y-3">
                         @php $journals = $this->getMemberJournals($selectedMember->id); @endphp
                         
                         @forelse($journals as $journal)
                             <div class="bg-white border border-slate-100 p-3 rounded-xl flex items-center justify-between gap-3 hover:border-indigo-200 transition-all">
                                 <div class="min-w-0 flex-1">
-                                    {{-- Tanggal & Indikator Komentar sejajar --}}
+                                    
                                     <div class="flex items-center gap-2 mb-1">
                                         <span class="text-[10px] text-slate-400 font-medium">{{ $journal['date'] }}</span>
                                         @if($journal['comment'])
@@ -73,11 +73,11 @@
                                         @endif
                                     </div>
                                     
-                                    {{-- Judul --}}
+                                    
                                     <p class="text-xs text-slate-700 truncate font-medium">{{ $journal['title'] }}</p>
                                 </div>
 
-                                {{-- Action Button --}}
+                                
                                 <button wire:click="openCommentModal({{ $journal['id'] }})" 
                                         class="flex-none text-[10px] text-indigo-600 font-bold hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition border border-indigo-100">
                                     {{ $journal['comment'] ? 'Edit' : 'Beri' }}

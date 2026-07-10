@@ -16,7 +16,7 @@
             <span class="font-extrabold text-slate-900 text-lg tracking-tight">Admin Panel</span>
         </div>
 
-        {{-- ============ CARD LOGIN (struktur asli, tidak diubah) ============ --}}
+        
         <div class="max-w-md mx-auto mt-12 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
             <h2 class="text-xl font-black text-slate-800 mb-2 text-center">Login Area Admin</h2>
             <p class="text-xs text-slate-400 text-center mb-6">Silakan masuk menggunakan kredensial akun manajemen.</p>
@@ -45,9 +45,9 @@
                 </button>
             </form>
         </div>
-        {{-- ============ END CARD LOGIN ============ --}}
+        
 
-        {{-- Footer kecil di bawah card --}}
+        
         <p class="mt-6 text-center text-xs text-slate-400 max-w-md px-4">
             &copy; {{ date('Y') }} Sukawebsite. Halaman ini hanya untuk admin.
         </p>

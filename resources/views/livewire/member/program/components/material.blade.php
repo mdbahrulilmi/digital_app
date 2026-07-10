@@ -1,6 +1,5 @@
 <div class="p-6">
-
-    {{-- Header --}}
+    
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6">
 
         <div>
@@ -15,13 +14,11 @@
 
         </div>
     </div>
-
-    {{-- Toolbar --}}
+    
     <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm mb-6">
 
         <div class="flex flex-col lg:flex-row gap-3">
-
-            {{-- Search --}}
+            
             <div class="relative flex-1">
 
                 <svg
@@ -50,8 +47,7 @@
                     focus:border-indigo-500">
 
             </div>
-
-            {{-- Filter --}}
+            
             <select
                 wire:model.live="filter"
                 class="rounded-xl border border-slate-200 px-4 py-3 lg:w-60">
@@ -68,11 +64,9 @@
         </div>
 
     </div>
-
-    {{-- Explorer --}}
+    
     <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-
-        {{-- Header Desktop --}}
+        
         <div
             class="hidden md:grid grid-cols-12 gap-4
             bg-slate-50 border-b border-slate-200
@@ -130,11 +124,9 @@
             <div
             class="group border-b border-slate-100 last:border-b-0
                    hover:bg-indigo-50/60 transition-all duration-200">
-
-            {{-- ===================== DESKTOP ===================== --}}
+            
             <div class="hidden md:grid grid-cols-12 gap-4 items-center px-5 py-3">
-
-                {{-- Nama --}}
+                
                 <div class="col-span-8 flex items-center gap-3 min-w-0">
 
                     <div class="w-10 h-10 rounded-lg {{ $badge }} flex items-center justify-center text-lg shrink-0">
@@ -150,8 +142,7 @@
                     </div>
 
                 </div>
-
-                {{-- Badge --}}
+                
                 <div class="col-span-2">
 
                     <span class="px-2 py-1 rounded-full text-[11px] font-semibold {{ $badge }}">
@@ -159,8 +150,7 @@
                     </span>
 
                 </div>
-
-                {{-- Aksi --}}
+                
                  <div class="col-span-2 flex justify-end">
 
                     <button
@@ -187,8 +177,7 @@
                 </div>
 
             </div>
-
-            {{-- ===================== MOBILE ===================== --}}
+            
             <div class="md:hidden flex items-center gap-3 p-4">
 
                 <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-lg">
@@ -252,8 +241,7 @@
         @endforelse
 
     </div>
-
-    {{-- Footer --}}
+    
     <div
         class="mt-5 flex flex-col md:flex-row
         md:items-center

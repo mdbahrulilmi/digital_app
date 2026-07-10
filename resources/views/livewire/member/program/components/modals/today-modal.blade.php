@@ -5,7 +5,6 @@
         <div
             class="bg-white w-full h-[92vh] sm:h-auto sm:max-h-[92vh] sm:max-w-4xl rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col">
 
-            {{-- Header --}}
             <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6 sm:py-5">
 
                 <div class="min-w-0">
@@ -39,9 +38,7 @@
 
                 </button>
 
-            </div>
-
-            {{-- Content --}}
+            </div>   
             
             <livewire:member.components.asset-viewer
                 :product="$selectedProduct"

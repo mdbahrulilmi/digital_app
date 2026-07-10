@@ -5,7 +5,7 @@
         </div>
     @endif
 
-    {{-- HEADER --}}
+    
     <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
             <h1 class="text-2xl font-bold text-slate-900">Manajemen Program</h1>
@@ -39,7 +39,7 @@
             </select>
         </div>
 
-    {{-- GRID --}}
+    
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
         @forelse($programs as $program)
@@ -48,7 +48,7 @@
                 
                 <a href="{{ route('program.show', $program->id) }}" class="block flex-1 cursor-pointer">
                     
-                    {{-- IMAGE --}}
+                    
                     <div class="h-44 bg-slate-100 overflow-hidden relative">
                         @if($program->image)
                             <img src="{{ asset($program->image) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
@@ -63,7 +63,7 @@
                         @endif
                     </div>
 
-                    {{-- CONTENT --}}
+                    
                     <div class="p-4 space-y-2">
 
                         <div class="flex items-start justify-between gap-2">
@@ -94,7 +94,7 @@
                     </div>
                 </a>
 
-                {{-- ACTION (Tombol aksi diletakkan di luar tag <a> agar action Livewire tidak bentrok) --}}
+                
                 <div class="px-4 pb-4 pt-2 flex items-center justify-between gap-2 bg-slate-50/50 border-t border-slate-100">
 
                     <button wire:click="edit({{ $program->id }})"
@@ -120,7 +120,7 @@
             </div>
         @endforelse
 
-    {{-- MODAL --}}
+    
     @if($openModal)
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
             <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl my-8 overflow-hidden flex flex-col max-h-[90vh]">
@@ -130,7 +130,7 @@
                 </div>
 
                 <form wire:submit.prevent="save" class="p-6 space-y-6 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {{-- KIRI --}}
+                    
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Program</label>
@@ -151,14 +151,14 @@
                             @error('price') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            {{-- Tgl Mulai --}}
+                            
                             <div>
                                 <label class="block text-sm font-semibold text-slate-700 mb-1">Tgl Mulai</label>
                                 <input type="date" wire:model="start_date" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50">
                                 @error('start_date') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                             </div>
 
-                            {{-- Tgl Selesai --}}
+                            
                             <div>
                                 <label class="block text-sm font-semibold text-slate-700 mb-1">Tgl Selesai</label>
                                 <input type="date" wire:model="end_date" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50">
@@ -189,7 +189,7 @@
                             </div>
                         </div>
 
-                        {{-- Opsi 1: Upload File --}}
+                        
                         @if($image_source === 'upload')
                             <div class="space-y-2">
                                 <x-image-cropper
@@ -205,7 +205,7 @@
                             </div>
                         @endif
 
-                        {{-- Opsi 2: Menggunakan Link URL --}}
+                        
                         @if($image_source === 'url')
                             <div class="space-y-2">
                                 <input type="text" wire:model.live="image_url" placeholder="https://example.com/image.jpg" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
@@ -218,12 +218,12 @@
                             </div>
                         @endif
 
-                        {{-- Opsi 3: Memilih dari Media Library dengan Custom Pagination --}}
+                        
                         @if($image_source === 'media')
                             <div class="space-y-3">
                                 <input type="text" wire:model.live="searchMedia" placeholder="Cari di media library..." class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg bg-slate-50 outline-none focus:ring-2 focus:ring-indigo-500">
                                 
-                                {{-- Grid List Media --}}
+                                
                                 <div class="grid grid-cols-4 gap-2 max-h-[180px] overflow-y-auto p-1 bg-slate-50 rounded-xl border border-dashed border-slate-200">
                                     @forelse($mediaItems as $item)
                                         <div wire:click="selectMedia('{{ $item->file }}')" 
@@ -243,14 +243,14 @@
                                     @endforelse
                                 </div>
 
-                                {{-- PAGINASI KHUSUS MEDIA --}}
+                                
                                 <div class="mt-2 text-xs opacity-80 sm-pagination">
                                     {{ $mediaItems->links(data: ['pageName' => 'mediaPage']) }}
                                 </div>
                             </div>
                         @endif
 
-                        {{-- FALLBACK PREVIEW GAMBAR LAMA SAAT EDIT --}}
+                        
                         @if($editMode && $existingImage && !$image && !$image_url && ($image_source !== 'media' || !$media_id))
                             <div class="pt-2 border-t border-slate-100">
                                 <span class="text-xs font-semibold text-slate-500 block mb-1">Gambar Saat Ini:</span>

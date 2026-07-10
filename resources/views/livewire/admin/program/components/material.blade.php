@@ -1,6 +1,6 @@
 <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm" x-data="{ selectedDate: '{{ $selectedDate }}' }">
 
-    {{-- Header --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <h2 class="text-sm font-medium text-slate-700 flex items-center gap-2">
             <x-heroicon-o-table-cells class="w-4 h-4 text-slate-400" />
@@ -14,7 +14,7 @@
         </button>
     </div>
 
-    {{-- Notifikasi --}}
+    
     @if(session()->has('message'))
         <div class="mb-4 flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2.5">
             <x-heroicon-o-check-circle class="w-4 h-4 shrink-0" />
@@ -28,7 +28,7 @@
         </div>
     @endif
 
-    {{-- Slider tanggal --}}
+    
     <div class="relative w-full mb-5">
         <div class="flex gap-2 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent snap-x">
             @foreach($this->dates as $date)
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    {{-- Form per tanggal (Looping semua untuk di-toggle Alpine) --}}
+    
     @foreach($this->dates as $date)
         @php 
             $dateKey = $date->format('Y-m-d'); 
@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
-                    {{-- Kolom 1: Info --}}
+                    
                     <div class="p-4">
                         <div class="flex items-center gap-2 mb-3 pb-2.5 border-b border-slate-100">
                             <x-heroicon-o-calendar class="w-3.5 h-3.5 text-indigo-400" />
@@ -85,7 +85,7 @@
                         <p class="text-xs text-slate-400 mt-0.5">{{ $date->format('d M Y') }}</p>
                     </div>
 
-                    {{-- Kolom 2: Produk --}}
+                    
                     <div class="p-4">
                         <div class="flex items-center gap-2 mb-3 pb-2.5 border-b border-slate-100">
                             <x-heroicon-o-book-open class="w-3.5 h-3.5 text-indigo-400" />
@@ -109,9 +109,9 @@
                         </button>
                     </div>
 
-                    {{-- Kolom 3: Tugas --}}
+                    
                     <div class="p-4">
-                        {{-- Header setara: Judul di kiri, Checkbox di kanan --}}
+                        
                         <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
                             <div class="flex items-center gap-2">
                                 <x-heroicon-o-clipboard-document-list class="w-3.5 h-3.5 text-amber-400" />
@@ -128,7 +128,7 @@
                             </label>
                         </div>
 
-                        {{-- List Tugas --}}
+                        
                         @foreach(($tasks[$dateKey] ?? []) as $taskIndex => $task)
                             <div class="mb-2 flex gap-2">
                                 <input type="text" wire:model="tasks.{{ $dateKey }}.{{ $taskIndex }}.task" placeholder="Tulis tugas…" class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 focus:border-indigo-300">
@@ -150,7 +150,7 @@
         <div class="space-y-2 mt-5">
             @forelse($this->getMemberSubmissions($dateKey) as $submission)
                 <div class="flex items-center justify-between p-2 bg-slate-50 border border-slate-100 rounded-lg hover:border-slate-200 transition">
-                    {{-- Menggunakan relasi member --}}
+                    
                     <p class="text-xs font-medium text-slate-700 truncate w-1/2">
                         {{ $submission->member->name ?? 'Member Tidak Ditemukan' }}
                     </p>

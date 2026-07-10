@@ -1,5 +1,4 @@
 <div class="space-y-5">
-    {{-- SECTION: Konten Checkout --}}
     <div class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm space-y-4">
         <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Konten Checkout</h3>
         <div class="grid grid-cols-1 gap-3">
@@ -10,7 +9,6 @@
         </div>
     </div>
 
-    {{-- SECTION: Warna --}}
     <div class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm space-y-3">
         <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Warna</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -31,7 +29,6 @@
         </div>
     </div>
 
-    {{-- SECTION: Tipografi & Bentuk --}}
     <div class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm space-y-3">
         <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Tipografi & Bentuk</h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -68,7 +65,6 @@
         </div>
     </div>
 
-    {{-- SECTION: Ukuran & Jarak --}}
     <div class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm space-y-4">
         <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Ukuran & Jarak</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -92,7 +88,6 @@
         </label>
     </div>
 
-    {{-- SECTION: Live Preview --}}
     <div class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-5">
         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center mb-4">Live Preview</p>
         <div class="flex" style="justify-content: {{ ($editingContent['alignment'] ?? 'center') === 'left' ? 'flex-start' : (($editingContent['alignment'] ?? 'right') === 'right' ? 'flex-end' : 'center') }}">

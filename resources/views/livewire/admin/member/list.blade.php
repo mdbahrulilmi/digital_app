@@ -64,7 +64,7 @@
 
                     <tr class="hover:bg-slate-50 transition">
 
-                        {{-- Member --}}
+                        
                         <td class="px-6 py-5">
 
                             <div class="font-semibold text-slate-900">
@@ -73,12 +73,12 @@
 
                         </td>
 
-                        {{-- Whatsapp --}}
+                        
                         <td class="px-6 py-5 whitespace-nowrap text-slate-700">
                             {{ $member->whatsapp }}
                         </td>
 
-                        {{-- Join Date --}}
+                        
                         <td class="px-6 py-5 whitespace-nowrap">
 
                             <div class="font-medium text-slate-800">
@@ -91,7 +91,7 @@
 
                         </td>
 
-                        {{-- Program Count --}}
+                        
                         <td class="px-6 py-5 text-center">
 
                             @if($member->programs_count)
@@ -110,7 +110,7 @@
 
                         </td>
 
-                        {{-- Action --}}
+                        
                         <td class="px-6 py-5 text-right">
 
                             <button
@@ -160,7 +160,7 @@
 
         <div class="w-full max-w-4xl rounded-3xl bg-white shadow-2xl overflow-hidden">
 
-            {{-- Header --}}
+            
             <div class="flex items-center justify-between border-b px-8 py-6">
 
                 <div>

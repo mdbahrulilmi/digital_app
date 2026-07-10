@@ -16,7 +16,6 @@
         </div>
     </div>
     
-    {{-- Notifikasi --}}
     @if(session()->has('message'))
         <div class="mb-4 flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2.5">
             <x-heroicon-o-check-circle class="w-4 h-4 shrink-0" />

@@ -3,7 +3,7 @@
     style="display:flex;flex-direction:column;"
 >
 
-    {{-- CONTENT --}}
+    
     <div style="flex:1;">
 
         @foreach($sections as $section)
@@ -50,12 +50,12 @@
 
     </div>
 
-    {{-- FOOTER --}}
+    
     @if($landingPage->blog)
         @include('blog.footer')
     @endif
 
-    {{-- CART SPACER --}}
+    
     @if($landingPage->cart)
         <div style="height:96px;"></div>
     @endif

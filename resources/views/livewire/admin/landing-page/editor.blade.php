@@ -11,23 +11,19 @@
 
         <div class="space-y-3">
 
-            {{-- ADD SECTION --}}
             <button wire:click="showSectionModal"
                     class="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-dashed border-gray-200 text-xs font-medium text-gray-400 hover:border-indigo-400 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
                 Tambah Section
             </button>
 
-            {{-- SECTION LIST --}}
             <div id="section-list" class="space-y-3">
 
                 @foreach($landingPage->sections as $section)
                 <div class="border border-gray-200/80 rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200" data-id="{{ $section->id }}">
 
-                    {{-- Section Head --}}
                     <div class="flex items-center justify-between px-3 py-2.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
                         <div class="flex items-center gap-2 min-w-0">
-                            {{-- Drag Handle --}}
                             <svg class="w-4 h-4 text-gray-300 cursor-move drag-handle flex-shrink-0 hover:text-gray-500 transition"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h8M8 12h8M8 18h8"/>
@@ -66,7 +62,6 @@
                         </div>
                     </div>
 
-                    {{-- Component List --}}
                     <div
                         class="p-2 space-y-1 component-list min-h-[8px]"
                         data-section="{{ $section->id }}"
@@ -115,7 +110,6 @@
                         @endforeach
                     </div>
 
-                    {{-- Add Component --}}
                     <button wire:click="showComponentModal({{ $section->id }})"
                             class="w-full flex items-center justify-center gap-1.5 py-2.5 border-t border-gray-100 text-[11px] font-medium text-gray-400 hover:text-indigo-600 hover:bg-indigo-50/60 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
@@ -129,19 +123,15 @@
         </div>
     </div>
 
-    {{-- RIGHT COLUMN: preview only, full screen height, unaffected by left header --}}
     <div class="flex-1 h-screen flex items-center justify-center bg-gray-100/60 border-l border-gray-200">
 
-        {{-- Phone Frame --}}
         <div class="w-[390px] h-[92vh] max-h-[820px] bg-gradient-to-b from-slate-800 to-slate-900 rounded-[44px] p-3 shadow-2xl ring-1 ring-black/10 flex flex-col">
-            {{-- notch --}}
             <div class="relative">
                 <div class="absolute top-1.5 left-1/2 -translate-x-1/2 w-24 h-5 bg-slate-900 rounded-full z-10"></div>
             </div>
             <div class="flex-1 min-h-0 w-full bg-slate-100 rounded-[34px] overflow-y-auto custom-scrollbar">
                 <div class="p-2 w-full max-w-md min-h-full bg-white mx-auto relative flex flex-col" style="min-height:100%;">
 
-                    {{-- CONTENT --}}
                     <div class="flex-1">
                         @foreach($landingPage->sections as $section)
                         <div style="
@@ -186,8 +176,6 @@
 
     </div>
 
-
-    {{-- ================= EDIT PANEL (SLIDE-IN) ================= --}}
     @if($openEditPanel)
         <div class="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-40" wire:click="$set('openEditPanel', false)"></div>
 
@@ -233,8 +221,6 @@
         </div>
     @endif
 
-
-    {{-- ================= SECTION MODAL ================= --}}
     @if($openSectionModal)
         <div class="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-end sm:items-center justify-center z-50">
             <div class="bg-white rounded-t-3xl sm:rounded-2xl border border-gray-200 w-full sm:w-80 overflow-hidden shadow-2xl">
@@ -269,8 +255,6 @@
         </div>
     @endif
 
-
-    {{-- ================= COMPONENT MODAL ================= --}}
     @if($openComponentModal)
         <div class="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-end sm:items-center justify-center z-50">
             <div class="bg-white rounded-t-3xl sm:rounded-2xl border border-gray-200 w-full sm:w-[480px] overflow-hidden shadow-2xl">

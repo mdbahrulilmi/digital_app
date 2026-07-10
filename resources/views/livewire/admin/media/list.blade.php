@@ -5,7 +5,6 @@
         </div>
     @endif
 
-    {{-- HEADER --}}
     <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
         <div>
@@ -35,20 +34,17 @@
         >
     </div>
 
-    {{-- GRID --}}
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
 
         @forelse($media as $item)
             <div wire:key="media-{{ $item->id }}"
                  class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition border border-slate-100">
-
-                {{-- IMAGE --}}
+              
                 <div class="aspect-square bg-slate-100 overflow-hidden">
                     <img src="{{ asset($item->file) }}"
                          class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 </div>
-
-                {{-- INFO --}}
+               
                 <div class="p-3">
                     <p class="text-sm font-semibold text-slate-800 truncate">
                         {{ $item->title }}
@@ -58,8 +54,7 @@
                         {{ strtoupper($item->type) }} • {{ number_format($item->size / 1024, 1) }} KB
                     </p>
                 </div>
-
-                {{-- ACTION --}}
+               
                 <div class="px-3 pb-3 flex gap-2">
                     <button
                         class="flex-1 py-1.5 text-xs rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100"
@@ -77,13 +72,11 @@
         @endforelse
 
     </div>
-
-    {{-- PAGINATION --}}
+   
     <div class="mt-6">
         {{ $media->links() }}
     </div>
-
-    {{-- MODAL UPLOAD --}}
+  
     @if($openModal)
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
 

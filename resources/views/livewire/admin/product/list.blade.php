@@ -5,8 +5,8 @@
             </div>
         @endif
 
-        {{-- HEADER --}}
-        {{-- ================= HEADER ================= --}}
+        
+        
         <div class="mb-8">
 
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -53,12 +53,12 @@
 
         </div>
 
-            {{-- ================= TOOLBAR ================= --}}
+            
             <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm mb-6">
 
                 <div class="flex flex-col xl:flex-row gap-4">
 
-                    {{-- Search --}}
+                    
                     <div class="relative flex-1">
 
                         <svg
@@ -87,7 +87,7 @@
 
                     </div>
 
-                    {{-- Status --}}
+                    
                     <select
                         wire:model.live="filterStatus"
                         class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 lg:w-52">
@@ -98,7 +98,7 @@
 
                     </select>
 
-                    {{-- Tipe --}}
+                    
                     <select
                         wire:model.live="filterType"
                         class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 lg:w-52">
@@ -117,11 +117,11 @@
 
             </div>
 
-        {{-- GRID --}}
-        {{-- ================= PRODUCT TABLE ================= --}}
+        
+        
         <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-            {{-- Header Desktop --}}
+            
             <div
                 class="hidden lg:grid grid-cols-12 gap-4
                 px-6 py-4
@@ -189,7 +189,7 @@
 
                 @endphp
 
-                {{-- ================= DESKTOP ================= --}}
+                
                 <div
                     wire:key="product-{{ $product->id }}"
                     class="hidden lg:grid grid-cols-12 gap-4 items-center
@@ -197,7 +197,7 @@
                     border-b border-slate-100
                     hover:bg-indigo-50/50 transition">
 
-                    {{-- Produk --}}
+                    
                     <div class="col-span-5 flex items-center gap-4 min-w-0">
 
                         <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 shrink-0">
@@ -236,7 +236,7 @@
 
                     </div>
 
-                    {{-- Harga --}}
+                    
                     <div class="col-span-2">
 
                         <div class="font-bold text-slate-800">
@@ -247,7 +247,7 @@
 
                     </div>
 
-                    {{-- Status --}}
+                    
                     <div class="col-span-2">
 
                         @if($product->status=='active')
@@ -270,7 +270,7 @@
 
                     </div>
 
-                    {{-- Asset --}}
+                    
                     <div class="col-span-1">
 
                         <span class="px-2 py-1 rounded-lg text-xs font-bold {{ $badge }}">
@@ -281,7 +281,7 @@
 
                     </div>
 
-                    {{-- Action --}}
+                    
                     <div class="col-span-2">
 
                         <div class="flex justify-end gap-2">
@@ -317,7 +317,7 @@
 
                 </div>
 
-                {{-- ================= MOBILE ================= --}}
+                
                 <div
                     class="lg:hidden p-4 border-b border-slate-100">
 
@@ -412,8 +412,8 @@
 
         </div>
 
-        {{-- PAGINATION --}}
-        {{-- ================= FOOTER ================= --}}
+        
+        
         <div class="mt-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
             <div class="text-sm text-slate-500">
@@ -538,7 +538,7 @@
                                 </div>
                             </div>
 
-                            {{-- Opsi 1: Upload File --}}
+                            
                             @if($image_source === 'upload')
                                 <div class="space-y-2">
                                     <x-image-cropper
@@ -554,7 +554,7 @@
                                 </div>
                             @endif
 
-                            {{-- Opsi 2: Menggunakan Link URL --}}
+                            
                             @if($image_source === 'url')
                                 <div class="space-y-2">
                                     <input type="text" wire:model.live="image_url" placeholder="https://example.com/image.jpg" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
@@ -567,12 +567,12 @@
                                 </div>
                             @endif
 
-                            {{-- Opsi 3: Memilih dari Media Library dengan Custom Pagination --}}
+                            
                             @if($image_source === 'media')
                                 <div class="space-y-3">
                                     <input type="text" wire:model.live="searchMedia" placeholder="Cari di media library..." class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg bg-slate-50 outline-none focus:ring-2 focus:ring-indigo-500">
                                     
-                                    {{-- Grid List Media --}}
+                                    
                                     <div class="grid grid-cols-4 gap-2 max-h-[180px] overflow-y-auto p-1 bg-slate-50 rounded-xl border border-dashed border-slate-200">
                                         @forelse($mediaItems as $item)
                                             <div wire:click="selectMedia('{{ $item->file }}')" 
@@ -592,14 +592,14 @@
                                         @endforelse
                                     </div>
 
-                                    {{-- PAGINASI KHUSUS MEDIA --}}
+                                    
                                     <div class="mt-2 text-xs opacity-80 sm-pagination">
                                         {{ $mediaItems->links(data: ['pagetitle' => 'mediaPage']) }}
                                     </div>
                                 </div>
                             @endif
 
-                            {{-- FALLBACK PREVIEW GAMBAR LAMA SAAT EDIT --}}
+                            
                             @if($editMode && $existingImage && !$image && !$image_url && ($image_source !== 'media' || !$media_id))
                                 <div class="pt-2 border-t border-slate-100">
                                     <span class="text-xs font-semibold text-slate-500 block mb-1">Gambar Saat Ini:</span>
@@ -610,7 +610,7 @@
                             @endif
                         </div>
 
-                        {{-- FOOTER MODAL --}}
+                        
                         <div class="col-span-full border-t pt-4 flex justify-end gap-3 bg-white sticky bottom-0 pb-4">
                             <button type="button" wire:click="$set('openModal', false)" 
                                     class="cursor-pointer px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition">
@@ -618,12 +618,12 @@
                             </button>
                             
                             <button type="submit" 
-                                    {{-- Tombol akan disable jika file sedang diupload --}}
+                                    
                                     wire:loading.attr="disabled"
                                     wire:target="digital_asset_file, image"
                                     class="cursor-pointer px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed">
                                 
-                                {{-- Menampilkan teks status saat proses berlangsung --}}
+                                
                                 <span wire:loading.remove wire:target="digital_asset_file, image">
                                     {{ $editMode ? 'Simpan Perubahan' : 'Tambah Produk' }}
                                 </span>

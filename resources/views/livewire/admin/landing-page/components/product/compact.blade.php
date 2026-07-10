@@ -15,7 +15,6 @@
 
 <div class="w-full bg-white rounded-xl border border-slate-200 p-3 flex gap-3 shadow-sm">
 
-    {{-- IMAGE --}}
     <div class="relative w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-slate-100">
 
         @if($imageUrl)
@@ -40,25 +39,16 @@
 
     </div>
 
-
-
-    {{-- CONTENT --}}
     <div class="flex-1 min-w-0 flex flex-col">
 
-        {{-- TITLE --}}
         <h3 class="text-sm font-semibold text-slate-800 leading-snug line-clamp-2">
             {{ $productTitle }}
         </h3>
 
-
-        {{-- DESCRIPTION --}}
         <p class="mt-1 text-[11px] text-slate-500 leading-relaxed line-clamp-2">
             {{ $productDescription }}
         </p>
 
-
-
-        {{-- PRICE --}}
         <div class="mt-auto pt-2">
 
             @if($oldPrice)
@@ -76,9 +66,6 @@
 
     </div>
 
-
-
-    {{-- ACTION --}}
     <div class="flex flex-col justify-end items-end gap-2">
 
         <a

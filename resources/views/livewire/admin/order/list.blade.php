@@ -1,6 +1,6 @@
 <div class="space-y-6">
 
-    {{-- Header --}}
+    
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-6">
 
         <div>
@@ -36,7 +36,7 @@
 
     </div>
 
-    {{-- Table --}}
+    
     <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
         <div class="overflow-x-auto">
@@ -81,7 +81,7 @@
 
                     <tr class="hover:bg-slate-50 transition">
 
-                        {{-- Order --}}
+                        
                         <td class="px-6 py-5">
 
                             <div class="font-semibold text-slate-900">
@@ -94,7 +94,7 @@
 
                         </td>
 
-                        {{-- Customer --}}
+                        
                         <td class="px-6 py-5">
 
                             <div class="font-semibold text-slate-900">
@@ -107,7 +107,7 @@
 
                         </td>
 
-                        {{-- Total --}}
+                        
                         <td class="px-6 py-5 whitespace-nowrap">
 
                             <span class="font-bold text-slate-900">
@@ -116,7 +116,7 @@
 
                         </td>
 
-                        {{-- Payment --}}
+                        
                         <td class="px-6 py-5">
 
                             @php
@@ -166,7 +166,7 @@
 
                         </td>
 
-                        {{-- Date --}}
+                        
                         <td class="px-6 py-5 whitespace-nowrap">
 
                             <div class="font-medium text-slate-800">
@@ -179,7 +179,7 @@
 
                         </td>
 
-                        {{-- Status --}}
+                        
                         <td class="px-6 py-5 text-right">
 
                             @switch($order->status)

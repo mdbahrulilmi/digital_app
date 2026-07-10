@@ -1,6 +1,5 @@
 <div class="max-w-5xl mx-auto px-4 py-8">
     
-    {{-- ALERT ERROR --}}
     @if (session()->has('error'))
         <div class="mb-6 p-4 bg-rose-100 text-rose-800 rounded-2xl font-medium flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -10,7 +9,6 @@
         </div>
     @endif
 
-    {{-- TOMBOL KEMBALI --}}
     <div class="mb-6">
         <a href="{{ route('product.list') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-slate-800 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -20,10 +18,9 @@
         </a>
     </div>
 
-    {{-- CARD DETAIL PRODUK --}}
     <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm grid grid-cols-1 md:grid-cols-12 gap-8 p-6 md:p-8">
         
-        {{-- BAGIAN KIRI: PREVIEW GAMBAR (40% Lebar Kolom) --}}
+        
         <div class="md:col-span-5 space-y-4">
             <div class="aspect-square bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 shadow-inner">
                 @if($product->image)
@@ -38,7 +35,6 @@
                 @endif
             </div>
 
-            {{-- BADGE STATUS --}}
             <div class="flex justify-center">
                 @if($product->status === 'active')
                     <span class="px-3 py-1 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full">● Produk Aktif</span>
@@ -47,12 +43,10 @@
                 @endif
             </div>
         </div>
-
-        {{-- BAGIAN KANAN: DETAIL DATA PRODUK (60% Lebar Kolom) --}}
+       
         <div class="md:col-span-7 flex flex-col justify-between space-y-6">
             
-            <div class="space-y-4">
-                {{-- NAMA & HARGA --}}
+            <div class="space-y-4">                
                 <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">{{ $product->name }}</h1>
                     <p class="text-2xl font-bold text-indigo-600 mt-2">
@@ -61,8 +55,7 @@
                 </div>
 
                 <hr class="border-slate-100">
-
-                {{-- DESKRIPSI --}}
+               
                 <div>
                     <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider">Deskripsi Produk</h3>
                     <p class="text-slate-600 text-sm mt-1 leading-relaxed whitespace-pre-line">
@@ -70,12 +63,10 @@
                     </p>
                 </div>
             </div>
-
-            {{-- PANEL ACTIONS / DOWNLOAD DIGITAL ASSET --}}
+           
             <div class="pt-6 border-t border-slate-100 bg-slate-50 -mx-6 -mb-6 p-6 md:-mx-8 md:-mb-8">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    
-                    {{-- Info metadata file --}}
+                                     
                     <div>
                         <span class="text-xs font-semibold text-slate-400 block uppercase tracking-wider">Aset Digital</span>
                         @php
@@ -94,16 +85,14 @@
                             <span class="text-sm text-slate-400 italic block mt-0.5">Belum ada aset.</span>
                         @endif
                     </div>
-
-                    {{-- Tombol Aksi --}}
+                    
                     <div>
                         @if($asset)
                             <button 
                                 wire:click="downloadAsset"
                                 wire:loading.attr="disabled"
                                 class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition group">
-                                
-                                {{-- Ubah teks tombol berdasarkan tipe --}}
+                                                               
                                 <span wire:loading.remove wire:target="downloadAsset">
                                     {{ (isset($asset['type']) && $asset['type'] === 'link') ? 'Buka Link Aset' : 'Unduh File Asset' }}
                                 </span>

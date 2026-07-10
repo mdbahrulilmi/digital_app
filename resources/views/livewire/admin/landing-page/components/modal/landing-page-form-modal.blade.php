@@ -1,10 +1,7 @@
     <div>
         @if($openModal)
             <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-
                 <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col">
-
-                    {{-- HEADER --}}
                     <div class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                         <h3 class="text-xl font-bold text-slate-800">
                             {{ $editMode ? 'Edit Halaman' : 'Buat Halaman Baru' }}
@@ -19,14 +16,9 @@
                     </div>
 
                     <form wire:submit.prevent="save" class="flex flex-col flex-1 overflow-hidden">
-
                         <div class="flex-1 overflow-y-auto p-8 space-y-6">
-
                             <div x-data="{ formTab:'general' }">
-
-                                {{-- TAB BUTTON --}}
                                 <div class="inline-flex p-1 bg-slate-100 rounded-xl mb-6">
-
                                     <button
                                         type="button"
                                         @click="formTab='general'"
@@ -36,7 +28,7 @@
                                         class="px-5 py-2 rounded-lg font-semibold text-sm">
                                         Umum
                                     </button>
-                                
+
                                     <button
                                         type="button"
                                         @click="formTab='setup'"
@@ -56,24 +48,19 @@
                                         class="px-5 py-2 rounded-lg font-semibold text-sm">
                                         Advanced
                                     </button>
-
                                 </div>
 
-                                {{-- GENERAL TAB --}}
                                 <div x-show="formTab==='general'">
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                                        {{-- KOLOM KIRI --}}
                                         <div class="space-y-5">
-                                            {{-- Judul Halaman --}}
                                             <div>
                                                 <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Halaman</label>
                                                 <input type="text" wire:model.live="title" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="Contoh: Tentang Kami">
                                                 @error('title') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                                             </div>
 
-                                            {{-- FITUR BARU: Set Sebagai Halaman Utama --}}
                                             <div class="relative">
                                                 <label class="flex items-center gap-2.5 p-3 rounded-xl cursor-pointer transition-all select-none 
                                                     {{ ($homeExists && !$home) ? 'bg-slate-100 opacity-60 cursor-not-allowed' : 'bg-indigo-50/50 border border-indigo-100 hover:bg-indigo-50' }}">
@@ -92,7 +79,6 @@
                                                 </label>
                                             </div>
                                             
-                                            {{-- Slug (URL) --}}
                                             <div>
                                                 <label class="block text-sm font-semibold text-slate-700 mb-2">Slug (URL)</label>
                                                 <div class="flex items-center">
@@ -108,7 +94,6 @@
                                                 @error('slug') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                                             </div>
 
-                                            {{-- Status --}}
                                             <div>
                                                 <label class="block text-sm font-semibold text-slate-700 mb-2">Status</label>
                                                 <select wire:model="status" class="cursor-pointer w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all bg-white">
@@ -119,7 +104,6 @@
                                             </div>
                                         </div>
 
-                                        {{-- KOLOM KANAN --}}
                                         <div class="space-y-5">
                                             <div>
                                                 <label class="block text-sm font-semibold text-slate-700 mb-2">Konten Halaman (Description)</label>
@@ -135,7 +119,6 @@
                                                 </div>
                                             </div>
 
-                                            {{-- Opsi 1: Upload File --}}
                                            @if($image_source === 'upload')
                                             <div class="space-y-2">
                                                 <x-image-cropper
@@ -152,7 +135,6 @@
 
                                             @endif
 
-                                            {{-- Opsi 2: Menggunakan Link URL --}}
                                             @if($image_source === 'url')
                                                 <div class="space-y-2">
                                                     <input type="text" wire:model.live="image_url" placeholder="https://example.com/image.jpg" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-slate-50 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
@@ -165,12 +147,10 @@
                                                 </div>
                                             @endif
 
-                                            {{-- Opsi 3: Memilih dari Media Library dengan Custom Pagination --}}
                                             @if($image_source === 'media')
                                                 <div class="space-y-3">
                                                     <input type="text" wire:model.live="searchMedia" placeholder="Cari di media library..." class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg bg-slate-50 outline-none focus:ring-2 focus:ring-indigo-500">
                                                     
-                                                    {{-- Grid List Media --}}
                                                     <div class="grid grid-cols-4 gap-2 max-h-[180px] overflow-y-auto p-1 bg-slate-50 rounded-xl border border-dashed border-slate-200">
                                                         @forelse($mediaItems as $item)
                                                             <div wire:click="selectMedia('{{ $item->file }}')" 
@@ -190,14 +170,12 @@
                                                         @endforelse
                                                     </div>
 
-                                                    {{-- PAGINASI KHUSUS MEDIA --}}
                                                     <div class="mt-2 text-xs opacity-80 sm-pagination">
                                                         {{ $mediaItems->links(data: ['pageName' => 'mediaPage']) }}
                                                     </div>
                                                 </div>
                                             @endif
 
-                                            {{-- FALLBACK PREVIEW GAMBAR LAMA SAAT EDIT --}}
                                             @if($editMode && $existingImage && !$image && !$image_url && ($image_source !== 'media' || !$media_id))
                                                 <div class="pt-2 border-t border-slate-100">
                                                     <span class="text-xs font-semibold text-slate-500 block mb-1">Gambar Saat Ini:</span>
@@ -212,11 +190,8 @@
 
                                 </div>
                                 
-                                {{-- SETUP TAB --}}
                                 <div x-show="formTab==='setup'">
-
                                     <div class="grid grid-cols-1 gap-8">
-                                        {{-- KOLOM KANAN --}}
                                         <div class="space-y-5">
                                             @if(empty($program_id))
                                                 <div class="pt-2">
@@ -267,12 +242,9 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-
                                 </div>
 
-                                {{-- ADVANCED TAB --}}
                                 <div x-show="formTab==='advanced'" x-cloak class="bg-white">                                
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div class="space-y-6">
@@ -316,7 +288,6 @@
                         </div>
                     </div>
 
-                        {{-- FOOTER --}}
                         <div class="shrink-0 flex justify-end gap-3 p-6 border-t border-slate-200 bg-white">
                             <button
                                 type="button"

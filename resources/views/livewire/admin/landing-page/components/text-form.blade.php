@@ -1,6 +1,5 @@
 <div class="space-y-4">
     
-    {{-- SECTION: Preview Teks (Sekarang di paling atas) --}}
     <div>
         <label class="block text-xs font-bold text-slate-600 uppercase mb-2">
             Isi Teks Paragraf (Preview)
@@ -26,7 +25,6 @@
         ></textarea>
     </div>
 
-    {{-- SECTION: Toolbar (Sekarang di bawah) --}}
     <div class="flex flex-wrap items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
         
         <div class="flex items-center gap-1.5">

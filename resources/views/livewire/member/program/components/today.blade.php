@@ -37,13 +37,11 @@
 
         <div>
             <div class="p-2 md:p-4 space-y-6">
-                {{-- HERO + MATERI --}}
+                
                 <div class="relative overflow-hidden rounded-2xl border border-slate-700/80">
-
-                    {{-- Background biru --}}
+                    
                     <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-[#111827] to-[#1E3A8A]"></div>
-
-                    {{-- Background hijau --}}
+                    
                     <div
                         class="absolute inset-y-0 left-0 bg-gradient-to-br from-emerald-950 via-emerald-900 to-green-800 transition-all duration-700 ease-in-out"
                         style="width: {{ $heroCompleted ? '100%' : '0%' }};">
@@ -344,7 +342,7 @@
                     </div>
 
                 </div>  
-                {{-- TUGAS --}}
+                
                 @if($hasTasks)
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
 
@@ -441,8 +439,7 @@
                         
                     </div>  
                 @endif
-
-                {{-- JURNAL --}}
+                
                 @if(!$showHighlightJournal)
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
 

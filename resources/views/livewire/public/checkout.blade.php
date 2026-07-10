@@ -1,6 +1,5 @@
 <div class="w-full max-w-md min-h-screen bg-slate-50 shadow-xl flex flex-col justify-between relative border-x border-slate-200/50 mx-auto font-sans">
-    
-    {{-- Header --}}
+   
     <div class="bg-white px-4 py-4 border-b border-slate-100 flex items-center sticky top-0 z-10 shadow-sm">
         <a href="javascript:void(0)" onclick="history.back()" class="text-slate-600 hover:text-slate-900 mr-3">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -8,7 +7,6 @@
         <h2 class="text-lg font-bold text-slate-800">Formulir Checkout</h2>
     </div>
 
-    {{-- Main Content --}}
     <form wire:submit.prevent="processOrder" class="flex-1 p-4 space-y-6 overflow-y-auto pb-24">
         <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm space-y-2">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ringkasan Pesanan</h3>
@@ -22,7 +20,6 @@
             </div>
         </div>
 
-        {{-- Data Pengiriman Form --}}
         @auth('member')
         @else
         <div class="space-y-4">
@@ -77,16 +74,13 @@
                                 wire:click="$set('payment_method', '{{ $key }}')"
                                 class="relative flex flex-col items-center justify-center p-4 rounded-xl border transition cursor-pointer hover:bg-slate-50
                                 {{ $payment_method === $key ? 'border-indigo-600 bg-indigo-50/50 ring-1 ring-indigo-500' : 'border-slate-200 bg-white' }}">
-                                
-                                {{-- Ikon --}}
+                                                            
                                 <img src="{{ $data['icon'] }}" class="w-10 h-10 object-contain mb-2">
-                                
-                                {{-- Label --}}
+                                                               
                                 <span class="text-[11px] font-bold text-slate-600 text-center leading-tight">
                                     {{ $data['label'] }}
                                 </span>
-
-                                {{-- Indikator Terpilih --}}
+                     
                                 @if($payment_method === $key)
                                     <div class="absolute top-2 right-2">
                                         <div class="w-3 h-3 bg-indigo-600 rounded-full"></div>

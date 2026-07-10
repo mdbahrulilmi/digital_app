@@ -18,7 +18,7 @@
 
     <div class="w-full">
 
-        {{-- LINK --}}
+        
         @if($type === 'link')
 
             @if(str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be'))
@@ -54,7 +54,7 @@
 
             @endif
 
-        {{-- PDF --}}
+        
         @elseif($extension === 'pdf')
 
             <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
@@ -67,7 +67,7 @@
 
             </div>
 
-        {{-- OFFICE --}}
+        
         @elseif(in_array($extension,['doc','docx','xls','xlsx','ppt','pptx']))
 
             <div class="w-full h-[80vh] bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
@@ -80,7 +80,7 @@
 
             </div>
 
-        {{-- IMAGE --}}
+        
         @elseif(in_array($extension,['jpg','jpeg','png','webp']))
 
             <div class="rounded-2xl overflow-hidden shadow-lg">
@@ -92,7 +92,7 @@
 
             </div>
 
-        {{-- VIDEO --}}
+        
         @elseif(in_array($extension,['mp4','mov','webm']))
 
             <div class="rounded-2xl overflow-hidden bg-black shadow-lg">
@@ -113,7 +113,7 @@
 
             </div>
 
-        {{-- AUDIO --}}
+        
         @elseif(in_array($extension,['mp3','wav','ogg']))
 
             <div class="p-8 bg-slate-900 rounded-2xl flex items-center justify-center shadow-lg">
@@ -128,7 +128,7 @@
 
             </div>
 
-        {{-- UNSUPPORTED --}}
+        
         @else
 
             <div class="rounded-2xl border border-slate-200 bg-slate-50 py-16 px-6 text-center">

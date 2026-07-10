@@ -28,21 +28,18 @@
                             {{ $isLive ? 'p-8 bg-[#0e71eb] text-white shadow-2xl border-[#0e71eb] gap-8' : 
                                 ($isSoon ? 'p-8 bg-orange-400/80 border-orange-200 text-slate-900 gap-8 text-white' : 
                                 'p-5 bg-white border-slate-200 text-slate-900 gap-6') }}">
-
-                            {{-- Ornamen untuk Live --}}
+                            
                             @if($isLive)
                                 <div class="absolute -top-12 -right-12 w-48 h-48 bg-white opacity-20 rounded-full blur-3xl"></div>
                             @endif
-
-                            {{-- Icon --}}
+                          
                             <div class="rounded-2xl flex items-center justify-center shrink-0 z-10 
                                 {{ $isLive ? 'w-20 h-20 bg-white text-[#0e71eb]' : 
                                 ($isSoon ? 'w-20 h-20 bg-white text-orange-600' : 
                                 'w-14 h-14 bg-slate-100 text-slate-400') }}">
                                 <x-heroicon-o-video-camera class="{{ $isCompact ? 'w-7 h-7' : 'w-10 h-10' }}" />
                             </div>
-
-                            {{-- Info --}}
+                           
                             <div class="flex-1 w-full z-10">
                                 @if($isLive)
                                     <div class="px-3 py-1 bg-white text-[#0e71eb] text-[10px] font-black rounded-full uppercase animate-pulse inline-block mb-3">LIVE NOW</div>
@@ -50,7 +47,7 @@
                                     <div class="px-3 py-1 bg-orange-500 text-white text-[10px] font-black rounded-full uppercase animate-pulse inline-block mb-3 tracking-widest">SEGERA HADIR</div>
                                 @endif
                                 
-                                {{-- Container Flex: Judul dan Tanggal --}}
+                                
                                 <div class="flex {{ $isCompact ? 'flex-col md:flex-row md:items-center md:justify-between' : 'flex-col' }} gap-2">
                                     
                                     <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -80,8 +77,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- Sisi Kanan --}}
+                            
                             <div class="flex items-center gap-6 shrink-0 z-10">
                                 @if($isSoon)
                                     <div class="flex gap-4">
