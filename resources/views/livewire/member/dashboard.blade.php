@@ -6,8 +6,9 @@
         <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-white/10 blur-3xl"></div>
         <div class="absolute -bottom-40 left-0 w-96 h-96 rounded-full bg-cyan-400/10 blur-3xl"></div>
 
-        <div class="relative z-10 flex flex-col lg:flex-row justify-between gap-10">
+        <div class="relative z-10 flex flex-col lg:flex-row justify-between items-center gap-10">
 
+            {{-- LEFT --}}
             <div class="flex-1">
 
                 <p class="uppercase tracking-[4px] text-xs font-bold text-indigo-200">
@@ -16,31 +17,38 @@
 
                 <h1 class="mt-3 text-4xl lg:text-5xl font-black">
                     Halo,
-                    {{ Auth::guard('member')->user()->name }}
-                    👋
+                    {{ Auth::guard('member')->user()->name }} 👋
                 </h1>
 
                 <p class="mt-4 text-indigo-100 max-w-xl leading-7">
-
-                    @if($programUtama)
-
-                        Kamu sedang mengikuti
-                        <strong>{{ $programUtama->title }}</strong>.
-                        Yuk lanjutkan belajarmu hari ini.
-
-                    @else
-
-                        Selamat datang.
-                        Mulai perjalanan belajarmu sekarang.
-
-                    @endif
-
+                    Selamat datang. Mulai perjalanan belajarmu sekarang.
                 </p>
+
+            </div>
+
+            {{-- RIGHT --}}
+            <div class="text-center lg:text-right">
+
+                <p class="text-indigo-200 uppercase tracking-[3px] text-xs font-bold">
+                    {{ now()->translatedFormat('l') }}
+                </p>
+
+                <h2
+                    id="clock"
+                    class="mt-2 text-5xl lg:text-6xl font-black tracking-tight">
+                    00:00:00
+                </h2>
+
+                <p class="mt-2 text-indigo-100">
+                    {{ now()->translatedFormat('d F Y') }}
+                </p>
+
             </div>
 
         </div>
 
     </section>
+
 
 
 
@@ -158,7 +166,7 @@
 
 
                             <span class="w-fit px-2 py-1 rounded-full text-[9px] uppercase font-bold
-                                {{ $program->status == 'active' ? 'bg-green-500 text-white' : 'bg-slate-500 text-white' }}">
+                                {{ $program->status == 'active' ? 'bg-blue-500 text-white' : 'bg-slate-500 text-white' }}">
                                 Sedang Berjalan
                             </span>
 
@@ -238,7 +246,7 @@
                         <div class="flex justify-end">
 
                             <a href="{{ route('member.program.hari-ini', $program->slug) }}" 
-                            class="bg-emerald-600 text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-emerald-700 transition shadow-lg">
+                            class="bg-blue-600 text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-blue-700 transition shadow-lg">
 
                                 Lanjutkan Belajar
 
@@ -289,4 +297,24 @@
             </div>
         </div>
     @endif
+
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        function updateClock() {
+            const now = new Date();
+
+            const time = now.toLocaleTimeString('id-ID', {
+                hour12: false
+            });
+
+            document.getElementById('clock').textContent = time;
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+
+    });
+    </script>
 </div>
