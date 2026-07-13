@@ -162,7 +162,7 @@
 
                             </div>
 
-                            <div class="flex justify-stretch sm:justify-end mt-5">
+                            <div class="flex justify-stretch sm:justify-end mt-3">
 
                                 @if($today->lt($start))
 
