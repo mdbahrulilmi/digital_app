@@ -47,8 +47,8 @@
                 class="rounded-xl border border-slate-200 px-4 py-3 lg:w-60">
 
                 <option value="">Semua Produk</option>
+                <option value="file">📄 File</option>
                 <option value="video">🎥 Video</option>
-                <option value="file">📄 PDF</option>
                 <option value="audio">🎵 Audio</option>
                 <option value="image">🖼 Gambar</option>
                 <option value="link">🔗 Link</option>
@@ -63,7 +63,7 @@
 
         @forelse($orderItems as $item)
 
-        <div class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:shadow-xl">
+        <div class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition duration-300 hover:shadow-xl">
 
             <div class="flex-1">
 

@@ -56,7 +56,7 @@
                         }
                     @endphp
 
-                    <div class="flex w-full rounded-xl overflow-hidden h-[180px]
+                    <div class="flex flex-col lg:flex-row w-full rounded-xl overflow-hidden lg:h-[180px]
                         {{ $badge == 'Sedang Berjalan'
                             ? 'bg-gradient-to-r from-blue-50 to-white border-2 border-blue-400 shadow-[0_0_35px_rgba(59,130,246,0.35)]'
                             : ($badge == 'Akan Datang'
@@ -64,7 +64,7 @@
                                 : 'bg-slate-50 border border-slate-200 opacity-80 shadow') }}">
 
                         {{-- IMAGE --}}
-                        <div class="relative w-1/3 overflow-hidden">
+                        <div class="relative w-full lg:w-1/3 h-52 lg:h-auto overflow-hidden">
 
                             <img
                                 src="{{ $program->image }}"
@@ -110,11 +110,11 @@
                         </div>
 
                         {{-- CONTENT --}}
-                        <div class="px-6 py-5 flex flex-col justify-between flex-1">
+                        <div class="flex-1 p-5 lg:px-6 lg:py-5 flex flex-col justify-between">
 
                             <div>
 
-                                <div class="flex justify-between items-start">
+                                <div class="flex flex-col sm:flex-row sm:justify-between gap-3">
 
                                     <div>
 
@@ -162,11 +162,11 @@
 
                             </div>
 
-                            <div class="flex justify-end">
+                            <div class="flex justify-stretch sm:justify-end mt-5">
 
                                 @if($today->lt($start))
 
-                                    <span class="bg-amber-500 text-white px-6 py-2 rounded-full text-xs font-bold">
+                                    <span class="w-full sm:w-auto text-center bg-amber-500 text-white px-6 py-2 rounded-full text-xs font-bold">
                                         Belum Dimulai
                                     </span>
 
@@ -174,7 +174,7 @@
 
                                     <a
                                         href="{{ route('member.program.hari-ini', $program->slug) }}"
-                                        class="bg-blue-600 text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-blue-700 transition shadow-lg">
+                                        class="w-full sm:w-auto text-center bg-blue-600 text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-blue-700 transition shadow-lg">
                                         Lanjutkan Belajar
                                     </a>
 
@@ -182,7 +182,7 @@
 
                                     <a
                                         {{-- href="{{ route('member.certificate.show', $program->slug) }}" --}}
-                                        class="bg-emerald-600 text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-emerald-700 transition shadow-lg cursor-pointer">
+                                        class="w-full sm:w-auto text-center bg-emerald-600 text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-emerald-700 transition shadow-lg cursor-pointer">
                                         Cetak Sertifikat
                                     </a>
 

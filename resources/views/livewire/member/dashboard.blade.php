@@ -141,16 +141,25 @@
         </div>
 
         <div class="space-y-3">
+
             @forelse($memberPrograms as $program)
-                <div class="flex w-full bg-white rounded-lg shadow-xl overflow-hidden h-[180px] border border-slate-100">
 
-                    <div class="relative w-1/3 overflow-hidden">
+                @php
+                    $today = now()->startOfDay();
+                    $start = \Carbon\Carbon::parse($program->start_date)->startOfDay();
+                    $end = \Carbon\Carbon::parse($program->end_date)->startOfDay();
+                @endphp
 
-                        <img 
-                            src="{{ $program->image }}" 
+                <div class="flex flex-col lg:flex-row w-full bg-white rounded-xl shadow-xl overflow-hidden border border-slate-100">
+
+                    {{-- IMAGE --}}
+                    <div class="relative w-full lg:w-1/3 h-56 lg:h-auto overflow-hidden">
+
+                        <img
+                            src="{{ $program->image }}"
                             class="absolute inset-0 w-full h-full object-cover">
 
-                        <div class="absolute inset-0 bg-indigo-950/80 p-6 flex flex-col justify-between">
+                        <div class="absolute inset-0 bg-indigo-950/80 p-5 lg:p-6 flex flex-col justify-between">
 
                             <div>
 
@@ -158,15 +167,13 @@
                                     Kelas
                                 </p>
 
-                                <h2 class="text-lg font-bold text-white leading-tight">
+                                <h2 class="text-xl lg:text-lg font-bold text-white leading-tight mt-1">
                                     {{ $program->title }}
                                 </h2>
 
                             </div>
 
-
-                            <span class="w-fit px-2 py-1 rounded-full text-[9px] uppercase font-bold
-                                {{ $program->status == 'active' ? 'bg-blue-500 text-white' : 'bg-slate-500 text-white' }}">
+                            <span class="w-fit px-3 py-1 rounded-full text-[10px] uppercase font-bold bg-blue-500 text-white">
                                 Sedang Berjalan
                             </span>
 
@@ -174,11 +181,12 @@
 
                     </div>
 
-                    <div class="px-6 py-5 flex flex-col justify-between flex-1">
+                    {{-- CONTENT --}}
+                    <div class="flex-1 p-5 lg:p-6 flex flex-col justify-between">
 
                         <div>
 
-                            <div class="flex justify-between items-start">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
 
                                 <div>
 
@@ -186,26 +194,20 @@
                                         Program
                                     </p>
 
-                                    <h3 class="text-xl font-bold text-slate-800">
+                                    <h3 class="text-xl lg:text-2xl font-bold text-slate-800">
                                         {{ $program->title }}
                                     </h3>
 
                                 </div>
 
+                                <div class="text-left sm:text-right">
 
-                                @php
-                                    $today = now()->startOfDay();
-                                    $start = \Carbon\Carbon::parse($program->start_date)->startOfDay();
-                                    $end = \Carbon\Carbon::parse($program->end_date)->startOfDay();
-                                @endphp
-
-                                <div class="text-right">
-
-                                    <p class="text-[10px] text-slate-400 uppercase font-bold">
+                                    <p class="text-[10px] uppercase text-slate-400 font-bold">
                                         Status
                                     </p>
 
                                     <p class="text-sm font-black text-indigo-950">
+
                                         @if($today->lt($start))
                                             Mulai dalam {{ $today->diffInDays($start) }} hari
                                         @elseif($today->lte($end))
@@ -213,40 +215,38 @@
                                         @else
                                             Program selesai
                                         @endif
+
                                     </p>
 
                                 </div>
 
                             </div>
 
-
-                            <p class="text-xs text-slate-500 mt-2 line-clamp-2">
+                            <p class="text-sm text-slate-500 mt-3 line-clamp-2">
                                 {{ $program->description }}
                             </p>
 
-
-                            <div class="flex gap-4 mt-3 text-[11px] text-slate-400 font-semibold">
+                            <div class="mt-4 flex flex-col sm:flex-row gap-2 sm:gap-6 text-xs text-slate-500 font-semibold">
 
                                 <span>
-                                    Mulai:
-                                    {{ \Carbon\Carbon::parse($program->start_date)->format('d M Y') }}
+                                    📅 Mulai:
+                                    {{ $start->format('d M Y') }}
                                 </span>
 
                                 <span>
-                                    Selesai:
-                                    {{ \Carbon\Carbon::parse($program->end_date)->format('d M Y') }}
+                                    🏁 Selesai:
+                                    {{ $end->format('d M Y') }}
                                 </span>
 
                             </div>
 
-
                         </div>
 
+                        <div class="mt-6 flex justify-stretch sm:justify-end">
 
-                        <div class="flex justify-end">
-
-                            <a href="{{ route('member.program.hari-ini', $program->slug) }}" 
-                            class="bg-blue-600 text-white px-6 py-2 rounded-full text-xs font-bold hover:bg-blue-700 transition shadow-lg">
+                            <a
+                                href="{{ route('member.program.hari-ini', $program->slug) }}"
+                                class="flex w-full sm:w-auto justify-center items-center bg-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-blue-700 transition shadow-lg">
 
                                 Lanjutkan Belajar
 
@@ -254,15 +254,22 @@
 
                         </div>
 
-
                     </div>
 
                 </div>
+
             @empty
-                <div class="text-center py-16 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200">
-                    <p class="text-slate-400">Belum ada program aktif.</p>
+
+                <div class="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 py-16 text-center">
+
+                    <p class="text-slate-400">
+                        Belum ada program aktif.
+                    </p>
+
                 </div>
+
             @endforelse
+
         </div>
     </section>
 
