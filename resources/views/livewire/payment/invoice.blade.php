@@ -231,9 +231,6 @@
                         this.expiredSent = true;
                         clearInterval(this.timer);
 
-                        console.log('Countdown habis');
-                        console.log('Memanggil Livewire');
-
                         Livewire.dispatch('payment-expired');
                     }
 

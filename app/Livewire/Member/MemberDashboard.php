@@ -112,8 +112,12 @@ class MemberDashboard extends Component
         $totalProgram = (clone $programQuery)->count();
         $totalProduct = (clone $productQuery)->count();
 
+        $today = now()->startOfDay();
+
         $this->memberPrograms = $member->programs()
             ->where('status', 'active')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
             ->withCount('schedules')
             ->get()
             ->map(function ($program) use ($member) {

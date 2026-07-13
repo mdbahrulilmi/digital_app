@@ -13,7 +13,7 @@
             <div class="divide-y divide-slate-100">
                 @foreach($cart as $item)
                     <div class="py-2 flex justify-between text-sm gap-2">
-                        <span class="text-slate-700 font-medium truncate">{{ $item['name'] }} <span class="text-xs text-slate-400">x{{ $item['qty'] }}</span></span>
+                        <span class="text-slate-700 font-medium truncate">{{ $item['name'] }}</span>
                         <span class="text-slate-900 font-bold shrink-0">Rp {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}</span>
                     </div>
                 @endforeach

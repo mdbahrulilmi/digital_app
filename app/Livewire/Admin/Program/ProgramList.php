@@ -46,6 +46,14 @@ class ProgramList extends Component
 
     protected function rules()
     {
+        $imageRule = $this->editingId && $this->existingImage
+        ? ['nullable', 'image', 'max:2048']
+        : ['nullable', 'image', 'max:2048', 'required_without:image_url'];
+
+        $imageUrlRule = $this->editingId && $this->existingImage
+            ? ['nullable', 'url']
+            : ['nullable', 'url', 'required_without:image'];
+
         return [
             'title'         => ['required', 'string', 'max:255'],
             'slug'          => ['required','string', 'unique:programs,slug,' . ($this->editingId ?? 'NULL')],
@@ -54,8 +62,8 @@ class ProgramList extends Component
             'status'        => ['required'],
             'start_date'    => ['required', 'date'],
             'end_date'      => ['required', 'date', 'after_or_equal:start_date'],
-            'image'         => ['nullable', 'image', 'max:2048', 'required_without:image_url'],
-            'image_url'     => ['nullable', 'url', 'required_without:image'],
+            'image'         => $imageRule,
+            'image_url'     => $imageUrlRule,
         ];
     }
 
