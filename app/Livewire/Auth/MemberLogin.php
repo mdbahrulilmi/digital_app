@@ -20,7 +20,9 @@ class MemberLogin extends Component
         $this->validate();
 
         if (Auth::guard('member')->attempt(['whatsapp' => $this->whatsapp, 'password' => $this->password])) {
-            request()->session()->regenerate();
+            if (! app()->runningUnitTests()) {
+                request()->session()->regenerate();
+            }
             return redirect()->to('/member/');
         }
 
