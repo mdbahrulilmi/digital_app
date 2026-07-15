@@ -3,8 +3,19 @@
 @endphp
 
 <div class="w-full px-6 py-10">
-    <div class="mb-10">
-        <h2 class="text-4xl font-black text-slate-900 tracking-tight">Jadwal Webinar</h2>
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6">
+
+        <div>
+
+            <h1 class="text-3xl font-black text-slate-900">
+                Jadwal Webinar
+            </h1>
+
+            <p class="mt-1 text-slate-500">
+                Lihat jadwal webinar yang akan datang dan ikuti sesi sesuai jadwal.
+            </p>
+
+        </div>
     </div>
 
     @foreach(['live' => 'Sedang Berlangsung', 'soon' => 'Segera Hadir', 'upcoming' => 'Akan Datang', 'past' => 'Selesai'] as $status => $label)
