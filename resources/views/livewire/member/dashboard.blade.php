@@ -1,6 +1,5 @@
 <div class="p-2 space-y-8">
 
-    {{-- ================= HERO ================= --}}
     <section class="relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-700 via-indigo-800 to-slate-900 p-8 lg:p-10 text-white shadow-2xl">
 
         <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-white/10 blur-3xl"></div>
@@ -8,7 +7,6 @@
 
         <div class="relative z-10 flex flex-col lg:flex-row justify-between items-center gap-10">
 
-            {{-- LEFT --}}
             <div class="flex-1">
 
                 <p class="uppercase tracking-[4px] text-xs font-bold text-indigo-200">
@@ -26,7 +24,6 @@
 
             </div>
 
-            {{-- RIGHT --}}
             <div class="text-center lg:text-right">
 
                 <p class="text-indigo-200 uppercase tracking-[3px] text-xs font-bold">
@@ -48,13 +45,6 @@
         </div>
 
     </section>
-
-
-
-
-
-
-    {{-- ================= QUICK STATS ================= --}}
 
     <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
@@ -152,7 +142,6 @@
 
                 <div class="flex flex-col lg:flex-row w-full bg-white rounded-xl shadow-xl overflow-hidden border border-slate-100">
 
-                    {{-- IMAGE --}}
                     <div class="relative w-full lg:w-1/3 h-56 lg:h-auto overflow-hidden">
 
                         <img
@@ -181,7 +170,6 @@
 
                     </div>
 
-                    {{-- CONTENT --}}
                     <div class="flex-1 p-5 lg:p-6 flex flex-col justify-between">
 
                         <div>

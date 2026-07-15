@@ -73,7 +73,6 @@
                                 ? 'bg-amber-50 border border-amber-200 shadow-lg'
                                 : 'bg-slate-50 border border-slate-200 opacity-80 shadow') }}">
 
-                        {{-- IMAGE --}}
                         <div class="relative w-full lg:w-1/3 h-52 lg:h-auto overflow-hidden">
 
                             <img
@@ -119,7 +118,6 @@
 
                         </div>
 
-                        {{-- CONTENT --}}
                         <div class="flex-1 p-5 lg:px-6 lg:py-5 flex flex-col justify-between">
 
                             <div>
