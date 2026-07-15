@@ -77,7 +77,7 @@
                         <option value="audio">🎵 Audio</option>
                         <option value="image">🖼 Image</option>
                         <option value="file">📄 PDF/File</option>
-                        <option value="link">🔗 Link</option>
+                        {{-- <option value="link">🔗 Link</option> --}}
 
                     </select>
 
