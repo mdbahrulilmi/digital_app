@@ -2,7 +2,7 @@
     $hasLive = isset($sessions['live']) && count($sessions['live']) > 0;
 @endphp
 
-<div class="w-full px-6 py-10">
+<div class="w-full px-6 py-6">
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6">
 
         <div>
