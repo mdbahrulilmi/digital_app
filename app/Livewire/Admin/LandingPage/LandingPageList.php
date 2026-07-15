@@ -42,18 +42,32 @@ class LandingPageList extends Component
     {
         return view('livewire.admin.landing-page.list', [
             'pages' => LandingPage::query()
-                ->whereNull('program_id')
-                ->when($this->search, function ($q) {
-                    $q->where('title', 'like', "%{$this->search}%")
-                      ->orWhere('slug', 'like', "%{$this->search}%");
-                })
-                ->when($this->filterStatus, function ($q) {
-                    $q->where('status', $this->filterStatus);
-                })
-                ->latest()
-                ->paginate(10),
+            ->whereNull('program_id')
+            ->when($this->search, function ($q) {
+                $q->where(function ($query) {
+                    $query->where('title', 'like', "%{$this->search}%")
+                        ->orWhere('slug', 'like', "%{$this->search}%");
+                });
+            })
+            ->when($this->filterStatus, function ($q) {
+                $q->where('status', $this->filterStatus);
+            })
+            ->latest()
+            ->paginate(10, ['*'], 'landing_pages'),
 
-            'program_pages' => LandingPage::whereNotNull('program_id')->paginate(10),
+        'program_pages' => LandingPage::query()
+            ->whereNotNull('program_id')
+            ->when($this->search, function ($q) {
+                $q->where(function ($query) {
+                    $query->where('title', 'like', "%{$this->search}%")
+                        ->orWhere('slug', 'like', "%{$this->search}%");
+                });
+            })
+            ->when($this->filterStatus, function ($q) {
+                $q->where('status', $this->filterStatus);
+            })
+            ->latest()
+            ->paginate(10, ['*'], 'program_pages'),
         ]);
     }
 }
