@@ -7,50 +7,18 @@
 
         
         
-        <div class="mb-8">
-
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-
-                <div>
-                    
-                    <h1 class="mt-2 text-3xl font-black text-slate-900">
-                        Manajemen Produk
-                    </h1>
-
-                    <p class="mt-2 text-slate-500">
-                        Kelola seluruh produk digital, video, PDF, audio dan gambar.
-                    </p>
-
-                </div>
-
-                <button
-                    wire:click="create"
-                    class="cursor-pointer inline-flex items-center justify-center gap-2
-                    rounded-xl bg-indigo-600 px-6 py-3
-                    font-bold text-white
-                    hover:bg-indigo-700 transition">
-
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 4v16m8-8H4"/>
-
-                    </svg>
-
-                    Tambah Produk
-
-                </button>
-
+        <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900">Manajemen Produk</h1>
+                <p class="text-sm text-slate-500">Kelola informasi dan data produk secara terpusat.</p>
             </div>
 
+            <button wire:click="create" class="flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold shadow-md transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                </svg>
+                Tambah Produk
+            </button>
         </div>
 
             

@@ -65,12 +65,10 @@
 <div class="d">
 
   <!-- Header -->
-  <div class="hdr">
-    <div class="hdr-left">
-      <h1>Dashboard</h1>
-      <p>Jumat, 13 Juni 2025 — Selamat datang kembali</p>
+    <div>
+        <h1 class="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <p class="text-sm text-slate-500">Jumat, 13 Juni 2025 — Selamat datang kembali</p>
     </div>
-  </div>
 
   <div class="stats">
     <div class="sc">
