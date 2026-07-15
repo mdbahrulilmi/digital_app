@@ -1,8 +1,18 @@
 <div class="p-2">
 
-    <h2 class="text-3xl font-extrabold text-slate-900 mb-8 tracking-tight">
-        Program Eksklusif Anda
-    </h2>
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6">
+
+        <div>
+            <h1 class="text-3xl font-black text-slate-900">
+                Program Eksklusif Anda
+            </h1>
+
+            <p class="mt-1 text-slate-500">
+                Lihat dan akses semua program yang Anda miliki.
+            </p>
+        </div>
+
+    </div>
 
     @php
         $groups = [

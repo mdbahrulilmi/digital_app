@@ -1,12 +1,14 @@
-<div class="p-6">
+<div class="p-2">
 
-    <div class="flex items-end justify-between mb-6">
+
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6">
+
         <div>
-            <h2 class="text-2xl font-bold text-slate-900">
+            <h1 class="text-3xl font-black text-slate-900">
                 Riwayat Pembelian
-            </h2>
+            </h1>
 
-            <p class="text-sm text-slate-500">
+            <p class="mt-1 text-slate-500">
                 Semua transaksi yang pernah dilakukan.
             </p>
         </div>
@@ -14,6 +16,7 @@
         <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
             {{ $purchases->total() }} Transaksi
         </span>
+
     </div>
 
     <div class="space-y-2">
