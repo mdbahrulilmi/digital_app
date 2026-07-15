@@ -476,7 +476,7 @@
                                     <option value="image">Gambar</option>
                                     <option value="audio">Audio</option>
                                     <option value="video">Video</option>
-                                    <option value="link">Link</option>
+                                    {{-- <option value="link">Link</option> --}}
                                 </select>
                                 @error('asset_type') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                                 @if($asset_source === 'upload')

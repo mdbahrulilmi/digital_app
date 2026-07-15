@@ -137,7 +137,7 @@
     <!-- TAB PROGRAM PAGE -->
     <div
         x-show="tab === 'programs'"
-        x-transition
+        x-transitionC
         x-cloak
     >
         <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
