@@ -1,11 +1,6 @@
   <style>
 .d { margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
 
-    /* Header */
-    .hdr { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-    .hdr-left h1 { font-size: 20px; font-weight: 600; color: #0F172A; }
-    .hdr-left p { font-size: 12px; color: #64748B; margin-top: 3px; }
-    .hdr-actions { display: flex; gap: 8px; }
     .btn {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 7px 14px; border-radius: 8px;
@@ -75,13 +70,8 @@
       <h1>Dashboard</h1>
       <p>Jumat, 13 Juni 2025 — Selamat datang kembali</p>
     </div>
-    {{-- <div class="hdr-actions">
-      <a href="#" class="btn"><i class="ti ti-download" style="font-size:13px"></i> Ekspor</a>
-      <a href="/admin/product" class="btn btn-accent"><i class="ti ti-plus" style="font-size:13px"></i> Produk baru</a>
-    </div> --}}
   </div>
 
-  <!-- Stats -->
   <div class="stats">
     <div class="sc">
         <p class="sc-label">Pendapatan bulan ini</p>
@@ -105,7 +95,6 @@
         </div>
     </div>
 
-  <!-- Row 2: Chart + Traffic Source -->
   <div class="row2">
     <div class="card">
       <div class="card-head">
@@ -136,76 +125,72 @@
     </div>
     </div>
 
-  <!-- Row 3: Produk + Devices + Notifikasi -->
   <div class="row2">
-      <div class="card">
+    <div class="card">
         <p class="card-title">Produk terlaris</p>
-        
-        @forelse($bestSellingProducts as $item)
-          @php
-              $barWidth = ($maxSold > 0) ? ($item->total_sold / $maxSold) * 100 : 0;
-              $svgIcon = ($item->type === 'program') 
-            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h10"/><path d="M12 9v2"/><path d="M15 9v2"/><path d="M9 9v2"/></svg>'
-            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>';
-          @endphp
 
-          <div class="prod-row">
-              <div class="prod-icon" style="color: #4F46E5;">{!! $svgIcon !!}</div>
-              <div style="flex:1;min-width:0; padding-right: 10px;">
-                  <p class="prod-name">{{ $item->name }}</p>
-                  <p class="prod-meta">{{ $item->total_sold }} lisensi • {{ ucfirst($item->type) }}</p>
+        @forelse($bestSellingProducts as $item)
+            @php
+                $iconColor = $item->type === 'program' ? '#2563EB' : '#22C55E';
+
+                $svgIcon = ($item->type === 'program')
+                    ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 10 12 5 2 10l10 5 10-5z"/> <path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/> <path d="M22 10v6"/>
+                      </svg>'
+                    : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>';
+            @endphp
+
+            <div class="prod-row" style="display:flex; align-items:center; gap:10px;">
+              <div class="prod-icon" style="background-color: {{ $iconColor }}; color:white;">
+                  {!! $svgIcon !!}
               </div>
-              <div style="  ">
-                  <span style="font-size: 10px; color: #64748B;">{{ round($barWidth) }}%</span>
+
+              <div style="flex:1; min-width:0;">
+                  <p class="prod-name" style="margin:0;">
+                      {{ $item->name }}
+                  </p>
               </div>
+
+              <span class="prod-meta" style="white-space:nowrap;">
+                  {{ $item->total_sold }} lisensi
+              </span>
           </div>
         @empty
-            <div class="text-center" style="padding: 20px 0; color: #94A3B8; font-size: 12px;">
-                <i class="ti ti-box-off" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
+            <div class="text-center" style="padding:20px 0; color:#94A3B8; font-size:12px;">
+                <i class="ti ti-box-off" style="font-size:24px; display:block; margin-bottom:8px;"></i>
                 Belum ada produk/program terjual
             </div>
         @endforelse
-      </div>
+    </div>
 
     <div class="card">
-      <p class="card-title">Perangkat pengunjung</p>
+        <p class="card-title">Perangkat pengunjung</p>
+
         <div style="position:relative; height:160px;">
             <canvas id="devChart"></canvas>
         </div>
-        <div class="legend">
+
+        <div class="py-4"></div>
+
+        <div class="flex justify-center items-center gap-6 flex-wrap">
             @foreach(['Desktop', 'Mobile', 'Tablet'] as $device)
-                @php 
+                @php
                     $count = isset($deviceData[$device]) ? $deviceData[$device]->count() : 0;
-                    $percent = ($totalVisitors > 0) ? round(($count / $totalVisitors) * 100) : 0;
+                    $percent = ($totalVisitors > 0)
+                        ? round(($count / $totalVisitors) * 100)
+                        : 0;
                 @endphp
-                <span>
-                    <span class="legend-dot" style="background:{{ $device == 'Desktop' ? '#4F46E5' : ($device == 'Mobile' ? '#818CF8' : '#C7D2FE') }}"></span>
-                    {{ $device }} {{ $percent }}%
-                </span>
+
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span
+                        class="w-2.5 h-2.5 rounded-full"
+                        style="background:{{ $device == 'Desktop' ? '#4F46E5' : ($device == 'Mobile' ? '#818CF8' : '#C7D2FE') }}">
+                    </span>
+                    <span>{{ $device }} {{ $percent }}%</span>
+                </div>
             @endforeach
         </div>
-    </div>
-
-    {{-- <div class="card">
-      <p class="card-title">Notifikasi</p>
-      <div class="alert-row">
-        <div class="dot" style="background:#F59E0B"></div>
-        <span>Review baru pada <strong>UI Kit Pro</strong> — bintang 5</span>
       </div>
-      <div class="alert-row">
-        <div class="dot" style="background:#4F46E5"></div>
-        <span>Lisensi baru dari pengguna <strong>@budi_d</strong></span>
-      </div>
-      <div class="alert-row">
-        <div class="dot" style="background:#10B981"></div>
-        <span>Pembayaran <strong>Rp 650.000</strong> diterima</span>
-      </div>
-      <div class="alert-row">
-        <div class="dot" style="background:#EF4444"></div>
-        <span>Refund request dari <strong>Mobile Kit</strong> — perlu ditinjau</span>
-      </div>
-    </div> --}}
-  </div>
+</div>
 
 </div>
 
