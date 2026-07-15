@@ -39,8 +39,7 @@
   <div class="grid gap-4 md:grid-cols-[1.6fr_1fr]">
     <div class="rounded-xl border border-slate-200 bg-white px-5 py-[18px]">
       <div class="mb-4 flex items-center justify-between">
-        <span class="mb-4 text-[13px] font-semibold text-slate-800">Pendapatan 7 hari terakhir</span>
-        <span class="text-[11px] text-slate-400">Rp juta</span>
+        <span class="mb-4 text-[13px] font-semibold text-slate-800">Pendapatan 1 Tahun terakhir</span>
       </div>
       <div style="position:relative; height:180px;">
         <canvas id="revChart"></canvas>

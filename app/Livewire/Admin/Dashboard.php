@@ -21,11 +21,24 @@ class Dashboard extends Component
                        ->where('orders.status', 'paid')
                        ->sum('qty');
 
-        $chartData = Order::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(amount) as total'))
-                          ->where('created_at', '>=', now()->subDays(7))
-                          ->where('orders.status', 'paid')
-                          ->groupBy('date')
-                          ->pluck('total', 'date');
+        $year = now()->year;
+
+        $data = Order::selectRaw('MONTH(created_at) as month, SUM(amount) as total')
+            ->whereYear('created_at', $year)
+            ->where('status', 'paid')
+            ->groupBy('month')
+            ->pluck('total', 'month');
+
+        $months = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+            'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+        ];
+
+        $chartData = collect();
+
+        foreach ($months as $index => $month) {
+            $chartData[$month] = $data[$index + 1] ?? 0;
+        }
 
         $bestSellingProducts = OrderItem::select('name', 'type', \DB::raw('SUM(qty) as total_sold'))
         ->whereHas('order', function($query) {
